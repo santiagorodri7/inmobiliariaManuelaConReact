@@ -1,0 +1,65 @@
+body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    margin: 0;
+}
+.premium-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 500px;
+}
+.role-btn {
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: #555;
+    background: #eee;
+    width: 48%;
+}
+.role-btn.active.comprador-btn {
+    background: #e3f2fd;
+    border-color: #2196f3;
+    color: #1976d2;
+}
+.role-btn.active.vendedor-btn {
+    background: #fce4ec;
+    border-color: #e91e63;
+    color: #c2185b;
+}
+.form-control {
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    transition: all 0.3s;
+}
+.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+    border-color: #2196f3;
+}
+.btn-register {
+    border-radius: 12px;
+    padding: 0.75rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #1976d2, #2196f3);
+    border: none;
+    color: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-register:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+    color: #fff;
+}
+.logo { max-width: 120px; margin-bottom: 20px; }
