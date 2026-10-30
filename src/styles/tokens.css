@@ -1,0 +1,56 @@
+:root {
+  --font-sans: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --ivory: #f8f5ef;
+  --ivory-deep: #efeae1;
+  --ivory-soft: #fbf9f5;
+  --sand: #e8e2d7;
+  --sand-deep: #d8cebe;
+  --sand-light: #f3eee6;
+  --slate: #3c464f;
+  --slate-deep: #2e373f;
+  --ink: #1c2a33;
+  --ink-soft: #253640;
+  --blue: #1b639e;
+  --blue-deep: #134b79;
+  --blue-soft: #e3edf5;
+  --green: #2f6d5a;
+  --green-soft: #e2efe9;
+  --terracotta: #a5523d;
+  --terracotta-soft: #f6e6df;
+  --muted: #6f787e;
+  --muted-strong: #505b62;
+  --line: rgba(60, 70, 79, 0.13);
+  --line-strong: rgba(60, 70, 79, 0.24);
+  --white: #ffffff;
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  --shadow-xs: 0 1px 2px rgba(28, 42, 51, 0.05);
+  --shadow-sm: 0 6px 20px rgba(28, 42, 51, 0.06);
+  --shadow-md: 0 16px 45px rgba(28, 42, 51, 0.1);
+  --shadow-lg: 0 30px 80px rgba(28, 42, 51, 0.16);
+
+  --container: 1240px;
+  --nav-height: 82px;
+  --transition: 180ms ease;
+
+  --bs-body-font-family: var(--font-sans);
+  --bs-body-color: var(--ink);
+  --bs-body-bg: var(--ivory);
+  --bs-primary: var(--blue);
+  --bs-primary-rgb: 27, 99, 158;
+  --bs-border-color: var(--line);
+  --bs-border-radius: var(--radius-xs);
+  --bs-border-radius-sm: var(--radius-xs);
+  --bs-border-radius-lg: var(--radius-md);
+  --bs-link-color: var(--blue);
+  --bs-link-hover-color: var(--blue-deep);
+  --bs-secondary-color: var(--muted);
+  --bs-emphasis-color: var(--ink);
+  --bs-font-sans-serif: var(--font-sans);
+}
