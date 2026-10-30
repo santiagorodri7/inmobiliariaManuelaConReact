@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#EFEAE1"/>
+  <path d="M0 430 210 260l140 112 120-96 330 264H0Z" fill="#E2DACD"/>
+  <path d="M0 500 250 320l150 118 130-104 270 216v50H0Z" fill="#D8CEBE"/>
+  <g fill="none" stroke="#3C464F" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M320 330v-92l80-46 80 46v92" stroke-width="10"/>
+    <path d="M367 330v-57h66v57" stroke-width="8"/>
+    <path d="M306 348h188" stroke-width="8"/>
+  </g>
+  <text x="400" y="420" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-size="22" letter-spacing="4" fill="#3C464F">PROPIEDAD</text>
+</svg>
