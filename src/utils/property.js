@@ -95,7 +95,6 @@ export const normalizeProperty = (id, raw = {}) => {
     id: safeString(raw.id || id),
     ownerId: safeString(raw.ownerId || raw.owner || ""),
     ownerName: safeString(raw.ownerName || raw.propietario || ""),
-    ownerEmail: safeString(raw.ownerEmail || ""),
     title: safeString(raw.title || raw.titulo || "Propiedad sin título"),
     location: safeString(raw.location || raw.ubicacion || ""),
     price,
@@ -197,7 +196,6 @@ export const propertyPayload = (values = {}) => ({
   stratum: Number(values.stratum) || 0,
   amenities: normalizeAmenities(values.amenities),
   ownerName: safeString(values.ownerName),
-  ownerEmail: safeString(values.ownerEmail),
 });
 
 export const propertySearchSummary = (filters = {}) => {

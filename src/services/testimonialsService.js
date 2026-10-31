@@ -2,7 +2,9 @@ import {
   addDoc,
   collection,
   getDocs,
+  query,
   serverTimestamp,
+  where,
 } from "firebase/firestore";
 import { auth, db, requireFirebase } from "./firebase.js";
 import { appError } from "../utils/errors.js";
@@ -23,8 +25,28 @@ const normalizeTestimonial = (id, raw = {}) => ({
 
 export const listTestimonials = async () => {
   requireFirebase();
-  const snapshot = await getDocs(collection(db, "testimonios"));
-  return snapshot.docs
+  const snapshot = await getDocs(
+    query(
+      collection(db, "testimonios"),
+      where("estado", "in", ["activo", "aprobado"]),
+    ),
+  );
+  let documents = snapshot.docs;
+
+  // Respaldo de desarrollo para testimonios legacy sin `estado`.
+  if (!documents.length && import.meta.env.DEV) {
+    try {
+      const legacySnapshot = await getDocs(collection(db, "testimonios"));
+      documents = legacySnapshot.docs.filter((item) => {
+        const estado = String(item.data().estado || "").toLowerCase();
+        return !estado || estado === "activo" || estado === "aprobado";
+      });
+    } catch {
+      // Sin migración ni permisos, la sección queda vacía.
+    }
+  }
+
+  return documents
     .map((item) => normalizeTestimonial(item.id, item.data()))
     .filter(
       (item) =>

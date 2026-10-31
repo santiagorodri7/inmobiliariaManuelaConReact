@@ -1,0 +1,269 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------------------------------------------------------------------
+    // Helpers
+    // ---------------------------------------------------------------------
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function userDocument(uid) {
+      return /databases/$(database)/documents/usuarios/$(uid);
+    }
+
+    function currentUserData() {
+      return get(userDocument(request.auth.uid)).data;
+    }
+
+    // Acepta los valores heredados ("Administrador") mientras se normaliza
+    // la colección. El cliente ya los trata como Admin.
+    function isAdmin() {
+      return isSignedIn() && currentUserData().rol in ['Admin', 'Administrador'];
+    }
+
+    function isActiveUser() {
+      return isSignedIn() && (
+        !currentUserData().keys().hasAny(['activo'])
+        || currentUserData().activo != false
+      );
+    }
+
+    function changedFields() {
+      return request.resource.data.diff(resource.data).affectedKeys();
+    }
+
+    function validText(value, min, max) {
+      return value is string && value.size() >= min && value.size() <= max;
+    }
+
+    // Solo los inmuebles publicados son legibles sin autenticación.
+    // Los documentos heredados sin `status` deben completarse desde el panel
+    // administrativo antes de aparecer en el catálogo.
+    function isPublicProperty() {
+      return resource.data.status == 'disponible';
+    }
+
+    function isPropertyOwner(property) {
+      return isActiveUser() && property.ownerId == request.auth.uid;
+    }
+
+    // ---------------------------------------------------------------------
+    // usuarios: perfil privado. Solo el propio usuario o un administrador.
+    // ---------------------------------------------------------------------
+
+    match /usuarios/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+
+      allow create: if isSignedIn()
+        && request.auth.uid == userId
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.activo == true
+        && request.resource.data.rol in ['Comprador', 'Vendedor']
+        && validText(request.resource.data.nombre, 2, 120)
+        && validText(request.resource.data.email, 5, 180)
+        && request.resource.data.keys().hasOnly([
+          'nombre',
+          'cedula',
+          'fechaNacimiento',
+          'email',
+          'telefono',
+          'direccion',
+          'avatar',
+          'rol',
+          'activo',
+          'fechaRegistro',
+          'createdAt',
+          'updatedAt'
+        ]);
+
+      // El usuario solo puede editar datos de contacto/perfil. Nunca su rol,
+      // su estado activo, su correo ni las fechas de registro.
+      allow update: if request.auth.uid == userId
+        && (!resource.data.keys().hasAny(['activo']) || resource.data.activo != false)
+        && changedFields().hasOnly([
+          'nombre',
+          'telefono',
+          'direccion',
+          'avatar',
+          'fechaNacimiento',
+          'preferences',
+          'updatedAt'
+        ])
+        && validText(request.resource.data.nombre, 2, 120)
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.rol == resource.data.rol
+        && request.resource.data.activo == resource.data.activo;
+
+      allow update: if isAdmin()
+        && changedFields().hasOnly([
+          'nombre',
+          'cedula',
+          'fechaNacimiento',
+          'telefono',
+          'direccion',
+          'avatar',
+          'rol',
+          'activo',
+          'deactivatedAt',
+          'deactivatedBy',
+          'fechaRegistro',
+          'updatedAt'
+        ])
+        && (!request.resource.data.keys().hasAny(['rol'])
+          || !changedFields().hasAny(['rol'])
+          || request.resource.data.rol in ['Admin', 'Vendedor', 'Comprador']);
+
+      allow delete: if isAdmin();
+    }
+
+    // ---------------------------------------------------------------------
+    // propiedades: lectura pública únicamente de inmuebles publicados.
+    // El listado público debe consultar where("status", "==", "disponible").
+    // ---------------------------------------------------------------------
+
+    match /propiedades/{propertyId} {
+      allow read: if isPublicProperty()
+        || isAdmin()
+        || isPropertyOwner(resource.data);
+
+      allow create: if (isAdmin()
+          || (isActiveUser() && request.resource.data.ownerId == request.auth.uid))
+        && request.resource.data.ownerId is string
+        && request.resource.data.ownerId.size() > 0
+        && request.resource.data.status == 'disponible'
+        && request.resource.data.operation in ['venta', 'renta']
+        && request.resource.data.price is number
+        && request.resource.data.price >= 0
+        && validText(request.resource.data.title, 3, 180)
+        && validText(request.resource.data.location, 2, 180)
+        && validText(request.resource.data.description, 0, 5000)
+        && request.resource.data.get('saleId', '') == ''
+        && request.resource.data.get('featured', false) == false
+        && !request.resource.data.keys().hasAny(['closedAt']);
+
+      // El propietario puede editar su inmueble mientras no tenga un cierre.
+      // Los cambios de estado a vendida/rentada y los cierres los hace un
+      // administrador o la transacción de ventas.
+      allow update: if isAdmin()
+        || (isActiveUser()
+          && resource.data.ownerId == request.auth.uid
+          && request.resource.data.ownerId == resource.data.ownerId
+          && (!resource.data.keys().hasAny(['status'])
+            || (resource.data.status != 'vendida' && resource.data.status != 'rentada'))
+          && request.resource.data.status in ['disponible', 'inactiva']
+          && request.resource.data.get('saleId', '')
+            == resource.data.get('saleId', '')
+          && request.resource.data.get('featured', false)
+            == resource.data.get('featured', false)
+          && request.resource.data.get('closedAt', null)
+            == resource.data.get('closedAt', null));
+
+      // El borrado definitivo se ejecuta con la Cloud Function protegida.
+      allow delete: if false;
+    }
+
+    // ---------------------------------------------------------------------
+    // ventas: solo administración.
+    // ---------------------------------------------------------------------
+
+    match /ventas/{saleId} {
+      allow read: if isAdmin();
+
+      allow create: if isAdmin()
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.status == 'cerrada'
+        && request.resource.data.closingValue is number
+        && request.resource.data.closingValue > 0
+        && validText(request.resource.data.propertyTitle, 1, 180)
+        && validText(request.resource.data.buyerName, 3, 160);
+
+      allow update: if isAdmin()
+        && changedFields().hasOnly([
+          'status',
+          'annulledAt',
+          'annulledBy',
+          'annulReason',
+          'updatedAt'
+        ])
+        && request.resource.data.status in ['cerrada', 'anulada'];
+
+      allow delete: if false;
+    }
+
+    // ---------------------------------------------------------------------
+    // testimonios: lectura pública solo de los aprobados/activos.
+    // ---------------------------------------------------------------------
+
+    match /testimonios/{testimonialId} {
+      allow read: if resource.data.estado in ['activo', 'aprobado']
+        || isAdmin()
+        || (isSignedIn() && resource.data.userId == request.auth.uid);
+
+      allow create: if isActiveUser()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.estado == 'activo'
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5
+        && validText(request.resource.data.nombre, 2, 100)
+        && validText(request.resource.data.texto, 20, 1200)
+        && request.resource.data.keys().hasOnly([
+          'nombre',
+          'profesion',
+          'texto',
+          'rating',
+          'estado',
+          'fecha',
+          'fechaCreacion',
+          'userId',
+          'email'
+        ]);
+
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ---------------------------------------------------------------------
+    // auditLog: escritura de acciones propias, lectura administrativa.
+    // ---------------------------------------------------------------------
+
+    match /auditLog/{entryId} {
+      allow read: if isAdmin();
+
+      allow create: if isActiveUser()
+        && request.resource.data.actorId == request.auth.uid
+        && request.resource.data.action in [
+          'createSale',
+          'annulSale',
+          'publishProperty',
+          'hideProperty',
+          'softDeleteProperty',
+          'reactivateUser',
+          'deactivateUser',
+          'deleteProperty',
+          'hardDeleteProperty',
+          'backfillLegacyData'
+        ]
+        && request.resource.data.keys().hasOnly([
+          'action',
+          'actorId',
+          'actorEmail',
+          'targetType',
+          'targetId',
+          'details',
+          'createdAt'
+        ]);
+
+      allow update, delete: if false;
+    }
+
+    // Cualquier colección no definida queda cerrada.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

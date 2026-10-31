@@ -10,6 +10,7 @@ import {
   TrendingUp,
   Users,
   Wallet,
+  Wrench,
 } from "lucide-react";
 import DashboardLayout from "../../components/layout/DashboardLayout.jsx";
 import StatCard from "../../components/admin/StatCard.jsx";
@@ -28,7 +29,7 @@ import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { adminNav } from "../../config/dashboardNav.js";
 import { listUsers, setUserActive } from "../../services/usersService.js";
 import {
-  listProperties,
+  listAllProperties,
   setPropertyStatus,
   propertyStats,
 } from "../../services/propertiesService.js";
@@ -39,6 +40,7 @@ import {
   salesStats,
 } from "../../services/salesService.js";
 import { writeAudit } from "../../services/auditService.js";
+import { backfillLegacyData } from "../../services/maintenanceService.js";
 import {
   exportAll,
   exportProperties,
@@ -85,6 +87,8 @@ export default function AdminDashboard() {
   const [saleFormOpen, setSaleFormOpen] = useState(false);
   const [saleInitialProperty, setSaleInitialProperty] = useState("");
   const [annulTarget, setAnnulTarget] = useState(null);
+  const [maintenanceOpen, setMaintenanceOpen] = useState(false);
+  const [maintenanceBusy, setMaintenanceBusy] = useState(false);
 
   const [userFilters, setUserFilters] = useState(initialUserFilters);
   const [propertyFilters, setPropertyFilters] = useState(initialPropertyFilters);
@@ -97,7 +101,7 @@ export default function AdminDashboard() {
     setLoading(true);
     const [usersResult, propertiesResult, salesResult] = await Promise.allSettled([
       listUsers(),
-      listProperties(),
+      listAllProperties(),
       listSales(),
     ]);
 
@@ -271,6 +275,28 @@ export default function AdminDashboard() {
       );
     } finally {
       setBusyId("");
+    }
+  };
+
+  const handleBackfill = async () => {
+    setMaintenanceBusy(true);
+    try {
+      const result = await backfillLegacyData(profile);
+      const removed = result.ownerEmailsRemoved || 0;
+      toast.success(
+        `Datos actualizados: ${result.propertiesUpdated || 0} propiedades y ${result.testimonialsUpdated || 0} testimonios${removed ? `; ${removed} correos de propietario retirados de las fichas públicas` : ""}.`,
+      );
+      setMaintenanceOpen(false);
+      await loadAll();
+    } catch (backfillError) {
+      toast.error(
+        getErrorMessage(
+          backfillError,
+          "No se pudieron completar los datos heredados.",
+        ),
+      );
+    } finally {
+      setMaintenanceBusy(false);
     }
   };
 
@@ -473,6 +499,30 @@ export default function AdminDashboard() {
               </div>
             </section>
           </div>
+
+          <section className="surface panel">
+            <div className="panel-heading">
+              <div>
+                <p className="eyebrow">Mantenimiento</p>
+                <h2>Datos heredados</h2>
+                <p>
+                  Completa el estado de las propiedades y los testimonios que
+                  vienen del sitio anterior, y retira de las fichas el correo
+                  del propietario. Es necesario para que las consultas públicas
+                  seguras los muestren.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-sm"
+                onClick={() => setMaintenanceOpen(true)}
+                disabled={maintenanceBusy}
+              >
+                <Wrench size={15} aria-hidden="true" />
+                Completar datos
+              </button>
+            </div>
+          </section>
 
           {!loading && !properties.length && !sales.length && (
             <EmptyState
@@ -701,6 +751,17 @@ export default function AdminDashboard() {
         busy={busyId === `sale-${annulTarget?.id}`}
         onConfirm={handleAnnul}
         onCancel={() => setAnnulTarget(null)}
+      />
+
+      <ConfirmDialog
+        open={maintenanceOpen}
+        title="Completar datos heredados"
+        description="Se agregará el estado faltante a las propiedades y los testimonios antiguos, y se retirará el correo del propietario de las fichas públicas. No se modifican precios, imágenes, cuentas ni cierres. Al terminar, el catálogo público podrá leer los inmuebles con las reglas seguras."
+        confirmLabel="Completar datos"
+        cancelLabel="Cancelar"
+        busy={maintenanceBusy}
+        onConfirm={handleBackfill}
+        onCancel={() => setMaintenanceOpen(false)}
       />
     </DashboardLayout>
   );

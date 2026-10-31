@@ -225,6 +225,28 @@ export default function SalesReportPage() {
             onRetry={load}
             onAnnul={() => undefined}
             compact
+            emptyState={
+              <EmptyState
+                icon={Ban}
+                title={
+                  sales.length
+                    ? "No hay cierres con estos filtros"
+                    : "Aún no hay cierres registrados"
+                }
+                description={
+                  sales.length
+                    ? "Prueba con otro rango de fechas o limpia los filtros para ver todos los cierres."
+                    : "Cuando registres la primera venta o arriendo, el reporte se actualizará automáticamente."
+                }
+                action={
+                  <Link to="/admin" className="btn btn-primary">
+                    Ir a registrar un cierre
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </Link>
+                }
+                compact
+              />
+            }
           />
           <Pagination
             page={pageData.page}
@@ -233,25 +255,6 @@ export default function SalesReportPage() {
             pageSize={PAGE_SIZE}
             onChange={setPage}
           />
-
-          {!loading && !filtered.length && (
-            <EmptyState
-              icon={Ban}
-              title={sales.length ? "No hay cierres con estos filtros" : "Aún no hay cierres registrados"}
-              description={
-                sales.length
-                  ? "Prueba con otro rango de fechas o limpia los filtros para ver todos los cierres."
-                  : "Cuando registres la primera venta o arriendo, el reporte se actualizará automáticamente."
-              }
-              action={
-                <Link to="/admin" className="btn btn-primary">
-                  Ir a registrar un cierre
-                  <ArrowRight size={16} aria-hidden="true" />
-                </Link>
-              }
-              compact
-            />
-          )}
         </section>
       )}
 

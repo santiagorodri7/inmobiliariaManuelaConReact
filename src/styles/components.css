@@ -14,7 +14,7 @@
   padding: 10px 18px;
   border-width: 1px;
   border-radius: var(--radius-xs);
-  font-size: 0.83rem;
+  font-size: 0.87rem;
   font-weight: 500;
   line-height: 1.25;
   letter-spacing: 0.005em;
@@ -112,21 +112,21 @@
 
 .btn-sm {
   min-height: 36px;
-  padding: 8px 13px;
-  font-size: 0.76rem;
+  padding: 8px 14px;
+  font-size: 0.8rem;
 }
 
 .btn-xs {
   min-height: 30px;
   padding: 6px 10px;
   border-radius: 5px;
-  font-size: 0.69rem;
+  font-size: 0.73rem;
 }
 
 .btn-lg {
   min-height: 50px;
-  padding: 13px 23px;
-  font-size: 0.9rem;
+  padding: 13px 24px;
+  font-size: 0.94rem;
 }
 
 .icon-button {
@@ -187,7 +187,7 @@
   gap: 4px;
   margin: 0;
   color: var(--ink);
-  font-size: 0.76rem;
+  font-size: 0.81rem;
   font-weight: 600;
   letter-spacing: 0.005em;
 }
@@ -204,7 +204,7 @@
   border-radius: 8px;
   background-color: var(--ivory-soft);
   color: var(--ink);
-  font-size: 0.86rem;
+  font-size: 0.91rem;
   line-height: 1.5;
   transition:
     border-color var(--transition),
@@ -249,14 +249,14 @@ textarea.form-control {
 .form-hint {
   margin: 0;
   color: var(--muted);
-  font-size: 0.69rem;
+  font-size: 0.75rem;
   line-height: 1.5;
 }
 
 .form-error {
   margin: 0;
   color: var(--terracotta);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 500;
   line-height: 1.5;
 }
@@ -536,7 +536,7 @@ textarea.form-control {
   gap: 6px;
   padding: 4px 9px;
   border-radius: var(--radius-pill);
-  font-size: 0.65rem;
+  font-size: 0.69rem;
   font-weight: 500;
   line-height: 1.4;
   white-space: nowrap;
@@ -737,12 +737,12 @@ textarea.form-control {
 
 .property-card__price span {
   color: var(--muted);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
 }
 
 .property-card h3 {
   margin-bottom: 8px;
-  font-size: 1.03rem;
+  font-size: 1.07rem;
   font-weight: 500;
   line-height: 1.35;
   letter-spacing: -0.012em;
@@ -762,7 +762,7 @@ textarea.form-control {
   gap: 5px;
   margin-bottom: 14px;
   color: var(--muted);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
 .property-card__location svg {
@@ -774,7 +774,7 @@ textarea.form-control {
   overflow: hidden;
   margin-bottom: 16px;
   color: var(--muted-strong);
-  font-size: 0.77rem;
+  font-size: 0.84rem;
   line-height: 1.65;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -795,7 +795,7 @@ textarea.form-control {
   align-items: center;
   gap: 5px;
   color: var(--muted-strong);
-  font-size: 0.69rem;
+  font-size: 0.74rem;
 }
 
 .property-card__specs svg {
@@ -814,7 +814,7 @@ textarea.form-control {
 
 .property-card__footer > span {
   color: var(--muted);
-  font-size: 0.66rem;
+  font-size: 0.7rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
@@ -824,7 +824,7 @@ textarea.form-control {
   align-items: center;
   gap: 4px;
   color: var(--blue);
-  font-size: 0.71rem;
+  font-size: 0.76rem;
   font-weight: 600;
 }
 
@@ -851,12 +851,12 @@ textarea.form-control {
 }
 
 .filter-tab {
-  padding: 6px 13px;
+  padding: 6px 14px;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
   background: transparent;
   color: var(--muted-strong);
-  font-size: 0.73rem;
+  font-size: 0.79rem;
   font-weight: 500;
   transition: all var(--transition);
 }
@@ -887,7 +887,7 @@ textarea.form-control {
 
 .filter-field__label {
   color: var(--muted);
-  font-size: 0.62rem;
+  font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -930,7 +930,7 @@ textarea.form-control {
   outline: 0;
   background: transparent;
   color: var(--ink);
-  font-size: 0.8rem;
+  font-size: 0.86rem;
 }
 
 .filter-field select {
@@ -941,7 +941,7 @@ textarea.form-control {
   border-radius: 8px;
   background-color: var(--ivory-soft);
   color: var(--ink);
-  font-size: 0.8rem;
+  font-size: 0.86rem;
 }
 
 .filter-field select:focus {
@@ -968,7 +968,7 @@ textarea.form-control {
   border: 0;
   background: transparent;
   color: var(--muted);
-  font-size: 0.71rem;
+  font-size: 0.77rem;
   font-weight: 500;
 }
 
@@ -1308,7 +1308,7 @@ textarea.form-control {
   flex: 1;
   margin: 17px 0 22px;
   color: var(--muted-strong);
-  font-size: 0.83rem;
+  font-size: 0.89rem;
   line-height: 1.75;
 }
 
@@ -1342,13 +1342,13 @@ textarea.form-control {
 
 .testimonial-card footer strong {
   color: var(--ink);
-  font-size: 0.76rem;
+  font-size: 0.81rem;
   font-weight: 600;
 }
 
 .testimonial-card footer span {
   color: var(--muted);
-  font-size: 0.64rem;
+  font-size: 0.69rem;
 }
 
 .testimonial-card--skeleton {
@@ -1403,7 +1403,7 @@ textarea.form-control {
   width: 100%;
   min-width: 740px;
   border-collapse: collapse;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
 }
 
 .data-table thead th {
@@ -1411,7 +1411,7 @@ textarea.form-control {
   border-bottom: 1px solid var(--line);
   background: var(--ivory-soft);
   color: var(--muted);
-  font-size: 0.62rem;
+  font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.07em;
   text-align: left;
@@ -1469,7 +1469,7 @@ textarea.form-control {
   overflow: hidden;
   max-width: 260px;
   color: var(--ink);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1480,7 +1480,7 @@ textarea.form-control {
   overflow: hidden;
   max-width: 260px;
   color: var(--muted);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1523,7 +1523,7 @@ textarea.form-control {
 
 .pagination-bar__summary {
   color: var(--muted);
-  font-size: 0.69rem;
+  font-size: 0.74rem;
 }
 
 .pagination-bar__controls {
@@ -1539,7 +1539,7 @@ textarea.form-control {
 
 .pagination-bar__page {
   color: var(--muted-strong);
-  font-size: 0.69rem;
+  font-size: 0.74rem;
   white-space: nowrap;
 }
 
@@ -1755,7 +1755,7 @@ textarea.form-control {
   max-width: 54ch;
   margin-bottom: 20px;
   color: var(--muted);
-  font-size: 0.83rem;
+  font-size: 0.89rem;
 }
 
 .empty-state__action {
@@ -1781,7 +1781,7 @@ textarea.form-control {
 
 .empty-state--compact p {
   margin-bottom: 14px;
-  font-size: 0.76rem;
+  font-size: 0.82rem;
 }
 
 .error-state {
@@ -1813,7 +1813,7 @@ textarea.form-control {
   max-width: 64ch;
   margin-bottom: 13px;
   color: var(--muted-strong);
-  font-size: 0.79rem;
+  font-size: 0.85rem;
 }
 
 .error-state--compact {
@@ -1831,7 +1831,7 @@ textarea.form-control {
   padding: 15px 17px;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   line-height: 1.6;
 }
 
@@ -1839,13 +1839,13 @@ textarea.form-control {
   display: block;
   margin-bottom: 3px;
   color: var(--ink);
-  font-size: 0.81rem;
+  font-size: 0.86rem;
 }
 
 .alert p {
   margin: 0;
   color: var(--muted-strong);
-  font-size: 0.77rem;
+  font-size: 0.82rem;
 }
 
 .alert-danger {
@@ -1962,7 +1962,7 @@ textarea.form-control {
   max-width: 44ch;
   margin: 0;
   color: var(--muted);
-  font-size: 0.68rem;
+  font-size: 0.74rem;
   line-height: 1.55;
 }
 
@@ -1983,7 +1983,7 @@ textarea.form-control {
 .contact-form--compact .form-select {
   min-height: 40px;
   padding-block: 9px;
-  font-size: 0.81rem;
+  font-size: 0.87rem;
 }
 
 .contact-form--compact .form-actions {
@@ -2018,7 +2018,7 @@ textarea.form-control {
 .contact-success p {
   max-width: 48ch;
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: 0.86rem;
 }
 
 .contact-success__actions {
@@ -2038,7 +2038,7 @@ textarea.form-control {
   border-radius: var(--radius-pill);
   background: var(--blue-soft);
   color: var(--blue-deep);
-  font-size: 0.68rem;
+  font-size: 0.73rem;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -2128,7 +2128,7 @@ textarea.form-control {
 .page-loader p {
   margin: 0;
   color: var(--muted);
-  font-size: 0.77rem;
+  font-size: 0.82rem;
 }
 
 .spinner {

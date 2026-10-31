@@ -14,11 +14,13 @@ export default function SalesTable({
   onAnnul,
   busyId = "",
   compact = false,
+  emptyState = null,
 }) {
   if (loading) return <TableSkeleton rows={5} columns={6} />;
   if (error) return <ErrorState title="No pudimos cargar los cierres" description={error} onRetry={onRetry} compact />;
 
   if (!sales.length) {
+    if (emptyState) return emptyState;
     return (
       <EmptyState
         icon={Banknote}

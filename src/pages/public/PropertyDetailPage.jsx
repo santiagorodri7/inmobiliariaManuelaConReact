@@ -56,7 +56,12 @@ export default function PropertyDetailPage() {
       })
       .catch((loadError) => {
         console.error("No se pudo cargar la propiedad:", loadError);
-        if (active) setError("No pudimos cargar esta propiedad. Inténtalo de nuevo.");
+        if (!active) return;
+        if (loadError?.code === "permission-denied") {
+          setProperty(null);
+          return;
+        }
+        setError("No pudimos cargar esta propiedad. Inténtalo de nuevo.");
       })
       .finally(() => {
         if (active) setLoading(false);

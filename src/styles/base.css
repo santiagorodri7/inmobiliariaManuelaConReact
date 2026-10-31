@@ -15,7 +15,7 @@ body {
   background: var(--ivory);
   color: var(--ink);
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -144,9 +144,10 @@ button {
 }
 
 .section-heading p {
-  max-width: 640px;
+  max-width: 660px;
   margin-bottom: 0;
-  font-size: 1rem;
+  font-size: 1.02rem;
+  line-height: 1.75;
 }
 
 .section-heading--split {
@@ -216,7 +217,7 @@ button {
 .panel-heading p {
   max-width: 620px;
   margin-bottom: 0;
-  font-size: 0.92rem;
+  font-size: 0.96rem;
 }
 
 .stack {
@@ -227,9 +228,9 @@ button {
 .eyebrow {
   margin-bottom: 10px;
   color: var(--blue);
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   line-height: 1.4;
   text-transform: uppercase;
 }
@@ -276,7 +277,7 @@ button {
   align-items: flex-start;
   gap: 10px;
   color: var(--muted-strong);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .check-list li svg {

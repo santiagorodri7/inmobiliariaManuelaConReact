@@ -1,0 +1,99 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "runtime": "nodejs20",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "*.log",
+        ".env",
+        ".env.*",
+        "!*.example"
+      ]
+    }
+  ],
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "redirects": [
+      { "source": "/index.html", "destination": "/", "type": 301 },
+      { "source": "/home.html", "destination": "/home", "type": 301 },
+      { "source": "/welcome.html", "destination": "/", "type": 301 },
+      { "source": "/about.html", "destination": "/nosotros", "type": 301 },
+      { "source": "/nosotros.html", "destination": "/nosotros", "type": 301 },
+      { "source": "/service.html", "destination": "/servicios", "type": 301 },
+      { "source": "/servicios.html", "destination": "/servicios", "type": 301 },
+      { "source": "/contact.html", "destination": "/contacto", "type": 301 },
+      { "source": "/contacto.html", "destination": "/contacto", "type": 301 },
+      { "source": "/login.html", "destination": "/registro", "type": 301 },
+      { "source": "/profiles.html", "destination": "/login", "type": 301 },
+      { "source": "/buyer.html", "destination": "/comprador", "type": 301 },
+      { "source": "/seller.html", "destination": "/vendedor", "type": 301 },
+      { "source": "/vandedorr.html", "destination": "/vendedor", "type": 301 },
+      { "source": "/admin.html", "destination": "/admin", "type": 301 },
+      {
+        "source": "/reporteVentas.html",
+        "destination": "/admin/reportes-ventas",
+        "type": 301
+      },
+      { "source": "/setup.html", "destination": "/login", "type": 301 },
+      { "source": "/blog.html", "destination": "/servicios", "type": 301 },
+      { "source": "/guide.html", "destination": "/servicios", "type": 301 },
+      { "source": "/single.html", "destination": "/", "type": 301 },
+      { "source": "/testimonial.html", "destination": "/servicios", "type": 301 }
+    ],
+    "headers": [
+      {
+        "source": "/assets/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public,max-age=31536000,immutable"
+          }
+        ]
+      },
+      {
+        "source": "/index.html",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        ]
+      },
+      {
+        "source": "**/*.@(jpg|jpeg|png|webp|svg|woff2)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public,max-age=604800"
+          }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "emulators": {
+    "auth": { "port": 9099 },
+    "firestore": { "port": 8080 },
+    "storage": { "port": 9199 },
+    "functions": { "port": 5001 },
+    "hosting": { "port": 5000 },
+    "ui": { "enabled": true }
+  }
+}
