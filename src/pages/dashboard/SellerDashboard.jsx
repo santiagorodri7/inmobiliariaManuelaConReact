@@ -78,7 +78,6 @@ export default function SellerDashboard() {
         id: editing?.id || "",
         ownerId: profile.id,
         ownerName: profile.nombre,
-        ownerEmail: profile.email,
         values: payload.values,
         newFiles: payload.newFiles,
         keptImages: payload.keptImages,

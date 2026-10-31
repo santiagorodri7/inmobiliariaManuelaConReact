@@ -1,0 +1,37 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "propiedades",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "propiedades",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "ownerId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "ventas",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "closingDate", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "testimonios",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "estado", "order": "ASCENDING" },
+        { "fieldPath": "fechaCreacion", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

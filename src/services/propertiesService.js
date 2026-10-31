@@ -25,6 +25,9 @@ import { writeAudit } from "./auditService.js";
 
 const PROPERTIES = "propiedades";
 
+const publicPropertiesQuery = () =>
+  query(collection(db, PROPERTIES), where("status", "==", "disponible"));
+
 const propertyId = () =>
   `prop_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
 
@@ -47,6 +50,31 @@ const staleStoragePaths = (existing, keptImages = []) => {
 };
 
 export const listProperties = async () => {
+  requireFirebase();
+  const snapshot = await getDocs(publicPropertiesQuery());
+  let documents = snapshot.docs;
+
+  // Mientras se ejecuta la migración, los documentos heredados no tienen
+  // `status` y no aparecen en la consulta segura. Este respaldo solo existe
+  // en desarrollo y se elimina del build de producción.
+  if (!documents.length && import.meta.env.DEV) {
+    try {
+      const legacySnapshot = await getDocs(collection(db, PROPERTIES));
+      documents = legacySnapshot.docs.filter((item) => {
+        const data = item.data();
+        return !data.status;
+      });
+    } catch {
+      // Con las reglas desplegadas y sin migración, el catálogo queda vacío.
+    }
+  }
+
+  return sortProperties(
+    documents.map((item) => normalizeProperty(item.id, item.data())),
+  );
+};
+
+export const listAllProperties = async () => {
   requireFirebase();
   const snapshot = await getDocs(collection(db, PROPERTIES));
   return sortProperties(
@@ -77,7 +105,6 @@ export const saveProperty = async ({
   id = "",
   ownerId,
   ownerName = "",
-  ownerEmail = "",
   values,
   newFiles = [],
   keptImages = [],
@@ -95,7 +122,6 @@ export const saveProperty = async ({
   const payload = propertyPayload({
     ...values,
     ownerName,
-    ownerEmail,
   });
 
   if (!id) {

@@ -32,7 +32,7 @@
 .hero__content {
   position: relative;
   display: grid;
-  width: min(100% - 48px, 1320px);
+  width: min(100% - 48px, var(--container));
   margin-inline: auto;
   grid-template-columns: minmax(0, 1.08fr) minmax(400px, 0.92fr);
   align-items: center;
@@ -60,10 +60,10 @@
 }
 
 .hero__lead {
-  max-width: 52ch;
+  max-width: 54ch;
   margin-bottom: 30px;
-  color: rgba(248, 245, 239, 0.67);
-  font-size: clamp(0.9rem, 1.15vw, 1.02rem);
+  color: rgba(248, 245, 239, 0.74);
+  font-size: clamp(0.96rem, 1.15vw, 1.06rem);
   line-height: 1.8;
 }
 
@@ -297,7 +297,7 @@
 .service-preview p {
   margin-bottom: 20px;
   color: var(--muted-strong);
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   line-height: 1.7;
 }
 
@@ -307,7 +307,7 @@
   gap: 5px;
   margin-top: auto;
   color: var(--blue);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 600;
 }
 
@@ -381,7 +381,7 @@
 
 .about-teaser__copy > p {
   max-width: 56ch;
-  font-size: 0.88rem;
+  font-size: 0.94rem;
   line-height: 1.8;
 }
 
@@ -433,10 +433,10 @@
 }
 
 .process-step p {
-  max-width: 34ch;
+  max-width: 36ch;
   margin-bottom: 0;
-  color: var(--muted);
-  font-size: 0.8rem;
+  color: var(--muted-strong);
+  font-size: 0.86rem;
   line-height: 1.7;
 }
 
@@ -496,8 +496,8 @@
 .cta-band p {
   max-width: 48ch;
   margin-bottom: 0;
-  color: rgba(248, 245, 239, 0.62);
-  font-size: 0.9rem;
+  color: rgba(248, 245, 239, 0.72);
+  font-size: 0.95rem;
 }
 
 .cta-band__actions {
@@ -538,7 +538,7 @@
 
 .about-page__copy p {
   max-width: 58ch;
-  font-size: 0.88rem;
+  font-size: 0.94rem;
   line-height: 1.85;
 }
 
@@ -575,7 +575,7 @@
 .about-page__quote p {
   margin-bottom: 8px;
   color: var(--ink);
-  font-size: 0.83rem;
+  font-size: 0.88rem;
   font-style: italic;
   line-height: 1.65;
 }
@@ -622,7 +622,7 @@
 .value-card p {
   margin-bottom: 0;
   color: var(--muted-strong);
-  font-size: 0.76rem;
+  font-size: 0.83rem;
   line-height: 1.7;
 }
 
@@ -646,7 +646,7 @@
 
 .coverage-panel p {
   margin-bottom: 0;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
 .coverage-list {
@@ -711,7 +711,7 @@
 .service-card p {
   margin-bottom: 0;
   color: var(--muted-strong);
-  font-size: 0.79rem;
+  font-size: 0.86rem;
   line-height: 1.72;
 }
 
@@ -734,7 +734,7 @@
   max-width: 78ch;
   margin: 0;
   color: var(--muted);
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   line-height: 1.7;
 }
 
@@ -758,7 +758,7 @@
 
 .contact-page__intro {
   max-width: 47ch;
-  font-size: 0.86rem;
+  font-size: 0.92rem;
   line-height: 1.8;
 }
 
@@ -807,7 +807,7 @@
 
 .contact-channel > div span {
   color: var(--muted);
-  font-size: 0.59rem;
+  font-size: 0.63rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
@@ -815,7 +815,7 @@
 .contact-channel > div strong {
   overflow: hidden;
   color: var(--ink);
-  font-size: 0.78rem;
+  font-size: 0.83rem;
   font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -924,7 +924,7 @@
   gap: 6px;
   margin-bottom: 20px;
   color: var(--muted);
-  font-size: 0.77rem;
+  font-size: 0.82rem;
 }
 
 .property-summary__price {
@@ -985,7 +985,7 @@
 .property-spec-grid span {
   overflow: hidden;
   color: var(--muted);
-  font-size: 0.58rem;
+  font-size: 0.63rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -993,7 +993,7 @@
 .property-spec-grid strong {
   overflow: hidden;
   color: var(--ink);
-  font-size: 0.76rem;
+  font-size: 0.81rem;
   font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1037,13 +1037,13 @@
 
 .agent-mini-card strong {
   color: var(--ink);
-  font-size: 0.72rem;
+  font-size: 0.77rem;
   font-weight: 600;
 }
 
 .agent-mini-card span {
   color: var(--muted);
-  font-size: 0.63rem;
+  font-size: 0.68rem;
 }
 
 .agent-mini-card > svg {
@@ -1070,9 +1070,9 @@
 }
 
 .property-description {
-  max-width: 68ch;
+  max-width: 70ch;
   color: var(--muted-strong);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   line-height: 1.9;
   white-space: pre-line;
 }
@@ -1107,7 +1107,7 @@
   border-radius: var(--radius-pill);
   background: var(--white);
   color: var(--muted-strong);
-  font-size: 0.7rem;
+  font-size: 0.76rem;
 }
 
 .amenities-block li svg {
@@ -1149,7 +1149,7 @@
 .property-location-card p {
   margin-bottom: 0;
   color: var(--muted);
-  font-size: 0.69rem;
+  font-size: 0.75rem;
   line-height: 1.55;
 }
 
@@ -1177,7 +1177,7 @@
 .property-detail-note p {
   margin: 0;
   color: var(--blue-deep);
-  font-size: 0.74rem;
+  font-size: 0.8rem;
   line-height: 1.65;
 }
 
@@ -1198,7 +1198,7 @@
 
 .property-consult-card > p {
   margin-bottom: 18px;
-  font-size: 0.79rem;
+  font-size: 0.85rem;
 }
 
 /* Estados de página ------------------------------------------------------ */
@@ -1247,9 +1247,9 @@
 }
 
 .not-found-page__inner > p:not(.eyebrow) {
-  max-width: 53ch;
+  max-width: 55ch;
   margin-inline: auto;
-  font-size: 0.87rem;
+  font-size: 0.94rem;
   line-height: 1.8;
 }
 
@@ -1599,7 +1599,7 @@
 
 @media (max-width: 520px) {
   .hero__content {
-    width: min(100% - 30px, 1320px);
+    width: min(100% - 30px, var(--container));
   }
 
   .hero__media {

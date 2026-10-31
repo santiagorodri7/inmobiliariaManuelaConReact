@@ -1,0 +1,44 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isImage() {
+      return request.resource.contentType.matches('image/(jpeg|png|webp)');
+    }
+
+    // Imágenes de propiedades. Lectura pública; escritura solo del dueño.
+    // La eliminación definitiva desde administración se hace con la Cloud
+    // Function (Admin SDK), que no pasa por estas reglas.
+    match /propiedades/{ownerId}/{propertyId}/{fileName} {
+      allow read: if true;
+
+      allow create, update: if isSignedIn()
+        && request.auth.uid == ownerId
+        && request.resource.size <= 8 * 1024 * 1024
+        && isImage();
+
+      allow delete: if isSignedIn() && request.auth.uid == ownerId;
+    }
+
+    // Avatares. Lectura pública y escritura únicamente del propio usuario.
+    match /avatares/{uid}/{fileName} {
+      allow read: if true;
+
+      allow create, update: if isSignedIn()
+        && request.auth.uid == uid
+        && request.resource.size <= 4 * 1024 * 1024
+        && isImage();
+
+      allow delete: if isSignedIn() && request.auth.uid == uid;
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
