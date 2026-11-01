@@ -160,7 +160,7 @@ export default function PropertyDetailPage() {
     <>
       <section className="property-detail-hero">
         <div className="shell">
-          <nav className="breadcrumb-line breadcrumb-line--dark" aria-label="Ruta de navegación">
+          <nav className="breadcrumb-line" aria-label="Ruta de navegación">
             <Link to="/">Inicio</Link>
             <ChevronRight size={13} aria-hidden="true" />
             <Link to="/#propiedades">Propiedades</Link>

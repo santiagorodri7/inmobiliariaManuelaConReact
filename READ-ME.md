@@ -172,5 +172,8 @@ inmuebles con la consulta segura `where("status", "==", "disponible")`.
   en `src/config/site.js`.
 - Los archivos estáticos antiguos (`css/`, `lib/`, `scss/`, `mail/`) se
   conservan como referencia o contingencia; la aplicación activa es `src/`.
+- Las vistas React antiguas de `src/pages/` (home, blog, guide, etc.) no se
+  importan desde `src/App.jsx`; se conservan solo como referencia y no forman
+  parte del build.
 - El formulario PHP de `mail/` solo debe usarse como respaldo si se configura
   `VITE_CONTACT_FALLBACK_URL`.
