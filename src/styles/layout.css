@@ -395,8 +395,7 @@
   color: var(--blue);
 }
 
-.page-header .breadcrumb-line,
-.breadcrumb-line--dark {
+.page-header .breadcrumb-line {
   color: rgba(248, 245, 239, 0.52);
 }
 
