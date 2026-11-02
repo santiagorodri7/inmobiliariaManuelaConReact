@@ -8,10 +8,13 @@ import "@fontsource/poppins/600.css";
 import "@fontsource/poppins/700.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./styles/index.css";
+import { I18nProvider } from "./i18n/I18nContext.jsx";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
+    <I18nProvider>
+      <App />
+    </I18nProvider>
   </StrictMode>,
 );

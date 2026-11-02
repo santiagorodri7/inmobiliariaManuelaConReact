@@ -21,6 +21,10 @@ import { normalizeUser } from "../utils/users.js";
 import { normalizeRole } from "../utils/roles.js";
 import { appError, getErrorMessage, isPermissionError } from "../utils/errors.js";
 import { isValidEmail } from "../utils/validation.js";
+import {
+  DEFAULT_LANGUAGE,
+  assertSupportedLanguage,
+} from "../i18n/languages.js";
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -41,6 +45,7 @@ export const registerUser = async ({
   password,
   telefono = "",
   rol,
+  idioma,
 }) => {
   requireFirebase();
   const cleanEmail = String(email || "").trim().toLowerCase();
@@ -58,6 +63,9 @@ export const registerUser = async ({
       "El registro público solo permite cuentas de Comprador o Vendedor.",
     );
   }
+
+  const selectedLanguage =
+    idioma === undefined ? DEFAULT_LANGUAGE : assertSupportedLanguage(idioma);
 
   let credential;
   try {
@@ -87,6 +95,7 @@ export const registerUser = async ({
       avatar: "",
       rol: selectedRole,
       activo: true,
+      idioma: selectedLanguage,
       fechaRegistro: serverTimestamp(),
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),

@@ -15,10 +15,13 @@ import {
   signOutUser,
 } from "../services/authService.js";
 import { getErrorMessage } from "../utils/errors.js";
+import { useI18n } from "../i18n/I18nContext.jsx";
+import { DEFAULT_LANGUAGE } from "../i18n/languages.js";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
+  const { setLanguage, resetToVisitorLanguage } = useI18n();
   const [profile, setProfile] = useState(null);
   const [firebaseUser, setFirebaseUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -95,6 +98,18 @@ export function AuthProvider({ children }) {
       unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    if (profile) {
+      setLanguage(profile.idioma || DEFAULT_LANGUAGE);
+    }
+  }, [profile?.idioma, setLanguage]);
+
+  useEffect(() => {
+    if (!loading && !profile) {
+      resetToVisitorLanguage();
+    }
+  }, [loading, profile, resetToVisitorLanguage]);
 
   const login = useCallback(async (email, password) => {
     setAuthError("");

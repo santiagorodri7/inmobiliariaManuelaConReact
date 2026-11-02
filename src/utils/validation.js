@@ -1,3 +1,5 @@
+import { isSupportedLanguage } from "../i18n/languages.js";
+
 export const isValidEmail = (value = "") =>
   /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(String(value).trim());
 
@@ -17,6 +19,9 @@ export const validateRegister = (values) => {
   }
   if (!values.rol) {
     errors.rol = "Selecciona cómo quieres usar la plataforma.";
+  }
+  if (!isSupportedLanguage(values.idioma)) {
+    errors.idioma = "Selecciona Español o English.";
   }
   if (!values.password || values.password.length < 8) {
     errors.password = "La contraseña debe tener al menos 8 caracteres.";

@@ -57,6 +57,7 @@ const messages = {
     "Firebase Storage no está disponible. Actívalo o usa el modo de contingencia.",
   "contact/not-configured":
     "El envío de correo aún no está configurado. Puedes escribirnos directamente por correo o WhatsApp.",
+  "language/invalid": "El idioma seleccionado no es válido.",
   "export/no-rows": "No hay datos para exportar con los filtros actuales.",
 };
 

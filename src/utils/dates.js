@@ -1,16 +1,35 @@
-const dateFormatter = new Intl.DateTimeFormat("es-CO", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-});
+const dateFormatters = new Map();
+const dateTimeFormatters = new Map();
 
-const dateTimeFormatter = new Intl.DateTimeFormat("es-CO", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-});
+const getDateFormatter = (locale) => {
+  if (!dateFormatters.has(locale)) {
+    dateFormatters.set(
+      locale,
+      new Intl.DateTimeFormat(locale, {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }),
+    );
+  }
+  return dateFormatters.get(locale);
+};
+
+const getDateTimeFormatter = (locale) => {
+  if (!dateTimeFormatters.has(locale)) {
+    dateTimeFormatters.set(
+      locale,
+      new Intl.DateTimeFormat(locale, {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    );
+  }
+  return dateTimeFormatters.get(locale);
+};
 
 export const toDate = (value) => {
   if (!value) return null;
@@ -34,14 +53,14 @@ export const toDate = (value) => {
   return null;
 };
 
-export const formatDate = (value, fallback = "—") => {
+export const formatDate = (value, fallback = "—", locale = "es-CO") => {
   const date = toDate(value);
-  return date ? dateFormatter.format(date) : fallback;
+  return date ? getDateFormatter(locale).format(date) : fallback;
 };
 
-export const formatDateTime = (value, fallback = "—") => {
+export const formatDateTime = (value, fallback = "—", locale = "es-CO") => {
   const date = toDate(value);
-  return date ? dateTimeFormatter.format(date) : fallback;
+  return date ? getDateTimeFormatter(locale).format(date) : fallback;
 };
 
 export const dateInputValue = (value) => {

@@ -10,8 +10,10 @@ import {
 } from "lucide-react";
 import AuthLayout from "../../components/auth/AuthLayout.jsx";
 import Field from "../../components/ui/Field.jsx";
+import LanguageSelect from "../../components/ui/LanguageSelect.jsx";
 import { useToast } from "../../components/ui/Toast.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { getErrorMessage } from "../../utils/errors.js";
 import { roleHome } from "../../utils/roles.js";
@@ -33,13 +35,14 @@ const roleOptions = [
   },
 ];
 
-const initialValues = (role) => ({
+const initialValues = (role, idioma) => ({
   nombre: "",
   cedula: "",
   fechaNacimiento: "",
   email: "",
   telefono: "",
   rol: role === "Vendedor" ? "Vendedor" : "Comprador",
+  idioma,
   password: "",
   confirmPassword: "",
   terms: false,
@@ -51,8 +54,9 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const toast = useToast();
   const { register } = useAuth();
+  const { language, setLanguage, t } = useI18n();
   const [values, setValues] = useState(() =>
-    initialValues(searchParams.get("rol")),
+    initialValues(searchParams.get("rol"), language),
   );
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState("");
@@ -65,6 +69,11 @@ export default function RegisterPage() {
     setValues((current) => ({ ...current, [field]: value }));
     if (errors[field]) setErrors((current) => ({ ...current, [field]: "" }));
     if (formError) setFormError("");
+  };
+
+  const handleLanguageChange = (event) => {
+    update("idioma")(event);
+    setLanguage(event.target.value, { persistVisitor: true });
   };
 
   const handleSubmit = async (event) => {
@@ -87,6 +96,7 @@ export default function RegisterPage() {
         telefono: values.telefono,
         password: values.password,
         rol: values.rol,
+        idioma: values.idioma,
       });
       toast.success("Tu cuenta está lista. Bienvenido a Manuela Bermúdez Realtor.");
       navigate(roleHome(created), { replace: true });
@@ -156,6 +166,14 @@ export default function RegisterPage() {
             </p>
           )}
         </fieldset>
+
+        <LanguageSelect
+          id="register-language"
+          value={values.idioma}
+          onChange={handleLanguageChange}
+          hint={t("language.registerHint")}
+          error={errors.idioma}
+        />
 
         <div className="form-grid form-grid--two">
           <Field label="Nombre completo" htmlFor="register-name" required error={errors.nombre}>

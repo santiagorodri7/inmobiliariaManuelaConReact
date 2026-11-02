@@ -1,0 +1,11 @@
+{
+  "language": {
+    "label": "Language",
+    "hint": "You can change it anytime.",
+    "registerHint": "It will be saved to your account and applied when you sign in.",
+    "profileHint": "The change is applied when you save your information.",
+    "spanish": "Español",
+    "english": "English",
+    "invalid": "Select Español or English."
+  }
+}

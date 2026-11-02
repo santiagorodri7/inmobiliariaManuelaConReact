@@ -1,21 +1,40 @@
-const copFormatter = new Intl.NumberFormat("es-CO", {
-  style: "currency",
-  currency: "COP",
-  maximumFractionDigits: 0,
-});
+const copFormatters = new Map();
+const numberFormatters = new Map();
 
-export const formatCOP = (value) =>
-  copFormatter.format(Number(value) || 0);
+const getCopFormatter = (locale) => {
+  if (!copFormatters.has(locale)) {
+    copFormatters.set(
+      locale,
+      new Intl.NumberFormat(locale, {
+        style: "currency",
+        currency: "COP",
+        maximumFractionDigits: 0,
+      }),
+    );
+  }
+  return copFormatters.get(locale);
+};
 
-export const formatNumber = (value) =>
-  new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 }).format(
-    Number(value) || 0,
-  );
+const getNumberFormatter = (locale) => {
+  if (!numberFormatters.has(locale)) {
+    numberFormatters.set(
+      locale,
+      new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }),
+    );
+  }
+  return numberFormatters.get(locale);
+};
 
-export const formatArea = (value) => {
+export const formatCOP = (value, locale = "es-CO") =>
+  getCopFormatter(locale).format(Number(value) || 0);
+
+export const formatNumber = (value, locale = "es-CO") =>
+  getNumberFormatter(locale).format(Number(value) || 0);
+
+export const formatArea = (value, locale = "es-CO") => {
   const area = Number(value);
   if (!area) return "";
-  return `${formatNumber(area)} m²`;
+  return `${formatNumber(area, locale)} m²`;
 };
 
 export const initials = (value = "") => {

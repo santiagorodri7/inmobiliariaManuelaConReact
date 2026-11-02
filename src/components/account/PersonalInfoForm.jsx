@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Camera, LoaderCircle, Mail, Save, ShieldCheck, X } from "lucide-react";
 import Field from "../ui/Field.jsx";
+import LanguageSelect from "../ui/LanguageSelect.jsx";
 import Avatar from "../ui/Avatar.jsx";
 import { useToast } from "../ui/Toast.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { updateOwnProfile } from "../../services/usersService.js";
 import { uploadAvatar, validateImageFile } from "../../services/storageService.js";
 import { getErrorMessage } from "../../utils/errors.js";
@@ -12,6 +14,7 @@ import { dateInputValue } from "../../utils/dates.js";
 export default function PersonalInfoForm({ profile, onUpdated }) {
   const toast = useToast();
   const { updateProfileState } = useAuth();
+  const { t } = useI18n();
   const fileRef = useRef(null);
   const uploadController = useRef(null);
   const [values, setValues] = useState({
@@ -19,6 +22,7 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
     telefono: "",
     direccion: "",
     fechaNacimiento: "",
+    idioma: "es",
   });
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -30,6 +34,7 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
       telefono: profile?.telefono || "",
       direccion: profile?.direccion || "",
       fechaNacimiento: dateInputValue(profile?.fechaNacimiento),
+      idioma: profile?.idioma || "es",
     });
   }, [profile]);
 
@@ -182,6 +187,12 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
             placeholder="Ciudad y sector"
           />
         </Field>
+        <LanguageSelect
+          id="profile-language"
+          value={values.idioma}
+          onChange={update("idioma")}
+          hint={t("language.profileHint")}
+        />
         <Field label="Correo electrónico" htmlFor="profile-email" hint="El correo está vinculado a tu cuenta.">
           <div className="input-with-icon">
             <Mail size={17} aria-hidden="true" />

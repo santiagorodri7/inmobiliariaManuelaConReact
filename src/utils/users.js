@@ -1,6 +1,7 @@
 import { dateInputValue } from "./dates.js";
 import { normalizeRole } from "./roles.js";
 import { safeString } from "./format.js";
+import { normalizeLanguage } from "../i18n/languages.js";
 
 export const normalizeUser = (id, data = {}, authUser = null) => {
   const email = safeString(data.email || authUser?.email);
@@ -20,6 +21,7 @@ export const normalizeUser = (id, data = {}, authUser = null) => {
     telefono: safeString(data.telefono),
     direccion: safeString(data.direccion),
     avatar: safeString(data.avatar),
+    idioma: normalizeLanguage(data.idioma),
     preferences:
       data.preferences && typeof data.preferences === "object"
         ? {
