@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Camera, LoaderCircle, Mail, Save, ShieldCheck } from "lucide-react";
+import { Camera, LoaderCircle, Mail, Save, ShieldCheck, X } from "lucide-react";
 import Field from "../ui/Field.jsx";
 import Avatar from "../ui/Avatar.jsx";
 import { useToast } from "../ui/Toast.jsx";
@@ -13,6 +13,7 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
   const toast = useToast();
   const { updateProfileState } = useAuth();
   const fileRef = useRef(null);
+  const uploadController = useRef(null);
   const [values, setValues] = useState({
     nombre: "",
     telefono: "",
@@ -65,21 +66,32 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
       return;
     }
 
+    const controller = new AbortController();
+    uploadController.current = controller;
     setUploading(true);
     try {
-      const uploaded = await uploadAvatar(profile.id, file);
+      const uploaded = await uploadAvatar(profile.id, file, {
+        signal: controller.signal,
+      });
       const updated = await updateOwnProfile(profile.id, { avatar: uploaded.url });
       updateProfileState(updated);
       onUpdated?.(updated);
       toast.success("Foto de perfil actualizada.");
     } catch (uploadError) {
-      toast.error(
-        getErrorMessage(
-          uploadError,
-          "No se pudo actualizar la foto. Verifica Firebase Storage.",
-        ),
-      );
+      if (uploadError?.code === "storage/canceled") {
+        toast.info("Subida de la foto cancelada.");
+      } else {
+        toast.error(
+          getErrorMessage(
+            uploadError,
+            "No se pudo actualizar la foto. Verifica Firebase Storage.",
+          ),
+        );
+      }
     } finally {
+      if (uploadController.current === controller) {
+        uploadController.current = null;
+      }
       setUploading(false);
     }
   };
@@ -112,6 +124,16 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
             )}
             {uploading ? "Subiendo…" : "Cambiar foto"}
           </button>
+          {uploading && (
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-sm ms-2"
+              onClick={() => uploadController.current?.abort()}
+            >
+              <X size={15} aria-hidden="true" />
+              Cancelar
+            </button>
+          )}
           <input
             ref={fileRef}
             type="file"

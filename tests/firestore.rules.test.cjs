@@ -347,6 +347,32 @@ const check = async (name, promise, shouldPass) => {
     false,
   );
   await check(
+    "usuario NO se autoasigna Admin con una edición válida",
+    updateDoc(doc(buyerDb, "usuarios", "buyer1"), {
+      nombre: "Comprador actualizado",
+      rol: "Admin",
+      updatedAt: serverTimestamp(),
+    }),
+    false,
+  );
+  await check(
+    "usuario NO se autoasigna el rol heredado Administrador",
+    updateDoc(doc(buyerDb, "usuarios", "buyer1"), {
+      rol: "Administrador",
+      updatedAt: serverTimestamp(),
+    }),
+    false,
+  );
+  await check(
+    "el rol del usuario sigue siendo Comprador",
+    getDoc(doc(adminDb, "usuarios", "buyer1")).then((snapshot) => {
+      if (snapshot.data().rol !== "Comprador") {
+        throw new Error(`rol inesperado: ${snapshot.data().rol}`);
+      }
+    }),
+    true,
+  );
+  await check(
     "admin desactiva una cuenta",
     updateDoc(doc(adminDb, "usuarios", "seller2"), {
       activo: false,

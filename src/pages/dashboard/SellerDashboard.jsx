@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -46,6 +46,7 @@ export default function SellerDashboard() {
   const [editing, setEditing] = useState(null);
   const [saving, setSaving] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const uploadController = useRef(null);
   const [busyId, setBusyId] = useState("");
   const [pendingHide, setPendingHide] = useState(null);
   const { properties, loading, error, reload, setProperties } = useProperties({
@@ -71,6 +72,8 @@ export default function SellerDashboard() {
   };
 
   const handleSave = async (payload) => {
+    const controller = new AbortController();
+    uploadController.current = controller;
     setSaving(true);
     setUploadProgress(0);
     try {
@@ -83,6 +86,7 @@ export default function SellerDashboard() {
         keptImages: payload.keptImages,
         imagesChanged: payload.imagesChanged,
         onProgress: setUploadProgress,
+        signal: controller.signal,
       });
       toast.success(
         editing
@@ -90,17 +94,28 @@ export default function SellerDashboard() {
           : "Tu propiedad ya está publicada en el catálogo.",
       );
       setEditing(null);
-      setUploadProgress(0);
       setSection("propiedades");
       reload();
     } catch (saveError) {
-      console.error("No se pudo guardar la propiedad:", saveError);
-      toast.error(
-        getErrorMessage(saveError, "No se pudo guardar la propiedad."),
-      );
+      if (saveError?.code === "storage/canceled") {
+        toast.info("Subida cancelada. La propiedad no se modificó.");
+      } else {
+        console.error("No se pudo guardar la propiedad:", saveError);
+        toast.error(
+          getErrorMessage(saveError, "No se pudo guardar la propiedad."),
+        );
+      }
     } finally {
+      if (uploadController.current === controller) {
+        uploadController.current = null;
+      }
       setSaving(false);
+      setUploadProgress(0);
     }
+  };
+
+  const cancelUpload = () => {
+    uploadController.current?.abort();
   };
 
   const handlePublish = async (property) => {
@@ -323,6 +338,7 @@ export default function SellerDashboard() {
             }}
             saving={saving}
             uploadProgress={uploadProgress}
+            onCancelUpload={cancelUpload}
           />
         </section>
       )}

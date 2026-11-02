@@ -23,6 +23,8 @@ const messages = {
   "storage/unauthorized":
     "No tienes permisos para subir esta imagen. Revisa la configuración de Storage.",
   "storage/canceled": "La subida de la imagen fue cancelada.",
+  "storage/timeout":
+    "La subida tardó demasiado. Revisa tu conexión e inténtalo de nuevo.",
   "storage/retry-limit-exceeded":
     "La conexión se interrumpió durante la subida. Inténtalo de nuevo.",
   "storage/unknown":
@@ -50,7 +52,7 @@ const messages = {
   "sale/not-found": "No encontramos este cierre.",
   "sale/already-annulled": "Este cierre ya fue anulado.",
   "storage/base64-too-large":
-    "La imagen sigue superando el límite de 700 KB después de comprimirla. Usa una imagen más liviana o habilita Firebase Storage.",
+    "La imagen sigue superando el límite del modo de contingencia. Usa una imagen más liviana o activa Firebase Storage.",
   "storage/not-available":
     "Firebase Storage no está disponible. Actívalo o usa el modo de contingencia.",
   "contact/not-configured":

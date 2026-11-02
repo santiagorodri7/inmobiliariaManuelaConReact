@@ -132,9 +132,10 @@ export default function ImageUploader({
       {fallbackEnabled && (
         <p className="inline-note">
           <Info size={16} aria-hidden="true" />
-          Modo de contingencia activo: si Storage no está disponible, se
-          guardará solo una imagen comprimida dentro de Firestore (máximo 700
-          KB). Para varias imágenes se requiere Firebase Storage.
+          Modo de contingencia activo (solo desarrollo): si Storage no está
+          disponible, se intentarán guardar todas las imágenes comprimidas
+          dentro de Firestore (máximo 180 KB por imagen y 600 KB en total). Si
+          no caben, no se publicará nada y se mostrará el error.
         </p>
       )}
 

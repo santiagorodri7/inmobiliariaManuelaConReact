@@ -9,6 +9,7 @@ import {
 } from "../../config/site.js";
 import { hasErrors, validateProperty } from "../../utils/validation.js";
 import { normalizeRole } from "../../utils/roles.js";
+import { allowBase64Fallback } from "../../services/firebase.js";
 
 const emptyValues = {
   title: "",
@@ -56,6 +57,7 @@ export default function PropertyForm({
   profile,
   onSave,
   onCancel,
+  onCancelUpload,
   saving = false,
   uploadProgress = 0,
 }) {
@@ -76,9 +78,7 @@ export default function PropertyForm({
     setCustomAmenity("");
   }, [property]);
 
-  const fallbackEnabled =
-    String(import.meta.env.VITE_ALLOW_BASE64_FALLBACK || "false").toLowerCase() ===
-    "true";
+  const fallbackEnabled = allowBase64Fallback;
 
   const typeOptions = useMemo(() => {
     const options = [...propertyTypes];
@@ -441,6 +441,16 @@ export default function PropertyForm({
       )}
 
       <div className="form-actions">
+        {saving && newFiles.length > 0 && uploadProgress < 100 && onCancelUpload && (
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
+            onClick={onCancelUpload}
+          >
+            <X size={17} aria-hidden="true" />
+            Cancelar subida
+          </button>
+        )}
         <button type="button" className="btn btn-outline-secondary" onClick={onCancel} disabled={saving}>
           <X size={17} aria-hidden="true" />
           Cancelar

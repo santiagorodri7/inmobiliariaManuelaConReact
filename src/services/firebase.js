@@ -40,7 +40,10 @@ export const functions = app
   ? getFunctions(app, env.VITE_FUNCTIONS_REGION || "us-central1")
   : null;
 
+// El respaldo Base64 es solo para desarrollo. En un build de producción
+// siempre queda desactivado, aunque la variable de entorno esté en true.
 export const allowBase64Fallback =
+  env.DEV === true &&
   String(env.VITE_ALLOW_BASE64_FALLBACK || "false").toLowerCase() === "true";
 
 export const requireFirebase = () => {

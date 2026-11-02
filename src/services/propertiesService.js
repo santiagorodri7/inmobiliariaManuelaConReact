@@ -110,6 +110,7 @@ export const saveProperty = async ({
   keptImages = [],
   imagesChanged = false,
   onProgress,
+  signal,
 }) => {
   requireFirebase();
   if (!ownerId) throw appError("auth/requires-login", "Inicia sesión de nuevo.");
@@ -129,14 +130,16 @@ export const saveProperty = async ({
     let upload = { images: [], usedFallback: false, skipped: 0 };
 
     if (newFiles.length) {
-      upload = await uploadPropertyImages(ownerId, newId, newFiles, onProgress);
+      upload = await uploadPropertyImages(ownerId, newId, newFiles, onProgress, {
+        signal,
+      });
     }
 
     const imageFields = upload.usedFallback
       ? {
-          images: [],
+          images: cleanImages(upload.images),
           imageUrl: "",
-          imageBase64: upload.images[0]?.url || "",
+          imageBase64: "",
           storageMode: "base64",
         }
       : {
@@ -186,7 +189,9 @@ export const saveProperty = async ({
 
   let upload = { images: [], usedFallback: false, skipped: 0 };
   if (newFiles.length) {
-    upload = await uploadPropertyImages(ownerId, id, newFiles, onProgress);
+    upload = await uploadPropertyImages(ownerId, id, newFiles, onProgress, {
+      signal,
+    });
   }
 
   const updates = {
@@ -198,10 +203,15 @@ export const saveProperty = async ({
   let finalImages = keptImages;
   if (newFiles.length) {
     if (upload.usedFallback) {
-      finalImages = [];
-      updates.images = [];
+      finalImages = [
+        ...cleanImages(keptImages).filter(
+          (image) => !image.url.startsWith("data:image/"),
+        ),
+        ...cleanImages(upload.images),
+      ];
+      updates.images = finalImages;
       updates.imageUrl = "";
-      updates.imageBase64 = upload.images[0]?.url || "";
+      updates.imageBase64 = "";
       updates.storageMode = "base64";
     } else {
       finalImages = [...cleanImages(keptImages), ...cleanImages(upload.images)];
