@@ -9,7 +9,7 @@ import {
 import Logo from "../ui/Logo.jsx";
 import Avatar from "../ui/Avatar.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { roleLabel } from "../../utils/roles.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 export default function DashboardLayout({
   role,
@@ -22,9 +22,11 @@ export default function DashboardLayout({
   children,
 }) {
   const { profile, logout } = useAuth();
+  const { t, roleLabel } = useI18n();
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const roleName = roleLabel(role);
 
   useEffect(() => {
     setOpen(false);
@@ -57,18 +59,18 @@ export default function DashboardLayout({
             type="button"
             className="icon-button dashboard-sidebar__close"
             onClick={() => setOpen(false)}
-            aria-label="Cerrar menú"
+            aria-label={t("nav.closeMenu")}
           >
             <X size={20} aria-hidden="true" />
           </button>
         </div>
 
         <div className="dashboard-sidebar__role">
-          <span>{roleLabel(role)}</span>
-          <p>Panel de {roleLabel(role).toLowerCase()}</p>
+          <span>{roleName}</span>
+          <p>{t("nav.panelOf", { role: roleName })}</p>
         </div>
 
-        <nav className="dashboard-nav" aria-label={`Menú de ${roleLabel(role)}`}>
+        <nav className="dashboard-nav" aria-label={t("nav.menuOf", { role: roleName })}>
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = activeKey === item.key;
@@ -84,7 +86,7 @@ export default function DashboardLayout({
                 onClick={() => setOpen(false)}
               >
                 {Icon && <Icon size={19} aria-hidden="true" />}
-                <span>{item.label}</span>
+                <span>{t(item.label)}</span>
               </Link>
             ) : (
               <button
@@ -95,7 +97,7 @@ export default function DashboardLayout({
                 onClick={() => handleItem(item)}
               >
                 {Icon && <Icon size={19} aria-hidden="true" />}
-                <span>{item.label}</span>
+                <span>{t(item.label)}</span>
               </button>
             );
           })}
@@ -103,13 +105,13 @@ export default function DashboardLayout({
 
         <div className="dashboard-sidebar__footer">
           <Link to="/" className="dashboard-sidebar__site">
-            Ver sitio público
+            {t("nav.viewSite")}
             <ArrowUpRight size={15} aria-hidden="true" />
           </Link>
           <div className="dashboard-user">
             <Avatar profile={profile} size="sm" />
             <div>
-              <strong>{profile?.nombre || "Usuario"}</strong>
+              <strong>{profile?.nombre || t("common.user")}</strong>
               <span>{profile?.email}</span>
             </div>
           </div>
@@ -119,7 +121,7 @@ export default function DashboardLayout({
             onClick={handleLogout}
           >
             <LogOut size={17} aria-hidden="true" />
-            Cerrar sesión
+            {t("nav.logout")}
           </button>
         </div>
       </aside>
@@ -129,7 +131,7 @@ export default function DashboardLayout({
           type="button"
           className="dashboard-backdrop"
           onClick={() => setOpen(false)}
-          aria-label="Cerrar menú"
+          aria-label={t("nav.closeMenu")}
         />
       )}
 
@@ -140,13 +142,13 @@ export default function DashboardLayout({
               type="button"
               className="icon-button dashboard-topbar__menu"
               onClick={() => setOpen(true)}
-              aria-label="Abrir menú"
+              aria-label={t("nav.openMenu")}
             >
               <Menu size={21} aria-hidden="true" />
             </button>
             <div>
               <p className="dashboard-topbar__eyebrow">
-                {roleLabel(role)} · Panel
+                {t("nav.panelEyebrow", { role: roleName })}
               </p>
               <h1>{title}</h1>
             </div>

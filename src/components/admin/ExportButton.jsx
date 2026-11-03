@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Download, LoaderCircle } from "lucide-react";
 import { useToast } from "../ui/Toast.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { getErrorMessage } from "../../utils/errors.js";
 
 export default function ExportButton({
   onExport,
-  label = "Exportar Excel",
-  successMessage = "Archivo exportado.",
+  label,
+  successMessage,
   variant = "outline",
   size = "",
   disabled = false,
 }) {
+  const { t } = useI18n();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
 
@@ -18,9 +20,9 @@ export default function ExportButton({
     setBusy(true);
     try {
       await onExport();
-      toast.success(successMessage);
+      toast.success(successMessage || t("admin.export.success"));
     } catch (error) {
-      toast.error(getErrorMessage(error, "No se pudo exportar el archivo."));
+      toast.error(getErrorMessage(error, "admin.export.error"));
     } finally {
       setBusy(false);
     }
@@ -38,7 +40,7 @@ export default function ExportButton({
       ) : (
         <Download size={16} aria-hidden="true" />
       )}
-      {busy ? "Generando…" : label}
+      {busy ? t("admin.export.busy") : label || t("admin.export.defaultLabel")}
     </button>
   );
 }

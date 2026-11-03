@@ -19,7 +19,7 @@ import { auth, db, requireFirebase } from "./firebase.js";
 import { getUserProfile } from "./usersService.js";
 import { normalizeUser } from "../utils/users.js";
 import { normalizeRole } from "../utils/roles.js";
-import { appError, getErrorMessage, isPermissionError } from "../utils/errors.js";
+import { appError, isPermissionError } from "../utils/errors.js";
 import { isValidEmail } from "../utils/validation.js";
 import {
   DEFAULT_LANGUAGE,
@@ -50,7 +50,7 @@ export const registerUser = async ({
   requireFirebase();
   const cleanEmail = String(email || "").trim().toLowerCase();
   if (!isValidEmail(cleanEmail)) {
-    throw appError("auth/invalid-email", "Escribe un correo válido.");
+    throw appError("auth/invalid-email");
   }
   if (!password || password.length < 8) {
     throw appError("auth/weak-password");
@@ -58,10 +58,7 @@ export const registerUser = async ({
 
   const selectedRole = normalizeRole(rol);
   if (!["Comprador", "Vendedor"].includes(selectedRole)) {
-    throw appError(
-      "auth/invalid-role",
-      "El registro público solo permite cuentas de Comprador o Vendedor.",
-    );
+    throw appError("auth/invalid-role");
   }
 
   const selectedLanguage =
@@ -72,10 +69,7 @@ export const registerUser = async ({
     credential = await createUserWithEmailAndPassword(auth, cleanEmail, password);
   } catch (error) {
     if (isPermissionError(error)) {
-      throw appError(
-        "auth/operation-not-allowed",
-        getErrorMessage(error, "No se pudo crear la cuenta."),
-      );
+      throw appError("auth/operation-not-allowed");
     }
     throw error;
   }
@@ -142,7 +136,7 @@ export const signOutUser = async () => {
 export const changePassword = async (currentPassword, newPassword) => {
   requireFirebase();
   const user = auth.currentUser;
-  if (!user) throw appError("auth/requires-login", "Inicia sesión de nuevo.");
+  if (!user) throw appError("auth/requires-login");
   if (!user.email) {
     throw appError("auth/requires-recent-login");
   }

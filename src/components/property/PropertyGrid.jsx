@@ -3,22 +3,24 @@ import PropertyCard from "./PropertyCard.jsx";
 import { PropertyGridSkeleton } from "../ui/Skeleton.jsx";
 import EmptyState from "../ui/EmptyState.jsx";
 import ErrorState from "../ui/ErrorState.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 export default function PropertyGrid({
   properties = [],
   loading = false,
   error = "",
   onRetry,
-  emptyTitle = "Todavía no hay propiedades publicadas",
-  emptyDescription = "Vuelve pronto o cuéntanos qué estás buscando para ayudarte a encontrarlo.",
+  emptyTitle,
+  emptyDescription,
   emptyAction = null,
   skeletonCount = 3,
 }) {
+  const { t } = useI18n();
   if (loading) return <PropertyGridSkeleton count={skeletonCount} />;
   if (error) {
     return (
       <ErrorState
-        title="No pudimos cargar las propiedades"
+        title={t("property.grid.errorTitle")}
         description={error}
         onRetry={onRetry}
       />
@@ -28,8 +30,8 @@ export default function PropertyGrid({
     return (
       <EmptyState
         icon={Building2}
-        title={emptyTitle}
-        description={emptyDescription}
+        title={emptyTitle || t("property.grid.emptyTitle")}
+        description={emptyDescription || t("property.grid.emptyDescription")}
         action={emptyAction}
       />
     );

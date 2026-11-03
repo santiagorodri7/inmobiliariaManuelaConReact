@@ -17,7 +17,7 @@ const SALES = "ventas";
 export const normalizeSale = (id, raw = {}) => ({
   id,
   propertyId: safeString(raw.propertyId || ""),
-  propertyTitle: safeString(raw.propertyTitle || "Propiedad"),
+  propertyTitle: safeString(raw.propertyTitle || ""),
   operation: raw.operation === "renta" ? "renta" : "venta",
   sellerId: safeString(raw.sellerId || ""),
   sellerName: safeString(raw.sellerName || ""),
@@ -64,21 +64,21 @@ export const registerSale = async ({
 }) => {
   requireFirebase();
   if (!propertyId) throw appError("property/not-found");
-  if (!admin?.id) throw appError("auth/requires-login", "Inicia sesión de nuevo.");
+  if (!admin?.id) throw appError("auth/requires-login");
   if (!buyerName?.trim() || buyerName.trim().length < 3) {
-    throw appError("sale/buyer", "Escribe el nombre del comprador o arrendatario.");
+    throw appError("sale/buyer");
   }
   if (buyerEmail && !isValidEmail(buyerEmail)) {
-    throw appError("sale/buyer-email", "El correo del comprador no es válido.");
+    throw appError("sale/buyer-email");
   }
   const value = Number(closingValue);
   if (!Number.isFinite(value) || value <= 0) {
-    throw appError("sale/value", "Ingresa un valor de cierre válido.");
+    throw appError("sale/value");
   }
   const date = parseDateInput(closingDate);
-  if (!date) throw appError("sale/date", "Selecciona una fecha de cierre válida.");
+  if (!date) throw appError("sale/date");
   if (isFutureDate(date)) {
-    throw appError("sale/date-future", "La fecha del cierre no puede ser futura.");
+    throw appError("sale/date-future");
   }
 
   const propertyRef = doc(db, "propiedades", propertyId);
@@ -91,10 +91,7 @@ export const registerSale = async ({
     const property = propertySnapshot.data();
     const status = property.status || "disponible";
     if (status !== "disponible") {
-      throw appError(
-        "property/not-available",
-        "Esta propiedad ya no está disponible para registrar un cierre.",
-      );
+      throw appError("property/not-available");
     }
 
     const selectedOperation =
@@ -116,7 +113,7 @@ export const registerSale = async ({
 
     const sale = {
       propertyId,
-      propertyTitle: safeString(property.title || "Propiedad"),
+      propertyTitle: safeString(property.title || ""),
       operation: selectedOperation,
       sellerId: safeString(property.ownerId || ""),
       sellerName,
@@ -166,7 +163,7 @@ export const registerSale = async ({
 export const annulSale = async (saleId, { admin, reason = "" } = {}) => {
   requireFirebase();
   if (!saleId) throw appError("sale/not-found");
-  if (!admin?.id) throw appError("auth/requires-login", "Inicia sesión de nuevo.");
+  if (!admin?.id) throw appError("auth/requires-login");
 
   const saleRef = doc(db, SALES, saleId);
   let result = null;

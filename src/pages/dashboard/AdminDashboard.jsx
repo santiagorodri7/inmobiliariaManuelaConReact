@@ -26,6 +26,7 @@ import EmptyState from "../../components/ui/EmptyState.jsx";
 import { useToast } from "../../components/ui/Toast.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { adminNav } from "../../config/dashboardNav.js";
 import { listUsers, setUserActive } from "../../services/usersService.js";
 import {
@@ -48,17 +49,10 @@ import {
   exportUsers,
 } from "../../services/excelService.js";
 import { getErrorMessage } from "../../utils/errors.js";
-import { formatCOP, normalizeText } from "../../utils/format.js";
+import { normalizeText } from "../../utils/format.js";
 import { normalizeRole, ROLES } from "../../utils/roles.js";
 
 const PAGE_SIZE = 8;
-
-const sectionTitles = {
-  resumen: "Panel de administración",
-  propiedades: "Propiedades",
-  usuarios: "Usuarios",
-  ventas: "Cierres registrados",
-};
 
 const initialUserFilters = { search: "", role: "", status: "" };
 const initialPropertyFilters = { search: "", operation: "", status: "" };
@@ -71,9 +65,10 @@ const initialSalesFilters = {
 };
 
 export default function AdminDashboard() {
+  const { t, formatCOP } = useI18n();
   usePageTitle(
-    "Panel de administración",
-    "Gestiona usuarios, propiedades y cierres de la plataforma.",
+    t("dashboard.admin.pageTitle"),
+    t("dashboard.admin.pageDescription"),
   );
   const { profile } = useAuth();
   const toast = useToast();
@@ -97,6 +92,13 @@ export default function AdminDashboard() {
   const [propertyPage, setPropertyPage] = useState(1);
   const [salesPage, setSalesPage] = useState(1);
 
+  const sectionTitles = {
+    resumen: t("dashboard.admin.sectionTitles.summary"),
+    propiedades: t("dashboard.admin.sectionTitles.properties"),
+    usuarios: t("dashboard.admin.sectionTitles.users"),
+    ventas: t("dashboard.admin.sectionTitles.sales"),
+  };
+
   const loadAll = useCallback(async () => {
     setLoading(true);
     const [usersResult, propertiesResult, salesResult] = await Promise.allSettled([
@@ -113,18 +115,18 @@ export default function AdminDashboard() {
     setErrors({
       users:
         usersResult.status === "rejected"
-          ? getErrorMessage(usersResult.reason, "No se pudieron cargar los usuarios.")
+          ? getErrorMessage(usersResult.reason, "dashboard.admin.load.usersError")
           : "",
       properties:
         propertiesResult.status === "rejected"
           ? getErrorMessage(
               propertiesResult.reason,
-              "No se pudieron cargar las propiedades.",
+              "dashboard.admin.load.propertiesError",
             )
           : "",
       sales:
         salesResult.status === "rejected"
-          ? getErrorMessage(salesResult.reason, "No se pudieron cargar los cierres.")
+          ? getErrorMessage(salesResult.reason, "dashboard.admin.load.salesError")
           : "",
     });
     setLoading(false);
@@ -221,12 +223,12 @@ export default function AdminDashboard() {
       );
       toast.success(
         nextActive
-          ? "La cuenta se reactivó correctamente."
-          : "La cuenta quedó desactivada y no podrá ingresar.",
+          ? t("dashboard.admin.userToggle.reactivated")
+          : t("dashboard.admin.userToggle.deactivated"),
       );
     } catch (toggleError) {
       toast.error(
-        getErrorMessage(toggleError, "No se pudo actualizar la cuenta."),
+        getErrorMessage(toggleError, "dashboard.admin.userToggle.error"),
       );
     } finally {
       setBusyId("");
@@ -244,12 +246,12 @@ export default function AdminDashboard() {
       );
       toast.success(
         nextStatus === "disponible"
-          ? "La propiedad volvió a publicarse."
-          : "La propiedad se ocultó del catálogo.",
+          ? t("dashboard.admin.propertyToggle.published")
+          : t("dashboard.admin.propertyToggle.hidden"),
       );
     } catch (toggleError) {
       toast.error(
-        getErrorMessage(toggleError, "No se pudo actualizar la propiedad."),
+        getErrorMessage(toggleError, "dashboard.admin.propertyToggle.error"),
       );
     } finally {
       setBusyId("");
@@ -266,12 +268,12 @@ export default function AdminDashboard() {
     setBusyId(`sale-${annulTarget.id}`);
     try {
       await annulSale(annulTarget.id, { admin: profile });
-      toast.success("El cierre quedó anulado y la propiedad volvió a publicarse.");
+      toast.success(t("dashboard.admin.annul.success"));
       setAnnulTarget(null);
       await loadAll();
     } catch (annulError) {
       toast.error(
-        getErrorMessage(annulError, "No se pudo anular el cierre."),
+        getErrorMessage(annulError, "dashboard.admin.annul.error"),
       );
     } finally {
       setBusyId("");
@@ -284,7 +286,13 @@ export default function AdminDashboard() {
       const result = await backfillLegacyData(profile);
       const removed = result.ownerEmailsRemoved || 0;
       toast.success(
-        `Datos actualizados: ${result.propertiesUpdated || 0} propiedades y ${result.testimonialsUpdated || 0} testimonios${removed ? `; ${removed} correos de propietario retirados de las fichas públicas` : ""}.`,
+        t("dashboard.admin.backfill.success", {
+          properties: result.propertiesUpdated || 0,
+          testimonials: result.testimonialsUpdated || 0,
+          removed: removed
+            ? t("dashboard.admin.backfill.removed", { count: removed })
+            : "",
+        }),
       );
       setMaintenanceOpen(false);
       await loadAll();
@@ -292,7 +300,7 @@ export default function AdminDashboard() {
       toast.error(
         getErrorMessage(
           backfillError,
-          "No se pudieron completar los datos heredados.",
+          "dashboard.admin.backfill.error",
         ),
       );
     } finally {
@@ -304,7 +312,7 @@ export default function AdminDashboard() {
     <>
       <ExportButton
         onExport={() => exportAll({ users, properties, sales })}
-        label="Exportar libro completo"
+        label={t("dashboard.admin.exportAll")}
         variant="outline-secondary"
         size="sm"
         disabled={!users.length && !properties.length && !sales.length}
@@ -315,7 +323,7 @@ export default function AdminDashboard() {
         onClick={() => openSaleForm()}
       >
         <Plus size={15} aria-hidden="true" />
-        Registrar cierre
+        {t("dashboard.admin.registerSale")}
       </button>
     </>
   );
@@ -327,7 +335,7 @@ export default function AdminDashboard() {
       activeKey={section}
       onNavigate={setSection}
       title={sectionTitles[section]}
-      subtitle="Datos reales de la plataforma: usuarios, inventario y cierres registrados."
+      subtitle={t("dashboard.admin.subtitle")}
       actions={
         section === "resumen" ? (
           summaryActions
@@ -335,7 +343,7 @@ export default function AdminDashboard() {
           <>
             <ExportButton
               onExport={() => exportProperties(filteredProperties)}
-              label="Exportar propiedades"
+              label={t("dashboard.admin.exportProperties")}
               variant="outline-secondary"
               size="sm"
               disabled={!filteredProperties.length}
@@ -346,13 +354,13 @@ export default function AdminDashboard() {
               onClick={() => openSaleForm()}
             >
               <Plus size={15} aria-hidden="true" />
-              Registrar cierre
+              {t("dashboard.admin.registerSale")}
             </button>
           </>
         ) : section === "usuarios" ? (
           <ExportButton
             onExport={() => exportUsers(filteredUsers)}
-            label="Exportar usuarios"
+            label={t("dashboard.admin.exportUsers")}
             variant="outline-secondary"
             size="sm"
             disabled={!filteredUsers.length}
@@ -360,7 +368,7 @@ export default function AdminDashboard() {
         ) : (
           <ExportButton
             onExport={() => exportSales(filteredSales)}
-            label="Exportar cierres"
+            label={t("dashboard.admin.exportSales")}
             variant="outline-secondary"
             size="sm"
             disabled={!filteredSales.length}
@@ -373,22 +381,22 @@ export default function AdminDashboard() {
           <section className="dash-welcome">
             <div>
               <p className="eyebrow">
-                Hola, {profile?.nombre?.split(" ")[0] || "administradora"}
+                {t("dashboard.admin.welcomeHello", {
+                  name:
+                    profile?.nombre?.split(" ")[0] ||
+                    t("dashboard.admin.welcomeDefault"),
+                })}
               </p>
-              <h2>La operación completa, con datos reales.</h2>
-              <p>
-                Revisa el estado de las cuentas y el inventario, registra cierres
-                y descarga reportes en Excel. Las acciones sensibles quedan
-                registradas para mantener la trazabilidad.
-              </p>
+              <h2>{t("dashboard.admin.welcomeTitle")}</h2>
+              <p>{t("dashboard.admin.welcomeText")}</p>
             </div>
             <div className="dash-welcome__actions">
               <button type="button" className="btn btn-primary" onClick={() => openSaleForm()}>
                 <Handshake size={16} aria-hidden="true" />
-                Registrar cierre
+                {t("dashboard.admin.registerSale")}
               </button>
               <Link to="/admin/reportes-ventas" className="btn btn-outline-secondary">
-                Ver reporte de ventas
+                {t("dashboard.admin.salesReport")}
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
             </div>
@@ -397,30 +405,37 @@ export default function AdminDashboard() {
           <div className="stat-grid">
             <StatCard
               icon={Users}
-              label="Usuarios registrados"
+              label={t("dashboard.admin.stats.users")}
               value={users.length}
-              hint={`${users.filter((user) => user.activo !== false).length} cuentas activas`}
+              hint={t("dashboard.admin.stats.usersHint", {
+                count: users.filter((user) => user.activo !== false).length,
+              })}
               tone="blue"
             />
             <StatCard
               icon={Building2}
-              label="Propiedades publicadas"
+              label={t("dashboard.admin.stats.published")}
               value={propertySummary.available}
-              hint={`${propertySummary.total} en total · ${propertySummary.closed} con cierre`}
+              hint={t("dashboard.admin.stats.publishedHint", {
+                total: propertySummary.total,
+                closed: propertySummary.closed,
+              })}
               tone="sand"
             />
             <StatCard
               icon={Handshake}
-              label="Cierres registrados"
+              label={t("dashboard.admin.stats.sales")}
               value={salesSummary.closed}
-              hint={`${salesSummary.annulled} anulados`}
+              hint={t("dashboard.admin.stats.salesHint", {
+                count: salesSummary.annulled,
+              })}
               tone="green"
             />
             <StatCard
               icon={Wallet}
-              label="Valor de cierres"
+              label={t("dashboard.admin.stats.salesValue")}
               value={formatCOP(salesSummary.totalValue)}
-              hint="Solo cierres vigentes"
+              hint={t("dashboard.admin.stats.salesValueHint")}
               tone="slate"
             />
           </div>
@@ -429,18 +444,16 @@ export default function AdminDashboard() {
             <section className="surface panel">
               <div className="panel-heading">
                 <div>
-                  <p className="eyebrow">Movimiento reciente</p>
-                  <h2>Últimos cierres</h2>
-                  <p>
-                    Ventas y arriendos registrados, con su valor y su estado.
-                  </p>
+                  <p className="eyebrow">{t("dashboard.admin.recent.eyebrow")}</p>
+                  <h2>{t("dashboard.admin.recent.title")}</h2>
+                  <p>{t("dashboard.admin.recent.text")}</p>
                 </div>
                 <button
                   type="button"
                   className="text-link text-link--button"
                   onClick={() => setSection("ventas")}
                 >
-                  Ver todos
+                  {t("dashboard.admin.recent.viewAll")}
                   <ArrowRight size={16} aria-hidden="true" />
                 </button>
               </div>
@@ -458,42 +471,42 @@ export default function AdminDashboard() {
             <section className="surface panel">
               <div className="panel-heading">
                 <div>
-                  <p className="eyebrow">Inventario</p>
-                  <h2>Estado del catálogo</h2>
+                  <p className="eyebrow">{t("dashboard.admin.catalog.eyebrow")}</p>
+                  <h2>{t("dashboard.admin.catalog.title")}</h2>
                 </div>
               </div>
               <div className="breakdown-list">
                 <div>
-                  <span>Publicadas</span>
+                  <span>{t("dashboard.admin.catalog.published")}</span>
                   <strong>{propertySummary.available}</strong>
                 </div>
                 <div>
-                  <span>Ocultas</span>
+                  <span>{t("dashboard.admin.catalog.hidden")}</span>
                   <strong>{propertySummary.hidden}</strong>
                 </div>
                 <div>
-                  <span>Con cierre</span>
+                  <span>{t("dashboard.admin.catalog.closed")}</span>
                   <strong>{propertySummary.closed}</strong>
                 </div>
                 <div>
-                  <span>Valor publicado</span>
+                  <span>{t("dashboard.admin.catalog.value")}</span>
                   <strong>{formatCOP(propertySummary.portfolioValue)}</strong>
                 </div>
               </div>
               <div className="quick-actions">
                 <button type="button" onClick={() => setSection("propiedades")}>
                   <Building2 size={17} aria-hidden="true" />
-                  Revisar propiedades
+                  {t("dashboard.admin.catalog.reviewProperties")}
                   <ArrowRight size={15} aria-hidden="true" />
                 </button>
                 <button type="button" onClick={() => setSection("usuarios")}>
                   <Users size={17} aria-hidden="true" />
-                  Revisar usuarios
+                  {t("dashboard.admin.catalog.reviewUsers")}
                   <ArrowRight size={15} aria-hidden="true" />
                 </button>
                 <Link to="/admin/reportes-ventas">
                   <FileSpreadsheet size={17} aria-hidden="true" />
-                  Abrir reporte de ventas
+                  {t("dashboard.admin.catalog.openReport")}
                   <ArrowRight size={15} aria-hidden="true" />
                 </Link>
               </div>
@@ -503,14 +516,9 @@ export default function AdminDashboard() {
           <section className="surface panel">
             <div className="panel-heading">
               <div>
-                <p className="eyebrow">Mantenimiento</p>
-                <h2>Datos heredados</h2>
-                <p>
-                  Completa el estado de las propiedades y los testimonios que
-                  vienen del sitio anterior, y retira de las fichas el correo
-                  del propietario. Es necesario para que las consultas públicas
-                  seguras los muestren.
-                </p>
+                <p className="eyebrow">{t("dashboard.admin.maintenance.eyebrow")}</p>
+                <h2>{t("dashboard.admin.maintenance.title")}</h2>
+                <p>{t("dashboard.admin.maintenance.text")}</p>
               </div>
               <button
                 type="button"
@@ -519,7 +527,7 @@ export default function AdminDashboard() {
                 disabled={maintenanceBusy}
               >
                 <Wrench size={15} aria-hidden="true" />
-                Completar datos
+                {t("dashboard.admin.maintenance.action")}
               </button>
             </div>
           </section>
@@ -527,11 +535,11 @@ export default function AdminDashboard() {
           {!loading && !properties.length && !sales.length && (
             <EmptyState
               icon={TrendingUp}
-              title="La plataforma está lista para empezar"
-              description="Aún no hay propiedades ni cierres. Publica el primer inmueble o registra un cierre cuando la operación esté cerrada."
+              title={t("dashboard.admin.emptyTitle")}
+              description={t("dashboard.admin.emptyDescription")}
               action={
                 <Link to="/vendedor" className="btn btn-primary">
-                  Ir a publicar una propiedad
+                  {t("dashboard.admin.emptyAction")}
                 </Link>
               }
               compact
@@ -544,47 +552,51 @@ export default function AdminDashboard() {
         <section className="surface panel">
           <div className="panel-heading">
             <div>
-              <p className="eyebrow">Cuentas</p>
-              <h2>Usuarios registrados</h2>
+              <p className="eyebrow">{t("dashboard.admin.users.eyebrow")}</p>
+              <h2>{t("dashboard.admin.users.title")}</h2>
               <p>
-                {filteredUsers.length} de {users.length} cuentas según los
-                filtros. Puedes desactivar una cuenta sin eliminar sus datos.
+                {t("dashboard.admin.users.summary", {
+                  filtered: filteredUsers.length,
+                  total: users.length,
+                })}
               </p>
             </div>
           </div>
 
           <div className="admin-toolbar">
             <label className="admin-search">
-              <span className="visually-hidden">Buscar usuarios</span>
+              <span className="visually-hidden">
+                {t("dashboard.admin.users.searchAria")}
+              </span>
               <Search size={17} aria-hidden="true" />
               <input
                 type="search"
                 className="form-control"
                 value={userFilters.search}
                 onChange={(event) => changeUserFilter("search", event.target.value)}
-                placeholder="Buscar por nombre, correo, cédula o teléfono"
+                placeholder={t("dashboard.admin.users.searchPlaceholder")}
               />
             </label>
             <select
               className="form-select"
               value={userFilters.role}
               onChange={(event) => changeUserFilter("role", event.target.value)}
-              aria-label="Filtrar por rol"
+              aria-label={t("dashboard.admin.users.roleAria")}
             >
-              <option value="">Todos los roles</option>
-              <option value={ROLES.ADMIN}>Administración</option>
-              <option value={ROLES.SELLER}>Vendedor</option>
-              <option value={ROLES.BUYER}>Comprador</option>
+              <option value="">{t("dashboard.admin.users.allRoles")}</option>
+              <option value={ROLES.ADMIN}>{t("dashboard.admin.users.adminRole")}</option>
+              <option value={ROLES.SELLER}>{t("dashboard.admin.users.sellerRole")}</option>
+              <option value={ROLES.BUYER}>{t("dashboard.admin.users.buyerRole")}</option>
             </select>
             <select
               className="form-select"
               value={userFilters.status}
               onChange={(event) => changeUserFilter("status", event.target.value)}
-              aria-label="Filtrar por estado"
+              aria-label={t("dashboard.admin.users.statusAria")}
             >
-              <option value="">Todos los estados</option>
-              <option value="activo">Activos</option>
-              <option value="inactivo">Inactivos</option>
+              <option value="">{t("dashboard.admin.users.allStatuses")}</option>
+              <option value="activo">{t("dashboard.admin.users.active")}</option>
+              <option value="inactivo">{t("dashboard.admin.users.inactive")}</option>
             </select>
           </div>
 
@@ -611,19 +623,22 @@ export default function AdminDashboard() {
         <section className="surface panel">
           <div className="panel-heading">
             <div>
-              <p className="eyebrow">Inventario</p>
-              <h2>Todas las propiedades</h2>
+              <p className="eyebrow">{t("dashboard.admin.properties.eyebrow")}</p>
+              <h2>{t("dashboard.admin.properties.title")}</h2>
               <p>
-                {filteredProperties.length} de {properties.length} propiedades
-                según los filtros. “Registrar cierre” actualiza la propiedad en
-                una sola transacción.
+                {t("dashboard.admin.properties.summary", {
+                  filtered: filteredProperties.length,
+                  total: properties.length,
+                })}
               </p>
             </div>
           </div>
 
           <div className="admin-toolbar">
             <label className="admin-search">
-              <span className="visually-hidden">Buscar propiedades</span>
+              <span className="visually-hidden">
+                {t("dashboard.admin.properties.searchAria")}
+              </span>
               <Search size={17} aria-hidden="true" />
               <input
                 type="search"
@@ -632,7 +647,7 @@ export default function AdminDashboard() {
                 onChange={(event) =>
                   changePropertyFilter("search", event.target.value)
                 }
-                placeholder="Buscar por título, ubicación, tipo o propietario"
+                placeholder={t("dashboard.admin.properties.searchPlaceholder")}
               />
             </label>
             <select
@@ -641,11 +656,11 @@ export default function AdminDashboard() {
               onChange={(event) =>
                 changePropertyFilter("operation", event.target.value)
               }
-              aria-label="Filtrar por operación"
+              aria-label={t("dashboard.admin.properties.operationAria")}
             >
-              <option value="">Venta y renta</option>
-              <option value="venta">Venta</option>
-              <option value="renta">Renta</option>
+              <option value="">{t("dashboard.admin.properties.allOperations")}</option>
+              <option value="venta">{t("dashboard.admin.properties.sale")}</option>
+              <option value="renta">{t("dashboard.admin.properties.rent")}</option>
             </select>
             <select
               className="form-select"
@@ -653,13 +668,21 @@ export default function AdminDashboard() {
               onChange={(event) =>
                 changePropertyFilter("status", event.target.value)
               }
-              aria-label="Filtrar por estado"
+              aria-label={t("dashboard.admin.properties.statusAria")}
             >
-              <option value="">Todos los estados</option>
-              <option value="disponible">Publicadas</option>
-              <option value="inactiva">Ocultas</option>
-              <option value="vendida">Vendidas</option>
-              <option value="rentada">Rentadas</option>
+              <option value="">{t("dashboard.admin.properties.allStatuses")}</option>
+              <option value="disponible">
+                {t("dashboard.admin.properties.published")}
+              </option>
+              <option value="inactiva">
+                {t("dashboard.admin.properties.hidden")}
+              </option>
+              <option value="vendida">
+                {t("dashboard.admin.properties.sold")}
+              </option>
+              <option value="rentada">
+                {t("dashboard.admin.properties.rented")}
+              </option>
             </select>
           </div>
 
@@ -686,11 +709,13 @@ export default function AdminDashboard() {
         <section className="surface panel">
           <div className="panel-heading">
             <div>
-              <p className="eyebrow">Cierres</p>
-              <h2>Ventas y arriendos registrados</h2>
+              <p className="eyebrow">{t("dashboard.admin.sales.eyebrow")}</p>
+              <h2>{t("dashboard.admin.sales.title")}</h2>
               <p>
-                {filteredSales.length} de {sales.length} cierres según los
-                filtros. Anular un cierre vuelve a publicar la propiedad.
+                {t("dashboard.admin.sales.summary", {
+                  filtered: filteredSales.length,
+                  total: sales.length,
+                })}
               </p>
             </div>
             <button
@@ -699,7 +724,7 @@ export default function AdminDashboard() {
               onClick={() => openSaleForm()}
             >
               <Plus size={15} aria-hidden="true" />
-              Registrar cierre
+              {t("dashboard.admin.registerSale")}
             </button>
           </div>
 
@@ -743,10 +768,12 @@ export default function AdminDashboard() {
 
       <ConfirmDialog
         open={Boolean(annulTarget)}
-        title="Anular cierre"
-        description={`El cierre de “${annulTarget?.propertyTitle || "esta propiedad"}” quedará marcado como anulado y la propiedad volverá a estar publicada. Esta acción queda registrada en la auditoría.`}
-        confirmLabel="Anular cierre"
-        cancelLabel="Conservar cierre"
+        title={t("dashboard.admin.sales.annulTitle")}
+        description={t("dashboard.admin.sales.annulText", {
+          title: annulTarget?.propertyTitle || "",
+        })}
+        confirmLabel={t("dashboard.admin.sales.annulConfirm")}
+        cancelLabel={t("dashboard.admin.sales.annulCancel")}
         tone="danger"
         busy={busyId === `sale-${annulTarget?.id}`}
         onConfirm={handleAnnul}
@@ -755,10 +782,10 @@ export default function AdminDashboard() {
 
       <ConfirmDialog
         open={maintenanceOpen}
-        title="Completar datos heredados"
-        description="Se agregará el estado faltante a las propiedades y los testimonios antiguos, y se retirará el correo del propietario de las fichas públicas. No se modifican precios, imágenes, cuentas ni cierres. Al terminar, el catálogo público podrá leer los inmuebles con las reglas seguras."
-        confirmLabel="Completar datos"
-        cancelLabel="Cancelar"
+        title={t("dashboard.admin.maintenance.dialogTitle")}
+        description={t("dashboard.admin.maintenance.dialogText")}
+        confirmLabel={t("dashboard.admin.maintenance.action")}
+        cancelLabel={t("common.cancel")}
         busy={maintenanceBusy}
         onConfirm={handleBackfill}
         onCancel={() => setMaintenanceOpen(false)}

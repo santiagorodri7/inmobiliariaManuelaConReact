@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { House, ImageOff } from "lucide-react";
 import { coverImage } from "../../utils/property.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 export default function PropertyGallery({ property }) {
+  const { t } = useI18n();
   const images = property?.images || [];
   const [active, setActive] = useState(0);
   const [failed, setFailed] = useState({});
@@ -16,26 +18,29 @@ export default function PropertyGallery({ property }) {
         {mainImage && !selectedFailed ? (
           <img
             src={mainImage}
-            alt={property?.title || "Propiedad"}
+            alt={property?.title || t("property.card.imageUnavailable")}
             onError={() => setFailed((current) => ({ ...current, [mainImage]: true }))}
           />
         ) : (
           <div className="property-gallery__placeholder">
             <ImageOff size={34} aria-hidden="true" />
-            <span>Este inmueble aún no tiene fotografías</span>
+            <span>{t("property.gallery.noPhotos")}</span>
           </div>
         )}
       </div>
 
       {images.length > 1 && (
-        <div className="property-gallery__thumbs" role="list" aria-label="Galería de imágenes">
+        <div className="property-gallery__thumbs" role="list" aria-label={t("property.gallery.aria")}>
           {images.map((image, index) => (
             <button
               key={`${image.url}-${index}`}
               type="button"
               className={`property-gallery__thumb${active === index ? " is-active" : ""}`}
               onClick={() => setActive(index)}
-              aria-label={`Ver imagen ${index + 1} de ${images.length}`}
+              aria-label={t("property.gallery.viewImage", {
+                index: index + 1,
+                total: images.length,
+              })}
               aria-current={active === index}
             >
               {failed[image.url] ? (

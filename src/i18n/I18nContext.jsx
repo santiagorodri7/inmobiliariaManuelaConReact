@@ -6,34 +6,28 @@ import {
   useMemo,
   useState,
 } from "react";
-import es from "./es.json";
-import en from "./en.json";
 import {
   DEFAULT_LANGUAGE,
   detectBrowserLanguage,
   isSupportedLanguage,
   normalizeLanguage,
 } from "./languages.js";
+import { setActiveLanguage, translate } from "./translate.js";
+import {
+  amenityLabel,
+  contactSubjectLabel,
+  operationLabel,
+  propertyTypeLabel,
+  propertyTypePluralLabel,
+  roleLabel,
+  saleStatusLabel,
+  statusLabel,
+  userStatusLabel,
+} from "./labels.js";
 import { formatDate, formatDateTime } from "../utils/dates.js";
 import { formatArea, formatCOP, formatNumber } from "../utils/format.js";
 
 const VISITOR_LANGUAGE_KEY = "manuela.idioma.visitante";
-
-const translations = { es, en };
-
-const resolveTranslation = (table, key) =>
-  String(key)
-    .split(".")
-    .reduce(
-      (value, part) =>
-        value && typeof value === "object" ? value[part] : undefined,
-      table,
-    );
-
-const interpolate = (value, variables) =>
-  value.replace(/\{\{(\w+)\}\}/g, (match, name) =>
-    variables[name] === undefined ? match : String(variables[name]),
-  );
 
 const readVisitorLanguage = () => {
   if (typeof window === "undefined") return detectBrowserLanguage();
@@ -63,6 +57,7 @@ export function I18nProvider({ children }) {
   const locale = language === "en" ? "en-US" : "es-CO";
 
   useEffect(() => {
+    setActiveLanguage(language);
     document.documentElement.lang = language;
   }, [language]);
 
@@ -78,17 +73,7 @@ export function I18nProvider({ children }) {
   }, []);
 
   const t = useCallback(
-    (key, variables = {}) => {
-      const activeValue = resolveTranslation(translations[language], key);
-      const fallbackValue = resolveTranslation(
-        translations[DEFAULT_LANGUAGE],
-        key,
-      );
-      const value =
-        typeof activeValue === "string" ? activeValue : fallbackValue;
-      if (typeof value !== "string") return key;
-      return interpolate(value, variables);
-    },
+    (key, variables = {}) => translate(key, variables, language),
     [language],
   );
 
@@ -99,6 +84,15 @@ export function I18nProvider({ children }) {
       setLanguage,
       resetToVisitorLanguage,
       t,
+      operationLabel: (operation) => operationLabel(t, operation),
+      statusLabel: (status) => statusLabel(t, status),
+      propertyTypeLabel: (type) => propertyTypeLabel(t, type),
+      propertyTypePluralLabel: (type) => propertyTypePluralLabel(t, type),
+      amenityLabel: (amenity) => amenityLabel(t, amenity),
+      roleLabel: (role) => roleLabel(t, role),
+      contactSubjectLabel: (subject) => contactSubjectLabel(t, subject),
+      saleStatusLabel: (status) => saleStatusLabel(t, status),
+      userStatusLabel: (active) => userStatusLabel(t, active),
       formatDate: (date, fallback = "—") =>
         formatDate(date, fallback, locale),
       formatDateTime: (date, fallback = "—") =>

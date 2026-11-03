@@ -9,33 +9,28 @@ import {
 import PageHeader from "../../components/layout/PageHeader.jsx";
 import ContactForm from "../../components/contact/ContactForm.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { site, whatsappUrl } from "../../config/site.js";
 
 export default function ContactPage() {
-  usePageTitle(
-    "Contacto",
-    "Habla con Manuela Bermúdez Realtor. Asesoría inmobiliaria en Medellín por correo, teléfono o WhatsApp.",
-  );
+  const { t } = useI18n();
+  usePageTitle(t("contact.pageTitle"), t("contact.pageDescription"));
 
   return (
     <>
       <PageHeader
-        eyebrow="Contacto"
-        title="Conversemos sobre el lugar que tienes en mente."
-        description="Cuéntanos qué buscas, qué quieres vender o qué necesitas resolver. Te responderemos con claridad y sin compromiso."
-        breadcrumb={[{ label: "Contacto" }]}
+        eyebrow={t("contact.header.eyebrow")}
+        title={t("contact.header.title")}
+        description={t("contact.header.description")}
+        breadcrumb={[{ label: t("contact.header.breadcrumb") }]}
       />
 
       <section className="section">
         <div className="shell contact-page">
           <div className="contact-page__info">
-            <p className="eyebrow">Canales directos</p>
-            <h2>Estamos para escucharte</h2>
-            <p className="contact-page__intro">
-              Si prefieres una conversación rápida, escríbenos por WhatsApp. Si
-              tu caso tiene más detalle, el formulario nos ayuda a preparar una
-              respuesta mejor.
-            </p>
+            <p className="eyebrow">{t("contact.info.eyebrow")}</p>
+            <h2>{t("contact.info.title")}</h2>
+            <p className="contact-page__intro">{t("contact.info.intro")}</p>
 
             <div className="contact-channels">
               <a href={`mailto:${site.email}`} className="contact-channel">
@@ -43,7 +38,7 @@ export default function ContactPage() {
                   <Mail size={19} />
                 </span>
                 <div>
-                  <span>Correo</span>
+                  <span>{t("contact.info.email")}</span>
                   <strong>{site.email}</strong>
                 </div>
                 <ExternalLink size={15} aria-hidden="true" />
@@ -54,14 +49,14 @@ export default function ContactPage() {
                   <Phone size={19} />
                 </span>
                 <div>
-                  <span>Teléfono</span>
+                  <span>{t("contact.info.phone")}</span>
                   <strong>{site.phone}</strong>
                 </div>
                 <ExternalLink size={15} aria-hidden="true" />
               </a>
 
               <a
-                href={whatsappUrl(`Hola ${site.name}, quiero hacer una consulta inmobiliaria.`)}
+                href={whatsappUrl(t("contact.whatsappMessage", { name: site.name }))}
                 target="_blank"
                 rel="noreferrer"
                 className="contact-channel"
@@ -70,8 +65,8 @@ export default function ContactPage() {
                   <MessageCircle size={19} />
                 </span>
                 <div>
-                  <span>WhatsApp</span>
-                  <strong>Escribir ahora</strong>
+                  <span>{t("contact.info.whatsapp")}</span>
+                  <strong>{t("contact.info.writeNow")}</strong>
                 </div>
                 <ExternalLink size={15} aria-hidden="true" />
               </a>
@@ -81,8 +76,8 @@ export default function ContactPage() {
                   <MapPin size={19} />
                 </span>
                 <div>
-                  <span>Zona de atención</span>
-                  <strong>{site.location}</strong>
+                  <span>{t("contact.info.area")}</span>
+                  <strong>{t("site.location")}</strong>
                 </div>
               </div>
 
@@ -91,34 +86,32 @@ export default function ContactPage() {
                   <Clock3 size={19} />
                 </span>
                 <div>
-                  <span>Horario</span>
-                  <strong>{site.hours}</strong>
+                  <span>{t("contact.info.hours")}</span>
+                  <strong>{t("site.hours")}</strong>
                 </div>
               </div>
             </div>
 
             <div className="contact-page__image">
-              <img src="/img/img contacto.jpg" alt="Vista de Medellín al atardecer" loading="lazy" />
-              <p>Medellín y el Valle de Aburrá</p>
+              <img
+                src="/img/img contacto.jpg"
+                alt={t("contact.info.imageAlt")}
+                loading="lazy"
+              />
+              <p>{t("contact.info.imageCaption")}</p>
             </div>
 
             {site.pendingOfficialData && import.meta.env.DEV && (
-              <p className="inline-note">
-                Vista previa local: el correo, teléfono y dirección definitivos
-                deben confirmarse antes de publicar.
-              </p>
+              <p className="inline-note">{t("contact.devNote")}</p>
             )}
           </div>
 
           <div className="contact-page__form surface">
             <div className="panel-heading">
               <div>
-                <p className="eyebrow">Escríbenos</p>
-                <h2>Cuéntanos tu caso</h2>
-                <p>
-                  Completa el formulario y te responderemos al correo que
-                  indiques.
-                </p>
+                <p className="eyebrow">{t("contact.form.eyebrow")}</p>
+                <h2>{t("contact.form.title")}</h2>
+                <p>{t("contact.form.text")}</p>
               </div>
             </div>
             <ContactForm />

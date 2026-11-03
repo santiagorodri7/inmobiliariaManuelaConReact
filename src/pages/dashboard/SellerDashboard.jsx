@@ -21,6 +21,7 @@ import { useToast } from "../../components/ui/Toast.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useProperties } from "../../hooks/useProperties.js";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { sellerNav } from "../../config/dashboardNav.js";
 import {
   saveProperty,
@@ -30,16 +31,13 @@ import {
 } from "../../services/propertiesService.js";
 import { exportProperties } from "../../services/excelService.js";
 import { getErrorMessage } from "../../utils/errors.js";
-import { formatCOP } from "../../utils/format.js";
-
-const sectionTitles = {
-  resumen: "Mi resumen",
-  publicar: "Publicar propiedad",
-  propiedades: "Mis propiedades",
-};
 
 export default function SellerDashboard() {
-  usePageTitle("Panel de vendedor", "Publica y administra tus propiedades.");
+  const { t, formatCOP } = useI18n();
+  usePageTitle(
+    t("dashboard.seller.pageTitle"),
+    t("dashboard.seller.pageDescription"),
+  );
   const { profile } = useAuth();
   const toast = useToast();
   const [section, setSection] = useState("resumen");
@@ -55,6 +53,12 @@ export default function SellerDashboard() {
 
   const stats = useMemo(() => propertyStats(properties), [properties]);
   const recent = properties.slice(0, 4);
+
+  const sectionTitles = {
+    resumen: t("dashboard.seller.sectionTitles.summary"),
+    publicar: t("dashboard.seller.sectionTitles.publish"),
+    propiedades: t("dashboard.seller.sectionTitles.properties"),
+  };
 
   const navigateSection = (key) => {
     if (key === "publicar") setEditing(null);
@@ -90,19 +94,19 @@ export default function SellerDashboard() {
       });
       toast.success(
         editing
-          ? "Los cambios se guardaron correctamente."
-          : "Tu propiedad ya está publicada en el catálogo.",
+          ? t("dashboard.seller.saveEditSuccess")
+          : t("dashboard.seller.saveNewSuccess"),
       );
       setEditing(null);
       setSection("propiedades");
       reload();
     } catch (saveError) {
       if (saveError?.code === "storage/canceled") {
-        toast.info("Subida cancelada. La propiedad no se modificó.");
+        toast.info(t("dashboard.seller.uploadCanceled"));
       } else {
         console.error("No se pudo guardar la propiedad:", saveError);
         toast.error(
-          getErrorMessage(saveError, "No se pudo guardar la propiedad."),
+          getErrorMessage(saveError, "dashboard.seller.saveError"),
         );
       }
     } finally {
@@ -125,10 +129,10 @@ export default function SellerDashboard() {
       setProperties((current) =>
         current.map((item) => (item.id === property.id ? updated : item)),
       );
-      toast.success("La propiedad volvió a estar publicada.");
+      toast.success(t("dashboard.seller.publishSuccess"));
     } catch (publishError) {
       toast.error(
-        getErrorMessage(publishError, "No se pudo publicar la propiedad."),
+        getErrorMessage(publishError, "dashboard.seller.publishError"),
       );
     } finally {
       setBusyId("");
@@ -145,11 +149,11 @@ export default function SellerDashboard() {
           item.id === pendingHide.id ? { ...item, status: "inactiva" } : item,
         ),
       );
-      toast.success("La propiedad se ocultó del catálogo público.");
+      toast.success(t("dashboard.seller.hideSuccess"));
       setPendingHide(null);
     } catch (hideError) {
       toast.error(
-        getErrorMessage(hideError, "No se pudo ocultar la propiedad."),
+        getErrorMessage(hideError, "dashboard.seller.hideError"),
       );
     } finally {
       setBusyId("");
@@ -160,30 +164,30 @@ export default function SellerDashboard() {
     <div className="stat-grid">
       <StatCard
         icon={Building2}
-        label="Propiedades publicadas"
+        label={t("dashboard.seller.stats.published")}
         value={stats.available}
-        hint="Visibles en el catálogo"
+        hint={t("dashboard.seller.stats.publishedHint")}
         tone="blue"
       />
       <StatCard
         icon={EyeOff}
-        label="Ocultas"
+        label={t("dashboard.seller.stats.hidden")}
         value={stats.hidden}
-        hint="No visibles al público"
+        hint={t("dashboard.seller.stats.hiddenHint")}
         tone="sand"
       />
       <StatCard
         icon={Handshake}
-        label="Cierres registrados"
+        label={t("dashboard.seller.stats.closed")}
         value={stats.closed}
-        hint="Vendidas o rentadas"
+        hint={t("dashboard.seller.stats.closedHint")}
         tone="green"
       />
       <StatCard
         icon={Wallet}
-        label="Valor publicado"
+        label={t("dashboard.seller.stats.value")}
         value={formatCOP(stats.portfolioValue)}
-        hint="Suma de propiedades activas"
+        hint={t("dashboard.seller.stats.valueHint")}
         tone="slate"
       />
     </div>
@@ -196,19 +200,19 @@ export default function SellerDashboard() {
       activeKey={section}
       onNavigate={navigateSection}
       title={sectionTitles[section]}
-      subtitle="Publica tus inmuebles, revisa su estado y mantén tu inventario al día."
+      subtitle={t("dashboard.seller.subtitle")}
       actions={
         <>
           <ExportButton
             onExport={() => exportProperties(properties)}
-            label="Exportar"
+            label={t("dashboard.seller.export")}
             variant="outline-secondary"
             size="sm"
             disabled={!properties.length}
           />
           <button type="button" className="btn btn-primary btn-sm dashboard-action" onClick={startNew}>
             <Plus size={15} aria-hidden="true" />
-            Publicar
+            {t("dashboard.seller.publish")}
           </button>
         </>
       }
@@ -217,21 +221,21 @@ export default function SellerDashboard() {
         <>
           <section className="dash-welcome">
             <div>
-              <p className="eyebrow">Hola, {profile?.nombre?.split(" ")[0] || "bienvenido"}</p>
-              <h2>Tu inventario, en un solo lugar.</h2>
-              <p>
-                Publica propiedades, revisa su estado y decide cuándo mostrarlas
-                al público. Si necesitas ajustar algo, puedes editarlas sin
-                perder el historial.
+              <p className="eyebrow">
+                {t("dashboard.seller.welcomeHello", {
+                  name: profile?.nombre?.split(" ")[0] || t("dashboard.seller.welcomeDefault"),
+                })}
               </p>
+              <h2>{t("dashboard.seller.welcomeTitle")}</h2>
+              <p>{t("dashboard.seller.welcomeText")}</p>
             </div>
             <div className="dash-welcome__actions">
               <button type="button" className="btn btn-primary" onClick={startNew}>
                 <Plus size={16} aria-hidden="true" />
-                Publicar propiedad
+                {t("dashboard.seller.publishProperty")}
               </button>
               <Link to="/contacto" className="btn btn-outline-secondary">
-                Hablar con Manuela
+                {t("dashboard.seller.talk")}
               </Link>
             </div>
           </section>
@@ -242,18 +246,16 @@ export default function SellerDashboard() {
             <section className="surface panel">
               <div className="panel-heading">
                 <div>
-                  <p className="eyebrow">Actividad</p>
-                  <h2>Mis propiedades recientes</h2>
-                  <p>
-                    Un vistazo rápido a las últimas publicaciones de tu cuenta.
-                  </p>
+                  <p className="eyebrow">{t("dashboard.seller.activity.eyebrow")}</p>
+                  <h2>{t("dashboard.seller.activity.title")}</h2>
+                  <p>{t("dashboard.seller.activity.text")}</p>
                 </div>
                 <button
                   type="button"
                   className="text-link text-link--button"
                   onClick={() => setSection("propiedades")}
                 >
-                  Ver todas
+                  {t("dashboard.seller.activity.viewAll")}
                   <ArrowRight size={16} aria-hidden="true" />
                 </button>
               </div>
@@ -273,24 +275,18 @@ export default function SellerDashboard() {
               <span className="panel__accent-icon" aria-hidden="true">
                 <Sparkles size={22} />
               </span>
-              <p className="eyebrow">Buenas prácticas</p>
-              <h2>Una publicación clara vende mejor</h2>
+              <p className="eyebrow">{t("dashboard.seller.tips.eyebrow")}</p>
+              <h2>{t("dashboard.seller.tips.title")}</h2>
               <ul className="check-list check-list--compact">
-                <li>
-                  <CheckCircle2 size={16} aria-hidden="true" />
-                  Usa fotos con luz natural y al menos una del espacio principal.
-                </li>
-                <li>
-                  <CheckCircle2 size={16} aria-hidden="true" />
-                  Describe el estado real, el área y lo que hace especial al inmueble.
-                </li>
-                <li>
-                  <CheckCircle2 size={16} aria-hidden="true" />
-                  Indica una zona aproximada; la dirección exacta se comparte en la visita.
-                </li>
+                {["tip1", "tip2", "tip3"].map((key) => (
+                  <li key={key}>
+                    <CheckCircle2 size={16} aria-hidden="true" />
+                    {t(`dashboard.seller.tips.${key}`)}
+                  </li>
+                ))}
               </ul>
               <Link to="/servicios" className="text-link">
-                Ver servicios de acompañamiento
+                {t("dashboard.seller.tips.link")}
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
             </section>
@@ -302,16 +298,17 @@ export default function SellerDashboard() {
         <section className="dashboard-section">
           <div className="section-heading section-heading--split">
             <div>
-              <p className="eyebrow">{editing ? "Editar publicación" : "Nueva publicación"}</p>
+              <p className="eyebrow">
+                {editing
+                  ? t("dashboard.seller.editEyebrow")
+                  : t("dashboard.seller.newEyebrow")}
+              </p>
               <h2>
                 {editing
-                  ? "Actualiza la información de tu propiedad"
-                  : "Cuéntanos sobre el inmueble que quieres publicar"}
+                  ? t("dashboard.seller.editTitle")
+                  : t("dashboard.seller.newTitle")}
               </h2>
-              <p>
-                Los campos marcados son obligatorios. La primera imagen será la
-                portada en el catálogo.
-              </p>
+              <p>{t("dashboard.seller.formHint")}</p>
             </div>
             {editing && (
               <button
@@ -322,7 +319,7 @@ export default function SellerDashboard() {
                   setSection("propiedades");
                 }}
               >
-                Cancelar edición
+                {t("dashboard.seller.cancelEdit")}
               </button>
             )}
           </div>
@@ -350,29 +347,31 @@ export default function SellerDashboard() {
           <section className="surface panel">
             <div className="panel-heading">
               <div>
-                <p className="eyebrow">Inventario</p>
-                <h2>Todas mis propiedades</h2>
+                <p className="eyebrow">{t("dashboard.seller.inventoryEyebrow")}</p>
+                <h2>{t("dashboard.seller.inventoryTitle")}</h2>
                 <p>
                   {properties.length
-                    ? `${properties.length} propiedades asociadas a tu cuenta.`
-                    : "Aún no tienes propiedades asociadas a tu cuenta."}
+                    ? t("dashboard.seller.inventoryCount", {
+                        count: properties.length,
+                      })
+                    : t("dashboard.seller.inventoryEmpty")}
                 </p>
               </div>
               <button type="button" className="btn btn-primary btn-sm" onClick={startNew}>
                 <Plus size={15} aria-hidden="true" />
-                Publicar
+                {t("dashboard.seller.publish")}
               </button>
             </div>
 
             {!loading && !error && !properties.length ? (
               <EmptyState
                 icon={Building2}
-                title="Tu inventario está vacío"
-                description="Publica tu primera propiedad para que aparezca en el catálogo y puedas gestionarla desde este panel."
+                title={t("dashboard.seller.inventoryEmptyTitle")}
+                description={t("dashboard.seller.inventoryEmptyDescription")}
                 action={
                   <button type="button" className="btn btn-primary" onClick={startNew}>
                     <Plus size={16} aria-hidden="true" />
-                    Publicar mi primera propiedad
+                    {t("dashboard.seller.publishFirst")}
                   </button>
                 }
               />
@@ -394,10 +393,12 @@ export default function SellerDashboard() {
 
       <ConfirmDialog
         open={Boolean(pendingHide)}
-        title="Ocultar propiedad"
-        description={`“${pendingHide?.title || "Esta propiedad"}” dejará de aparecer en el catálogo público. Podrás volver a publicarla cuando quieras; no se elimina de tu cuenta.`}
-        confirmLabel="Ocultar propiedad"
-        cancelLabel="Cancelar"
+        title={t("dashboard.seller.hideDialogTitle")}
+        description={t("dashboard.seller.hideDialogText", {
+          title: pendingHide?.title || "",
+        })}
+        confirmLabel={t("dashboard.seller.hideConfirm")}
+        cancelLabel={t("common.cancel")}
         tone="danger"
         busy={busyId === pendingHide?.id}
         onConfirm={handleHide}

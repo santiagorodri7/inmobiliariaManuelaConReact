@@ -7,12 +7,11 @@ import {
   Pencil,
 } from "lucide-react";
 import { OperationBadge, PropertyStatusPill } from "../ui/StatusBadge.jsx";
-import { formatCOP } from "../../utils/format.js";
-import { formatDate } from "../../utils/dates.js";
 import { isAvailable } from "../../utils/property.js";
 import EmptyState from "../ui/EmptyState.jsx";
 import ErrorState from "../ui/ErrorState.jsx";
 import { TableSkeleton } from "../ui/Skeleton.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 export default function OwnerPropertiesTable({
   properties = [],
@@ -24,11 +23,12 @@ export default function OwnerPropertiesTable({
   onHide,
   busyId = "",
 }) {
+  const { t, formatCOP, formatDate, propertyTypeLabel } = useI18n();
   if (loading) return <TableSkeleton rows={5} columns={5} />;
   if (error) {
     return (
       <ErrorState
-        title="No pudimos cargar tus propiedades"
+        title={t("property.ownerTable.errorTitle")}
         description={error}
         onRetry={onRetry}
         compact
@@ -40,8 +40,8 @@ export default function OwnerPropertiesTable({
     return (
       <EmptyState
         icon={Building2}
-        title="Aún no has publicado propiedades"
-        description="Publica tu primer inmueble y aparecerá en el catálogo público. Podrás editarlo u ocultarlo cuando quieras."
+        title={t("property.ownerTable.emptyTitle")}
+        description={t("property.ownerTable.emptyDescription")}
         compact
       />
     );
@@ -52,12 +52,12 @@ export default function OwnerPropertiesTable({
       <table className="data-table">
         <thead>
           <tr>
-            <th>Propiedad</th>
-            <th>Operación</th>
-            <th>Precio</th>
-            <th>Estado</th>
-            <th>Publicada</th>
-            <th className="text-end">Acciones</th>
+            <th>{t("property.ownerTable.property")}</th>
+            <th>{t("property.ownerTable.operation")}</th>
+            <th>{t("property.ownerTable.price")}</th>
+            <th>{t("property.ownerTable.status")}</th>
+            <th>{t("property.ownerTable.published")}</th>
+            <th className="text-end">{t("property.ownerTable.actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -70,8 +70,8 @@ export default function OwnerPropertiesTable({
                   <div className="table-property">
                     <div>
                       <strong>{property.title}</strong>
-                      <span>{property.location || "Sin ubicación"}</span>
-                      <small>{property.type}</small>
+                      <span>{property.location || t("property.ownerTable.noLocation")}</span>
+                      <small>{propertyTypeLabel(property.type)}</small>
                     </div>
                   </div>
                 </td>
@@ -88,8 +88,8 @@ export default function OwnerPropertiesTable({
                     <Link
                       to={`/propiedad/${encodeURIComponent(property.id)}`}
                       className="icon-button"
-                      title="Ver publicación"
-                      aria-label={`Ver ${property.title}`}
+                      title={t("property.ownerTable.view")}
+                      aria-label={t("property.ownerTable.viewAria", { title: property.title })}
                     >
                       <Eye size={17} />
                     </Link>
@@ -99,8 +99,8 @@ export default function OwnerPropertiesTable({
                         type="button"
                         className="icon-button"
                         onClick={() => onEdit(property)}
-                        title="Editar propiedad"
-                        aria-label={`Editar ${property.title}`}
+                        title={t("property.ownerTable.edit")}
+                        aria-label={t("property.ownerTable.editAria", { title: property.title })}
                       >
                         <Pencil size={16} />
                       </button>
@@ -112,8 +112,8 @@ export default function OwnerPropertiesTable({
                         className="icon-button icon-button--danger"
                         onClick={() => onHide(property)}
                         disabled={busyId === property.id}
-                        title="Ocultar del catálogo"
-                        aria-label={`Ocultar ${property.title}`}
+                        title={t("property.ownerTable.hide")}
+                        aria-label={t("property.ownerTable.hideAria", { title: property.title })}
                       >
                         <EyeOff size={17} />
                       </button>
@@ -125,15 +125,15 @@ export default function OwnerPropertiesTable({
                         className="icon-button icon-button--success"
                         onClick={() => onToggle(property)}
                         disabled={busyId === property.id}
-                        title="Volver a publicar"
-                        aria-label={`Publicar ${property.title}`}
+                        title={t("property.ownerTable.publish")}
+                        aria-label={t("property.ownerTable.publishAria", { title: property.title })}
                       >
                         <Eye size={17} />
                       </button>
                     )}
 
                     {closed && (
-                      <span className="table-lock" title="Propiedad con cierre registrado">
+                      <span className="table-lock" title={t("property.ownerTable.closed")}>
                         <LockKeyhole size={16} aria-hidden="true" />
                       </span>
                     )}

@@ -6,6 +6,7 @@ import {
 } from "firebase/storage";
 import { allowBase64Fallback, requireFirebase, storage } from "./firebase.js";
 import { appError } from "../utils/errors.js";
+import { translate } from "../i18n/translate.js";
 
 const MAX_FILE_SIZE = 8 * 1024 * 1024;
 const MAX_BASE64_BYTES = 180 * 1024;
@@ -23,7 +24,7 @@ const loadImage = (file) =>
     };
     image.onerror = () => {
       URL.revokeObjectURL(url);
-      reject(appError("storage/image-error", "No se pudo leer la imagen."));
+      reject(appError("storage/image-error"));
     };
     image.src = url;
   });
@@ -33,7 +34,7 @@ const canvasToBlob = (canvas, mime, quality) =>
     canvas.toBlob(
       (blob) => {
         if (blob) resolve(blob);
-        else reject(appError("storage/image-error", "No se pudo comprimir la imagen."));
+        else reject(appError("storage/image-error"));
       },
       mime,
       quality,
@@ -45,7 +46,7 @@ const blobToDataUrl = (blob) =>
     const reader = new FileReader();
     reader.onload = () => resolve(String(reader.result || ""));
     reader.onerror = () =>
-      reject(appError("storage/image-error", "No se pudo procesar la imagen."));
+      reject(appError("storage/image-error"));
     reader.readAsDataURL(blob);
   });
 
@@ -55,12 +56,12 @@ const dataUrlBytes = (dataUrl) => {
 };
 
 export const validateImageFile = (file) => {
-  if (!file) return "Selecciona una imagen.";
+  if (!file) return translate("errors.storage.select");
   if (!ACCEPTED_TYPES.includes(file.type)) {
-    return "Formato no compatible. Usa JPG, PNG o WebP.";
+    return translate("errors.storage.format");
   }
   if (file.size > MAX_FILE_SIZE) {
-    return "Cada imagen debe pesar menos de 8 MB.";
+    return translate("errors.storage.size");
   }
   return "";
 };
@@ -78,7 +79,7 @@ export const compressImage = async (
   canvas.width = width;
   canvas.height = height;
   const context = canvas.getContext("2d");
-  if (!context) throw appError("storage/image-error", "No se pudo comprimir la imagen.");
+  if (!context) throw appError("storage/image-error");
   context.drawImage(image, 0, 0, width, height);
 
   const blob = await canvasToBlob(canvas, "image/webp", quality);
@@ -157,13 +158,7 @@ const uploadWithTimeout = (
       reject(error);
     };
 
-    const handleAbort = () =>
-      fail(
-        appError(
-          "storage/canceled",
-          "La subida de la imagen fue cancelada.",
-        ),
-      );
+    const handleAbort = () => fail(appError("storage/canceled"));
 
     if (signal?.aborted) {
       handleAbort();
@@ -173,12 +168,7 @@ const uploadWithTimeout = (
     signal?.addEventListener("abort", handleAbort, { once: true });
 
     timeoutId = setTimeout(() => {
-      fail(
-        appError(
-          "storage/timeout",
-          "La subida tardó más de 45 segundos. Revisa tu conexión e inténtalo de nuevo.",
-        ),
-      );
+      fail(appError("storage/timeout"));
     }, timeoutMs);
 
     task.on(
@@ -235,8 +225,7 @@ const uploadOne = async (
 
 const fallbackBatchError = (omitted, total) => {
   const error = new Error(
-    `No se pudieron guardar ${omitted} de ${total} imágenes en el modo de contingencia. ` +
-      "Activa Firebase Storage o selecciona menos fotos; no se publicó nada.",
+    translate("errors.storage.base64BatchTooLarge", { omitted, total }),
   );
   error.code = "storage/base64-batch-too-large";
   return error;

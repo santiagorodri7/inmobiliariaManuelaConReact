@@ -44,7 +44,7 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!values.nombre.trim()) {
-      setError("El nombre no puede quedar vacío.");
+      setError(t("account.personal.emptyName"));
       return;
     }
     setSaving(true);
@@ -53,9 +53,9 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
       const updated = await updateOwnProfile(profile.id, values);
       updateProfileState(updated);
       onUpdated?.(updated);
-      toast.success("Tu información se actualizó.");
+      toast.success(t("account.personal.saveSuccess"));
     } catch (saveError) {
-      toast.error(getErrorMessage(saveError, "No se pudo guardar tu información."));
+      toast.error(getErrorMessage(saveError, "account.personal.saveError"));
     } finally {
       setSaving(false);
     }
@@ -81,16 +81,13 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
       const updated = await updateOwnProfile(profile.id, { avatar: uploaded.url });
       updateProfileState(updated);
       onUpdated?.(updated);
-      toast.success("Foto de perfil actualizada.");
+      toast.success(t("account.personal.photoSuccess"));
     } catch (uploadError) {
       if (uploadError?.code === "storage/canceled") {
-        toast.info("Subida de la foto cancelada.");
+        toast.info(t("account.personal.photoCanceled"));
       } else {
         toast.error(
-          getErrorMessage(
-            uploadError,
-            "No se pudo actualizar la foto. Verifica Firebase Storage.",
-          ),
+          getErrorMessage(uploadError, "account.personal.photoError"),
         );
       }
     } finally {
@@ -105,17 +102,17 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
     <form className="surface profile-form" onSubmit={handleSubmit}>
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">Datos personales</p>
-          <h2>Tu información de contacto</h2>
-          <p>Estos datos se usan para comunicarnos contigo y no se muestran públicamente.</p>
+          <p className="eyebrow">{t("account.personal.eyebrow")}</p>
+          <h2>{t("account.personal.title")}</h2>
+          <p>{t("account.personal.text")}</p>
         </div>
       </div>
 
       <div className="profile-avatar-row">
         <Avatar profile={profile} size="lg" />
         <div>
-          <strong>Foto de perfil</strong>
-          <p>Una imagen ayuda a reconocerte dentro de la plataforma.</p>
+          <strong>{t("account.personal.photo")}</strong>
+          <p>{t("account.personal.photoText")}</p>
           <button
             type="button"
             className="btn btn-outline-secondary btn-sm"
@@ -127,7 +124,9 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
             ) : (
               <Camera size={16} aria-hidden="true" />
             )}
-            {uploading ? "Subiendo…" : "Cambiar foto"}
+            {uploading
+              ? t("account.personal.uploading")
+              : t("account.personal.changePhoto")}
           </button>
           {uploading && (
             <button
@@ -136,7 +135,7 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
               onClick={() => uploadController.current?.abort()}
             >
               <X size={15} aria-hidden="true" />
-              Cancelar
+              {t("account.personal.cancel")}
             </button>
           )}
           <input
@@ -150,7 +149,12 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
       </div>
 
       <div className="form-grid form-grid--two">
-        <Field label="Nombre completo" htmlFor="profile-name" required error={error}>
+        <Field
+          label={t("account.personal.name")}
+          htmlFor="profile-name"
+          required
+          error={error}
+        >
           <input
             id="profile-name"
             className="form-control"
@@ -159,17 +163,17 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
             aria-invalid={Boolean(error)}
           />
         </Field>
-        <Field label="Teléfono" htmlFor="profile-phone">
+        <Field label={t("account.personal.phone")} htmlFor="profile-phone">
           <input
             id="profile-phone"
             type="tel"
             className="form-control"
             value={values.telefono}
             onChange={update("telefono")}
-            placeholder="+57 300 000 0000"
+            placeholder={t("account.personal.phonePlaceholder")}
           />
         </Field>
-        <Field label="Fecha de nacimiento" htmlFor="profile-birth">
+        <Field label={t("account.personal.birth")} htmlFor="profile-birth">
           <input
             id="profile-birth"
             type="date"
@@ -178,13 +182,17 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
             onChange={update("fechaNacimiento")}
           />
         </Field>
-        <Field label="Dirección de contacto" htmlFor="profile-address" hint="Opcional">
+        <Field
+          label={t("account.personal.address")}
+          htmlFor="profile-address"
+          hint={t("account.personal.addressHint")}
+        >
           <input
             id="profile-address"
             className="form-control"
             value={values.direccion}
             onChange={update("direccion")}
-            placeholder="Ciudad y sector"
+            placeholder={t("account.personal.addressPlaceholder")}
           />
         </Field>
         <LanguageSelect
@@ -193,7 +201,11 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
           onChange={update("idioma")}
           hint={t("language.profileHint")}
         />
-        <Field label="Correo electrónico" htmlFor="profile-email" hint="El correo está vinculado a tu cuenta.">
+        <Field
+          label={t("account.personal.email")}
+          htmlFor="profile-email"
+          hint={t("account.personal.emailHint")}
+        >
           <div className="input-with-icon">
             <Mail size={17} aria-hidden="true" />
             <input
@@ -204,13 +216,17 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
             />
           </div>
         </Field>
-        <Field label="Cédula" htmlFor="profile-id" hint="Solo la administradora puede modificarla.">
+        <Field
+          label={t("account.personal.id")}
+          htmlFor="profile-id"
+          hint={t("account.personal.idHint")}
+        >
           <div className="input-with-icon">
             <ShieldCheck size={17} aria-hidden="true" />
             <input
               id="profile-id"
               className="form-control"
-              value={profile?.cedula || "No registrada"}
+              value={profile?.cedula || t("account.personal.idMissing")}
               readOnly
             />
           </div>
@@ -220,7 +236,7 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
       <div className="form-actions">
         <button type="submit" className="btn btn-primary" disabled={saving}>
           <Save size={16} aria-hidden="true" />
-          {saving ? "Guardando…" : "Guardar cambios"}
+          {saving ? t("common.saving") : t("common.saveChanges")}
         </button>
       </div>
     </form>

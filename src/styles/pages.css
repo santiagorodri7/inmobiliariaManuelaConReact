@@ -1186,6 +1186,58 @@
   top: calc(var(--nav-height) + 20px);
 }
 
+.manu-contact-card {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: clamp(21px, 3vw, 29px);
+  border: 1px solid rgba(47, 109, 90, 0.28);
+  background:
+    radial-gradient(18rem 12rem at 100% 0%, rgba(47, 109, 90, 0.12), transparent 70%),
+    var(--ivory-soft);
+}
+
+.manu-contact-card__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.manu-contact-card__icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--green);
+  color: var(--white);
+}
+
+.manu-contact-card h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 2vw, 1.65rem);
+  font-weight: 500;
+}
+
+.manu-contact-card p {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.manu-contact-card .eyebrow {
+  margin-bottom: 2px;
+}
+
+.manu-contact-card__availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--green);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
 .property-consult-card {
   padding: clamp(21px, 3vw, 29px);
 }

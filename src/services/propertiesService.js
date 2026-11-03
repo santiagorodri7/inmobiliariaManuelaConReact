@@ -113,7 +113,7 @@ export const saveProperty = async ({
   signal,
 }) => {
   requireFirebase();
-  if (!ownerId) throw appError("auth/requires-login", "Inicia sesión de nuevo.");
+  if (!ownerId) throw appError("auth/requires-login");
 
   const currentUser = auth?.currentUser;
   if (currentUser && currentUser.uid !== ownerId) {
@@ -181,10 +181,7 @@ export const saveProperty = async ({
     throw appError("permission-denied");
   }
   if (["vendida", "rentada"].includes(existing.status)) {
-    throw appError(
-      "property/locked",
-      "Esta propiedad tiene un cierre registrado y ya no se puede editar.",
-    );
+    throw appError("property/locked");
   }
 
   let upload = { images: [], usedFallback: false, skipped: 0 };
@@ -258,16 +255,10 @@ export const setPropertyStatus = async (property, status, admin) => {
   requireFirebase();
   if (!property?.id) throw appError("property/not-found");
   if (!["disponible", "inactiva"].includes(status)) {
-    throw appError(
-      "property/invalid-status",
-      "Solo puedes publicar u ocultar una propiedad desde este panel.",
-    );
+    throw appError("property/invalid-status");
   }
   if (["vendida", "rentada"].includes(property.status)) {
-    throw appError(
-      "property/locked",
-      "Una propiedad con cierre registrado solo cambia al anular la venta.",
-    );
+    throw appError("property/locked");
   }
 
   await updateDoc(doc(db, PROPERTIES, property.id), {
@@ -291,10 +282,7 @@ export const softDeleteProperty = async (property, actor) => {
   requireFirebase();
   if (!property?.id) throw appError("property/not-found");
   if (!isAvailable(property)) {
-    throw appError(
-      "property/locked",
-      "Solo puedes ocultar propiedades publicadas.",
-    );
+    throw appError("property/locked");
   }
   await updateDoc(doc(db, PROPERTIES, property.id), {
     status: "inactiva",

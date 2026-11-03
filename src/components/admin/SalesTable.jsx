@@ -1,7 +1,6 @@
 import { Banknote, Ban } from "lucide-react";
 import { OperationBadge, SaleStatusPill } from "../ui/StatusBadge.jsx";
-import { formatCOP } from "../../utils/format.js";
-import { formatDate } from "../../utils/dates.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import EmptyState from "../ui/EmptyState.jsx";
 import ErrorState from "../ui/ErrorState.jsx";
 import { TableSkeleton } from "../ui/Skeleton.jsx";
@@ -16,16 +15,26 @@ export default function SalesTable({
   compact = false,
   emptyState = null,
 }) {
+  const { t, formatCOP, formatDate } = useI18n();
+
   if (loading) return <TableSkeleton rows={5} columns={6} />;
-  if (error) return <ErrorState title="No pudimos cargar los cierres" description={error} onRetry={onRetry} compact />;
+  if (error)
+    return (
+      <ErrorState
+        title={t("admin.salesTable.errorTitle")}
+        description={error}
+        onRetry={onRetry}
+        compact
+      />
+    );
 
   if (!sales.length) {
     if (emptyState) return emptyState;
     return (
       <EmptyState
         icon={Banknote}
-        title="Aún no hay cierres registrados"
-        description="Cuando registres una venta o un arriendo, aparecerá aquí con su valor y su fecha."
+        title={t("admin.salesTable.emptyTitle")}
+        description={t("admin.salesTable.emptyDescription")}
         compact
       />
     );
@@ -36,13 +45,15 @@ export default function SalesTable({
       <table className="data-table">
         <thead>
           <tr>
-            <th>Propiedad</th>
-            <th>Operación</th>
-            {!compact && <th>Comprador</th>}
-            <th>Valor</th>
-            <th>Fecha</th>
-            <th>Estado</th>
-            {!compact && <th className="text-end">Acciones</th>}
+            <th>{t("admin.salesTable.property")}</th>
+            <th>{t("admin.salesTable.operation")}</th>
+            {!compact && <th>{t("admin.salesTable.buyer")}</th>}
+            <th>{t("admin.salesTable.value")}</th>
+            <th>{t("admin.salesTable.date")}</th>
+            <th>{t("admin.salesTable.status")}</th>
+            {!compact && (
+              <th className="text-end">{t("admin.salesTable.actions")}</th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -51,8 +62,10 @@ export default function SalesTable({
               <td>
                 <div className="table-property">
                   <div>
-                    <strong>{sale.propertyTitle}</strong>
-                    <span>{sale.sellerName || "Vendedor sin nombre"}</span>
+                    <strong>{sale.propertyTitle || "—"}</strong>
+                    <span>
+                      {sale.sellerName || t("admin.salesTable.sellerMissing")}
+                    </span>
                   </div>
                 </div>
               </td>
@@ -72,7 +85,7 @@ export default function SalesTable({
                         disabled={busyId === sale.id}
                       >
                         <Ban size={14} aria-hidden="true" />
-                        Anular
+                        {t("admin.salesTable.annul")}
                       </button>
                     )}
                   </div>

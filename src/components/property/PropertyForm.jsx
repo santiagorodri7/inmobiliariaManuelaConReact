@@ -10,6 +10,7 @@ import {
 import { hasErrors, validateProperty } from "../../utils/validation.js";
 import { normalizeRole } from "../../utils/roles.js";
 import { allowBase64Fallback } from "../../services/firebase.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 const emptyValues = {
   title: "",
@@ -61,6 +62,7 @@ export default function PropertyForm({
   saving = false,
   uploadProgress = 0,
 }) {
+  const { t, operationLabel, propertyTypeLabel, amenityLabel, statusLabel } = useI18n();
   const toast = useToast();
   const [values, setValues] = useState(() => valuesFromProperty(property));
   const [errors, setErrors] = useState({});
@@ -130,7 +132,7 @@ export default function PropertyForm({
     const nextErrors = validateProperty(values);
     setErrors(nextErrors);
     if (hasErrors(nextErrors)) {
-      toast.error("Revisa los campos marcados antes de guardar.");
+      toast.error(t("property.form.validationToast"));
       window.requestAnimationFrame(() => {
         document
           .querySelector('.property-form [aria-invalid="true"]')
@@ -154,32 +156,29 @@ export default function PropertyForm({
       <section className="surface form-section">
         <div className="form-section__head">
           <div>
-            <p className="eyebrow">Lo esencial</p>
-            <h3>Cuéntanos qué estás publicando</h3>
+            <p className="eyebrow">{t("property.form.eyebrow")}</p>
+            <h3>{t("property.form.title")}</h3>
           </div>
           <span className="form-section__step">01</span>
         </div>
 
-        <div className="segmented" role="group" aria-label="Operación">
-          {[
-            { value: "venta", label: "Venta" },
-            { value: "renta", label: "Renta" },
-          ].map((operation) => (
+        <div className="segmented" role="group" aria-label={t("property.form.operationAria")}>
+          {["venta", "renta"].map((operation) => (
             <button
-              key={operation.value}
+              key={operation}
               type="button"
-              className={`segmented__item${values.operation === operation.value ? " is-active" : ""}`}
-              onClick={() => setValues((current) => ({ ...current, operation: operation.value }))}
-              aria-pressed={values.operation === operation.value}
+              className={`segmented__item${values.operation === operation ? " is-active" : ""}`}
+              onClick={() => setValues((current) => ({ ...current, operation }))}
+              aria-pressed={values.operation === operation}
             >
-              {operation.label}
+              {operationLabel(operation)}
             </button>
           ))}
         </div>
 
         <div className="form-grid form-grid--two">
           <Field
-            label="Título de la publicación"
+            label={t("property.form.titleLabel")}
             htmlFor="property-title"
             required
             error={errors.title}
@@ -190,12 +189,12 @@ export default function PropertyForm({
               className="form-control"
               value={values.title}
               onChange={update("title")}
-              placeholder="Ej. Casa con jardín y vista a la ciudad"
+              placeholder={t("property.form.titlePlaceholder")}
               aria-invalid={Boolean(errors.title)}
             />
           </Field>
 
-          <Field label="Tipo de inmueble" htmlFor="property-type" required error={errors.type}>
+          <Field label={t("property.form.type")} htmlFor="property-type" required error={errors.type}>
             <select
               id="property-type"
               className="form-select"
@@ -205,14 +204,14 @@ export default function PropertyForm({
             >
               {typeOptions.map((type) => (
                 <option key={type.value} value={type.value}>
-                  {type.label}
+                  {propertyTypeLabel(type.value)}
                 </option>
               ))}
             </select>
           </Field>
 
           <Field
-            label={values.operation === "renta" ? "Canon mensual (COP)" : "Precio de venta (COP)"}
+            label={values.operation === "renta" ? t("property.form.priceRent") : t("property.form.priceSale")}
             htmlFor="property-price"
             required
             error={errors.price}
@@ -227,17 +226,17 @@ export default function PropertyForm({
                 className="form-control"
                 value={values.price}
                 onChange={update("price")}
-                placeholder="Ej. 650000000"
+                placeholder={t("property.form.pricePlaceholder")}
                 aria-invalid={Boolean(errors.price)}
               />
             </div>
           </Field>
 
           <Field
-            label="Ubicación"
+            label={t("property.form.location")}
             htmlFor="property-location"
             required
-            hint="Ciudad, barrio o sector. Evita direcciones exactas si prefieres privacidad."
+            hint={t("property.form.locationHint")}
             error={errors.location}
             className="form-field--full"
           >
@@ -246,7 +245,7 @@ export default function PropertyForm({
               className="form-control"
               value={values.location}
               onChange={update("location")}
-              placeholder="Ej. Medellín, El Poblado"
+              placeholder={t("property.form.locationPlaceholder")}
               aria-invalid={Boolean(errors.location)}
             />
           </Field>
@@ -256,14 +255,14 @@ export default function PropertyForm({
       <section className="surface form-section">
         <div className="form-section__head">
           <div>
-            <p className="eyebrow">Características</p>
-            <h3>Los detalles que hacen la diferencia</h3>
+            <p className="eyebrow">{t("property.form.featuresEyebrow")}</p>
+            <h3>{t("property.form.featuresTitle")}</h3>
           </div>
           <span className="form-section__step">02</span>
         </div>
 
         <div className="form-grid form-grid--five">
-          <Field label="Habitaciones" htmlFor="property-bedrooms" error={errors.bedrooms}>
+          <Field label={t("property.form.bedrooms")} htmlFor="property-bedrooms" error={errors.bedrooms}>
             <input
               id="property-bedrooms"
               type="number"
@@ -276,7 +275,7 @@ export default function PropertyForm({
               aria-invalid={Boolean(errors.bedrooms)}
             />
           </Field>
-          <Field label="Baños" htmlFor="property-bathrooms" error={errors.bathrooms}>
+          <Field label={t("property.form.bathrooms")} htmlFor="property-bathrooms" error={errors.bathrooms}>
             <input
               id="property-bathrooms"
               type="number"
@@ -289,7 +288,7 @@ export default function PropertyForm({
               aria-invalid={Boolean(errors.bathrooms)}
             />
           </Field>
-          <Field label="Parqueaderos" htmlFor="property-parking">
+          <Field label={t("property.form.parking")} htmlFor="property-parking">
             <input
               id="property-parking"
               type="number"
@@ -301,7 +300,7 @@ export default function PropertyForm({
               placeholder="0"
             />
           </Field>
-          <Field label="Área (m²)" htmlFor="property-area" error={errors.area}>
+          <Field label={t("property.form.area")} htmlFor="property-area" error={errors.area}>
             <input
               id="property-area"
               type="number"
@@ -309,11 +308,11 @@ export default function PropertyForm({
               className="form-control"
               value={values.area}
               onChange={update("area")}
-              placeholder="Ej. 120"
+              placeholder={t("property.form.areaPlaceholder")}
               aria-invalid={Boolean(errors.area)}
             />
           </Field>
-          <Field label="Estrato" htmlFor="property-stratum" error={errors.stratum}>
+          <Field label={t("property.form.stratum")} htmlFor="property-stratum" error={errors.stratum}>
             <select
               id="property-stratum"
               className="form-select"
@@ -321,7 +320,7 @@ export default function PropertyForm({
               onChange={update("stratum")}
               aria-invalid={Boolean(errors.stratum)}
             >
-              <option value="">No aplica</option>
+              <option value="">{t("property.form.stratumNone")}</option>
               {[1, 2, 3, 4, 5, 6].map((stratum) => (
                 <option key={stratum} value={stratum}>
                   {stratum}
@@ -332,11 +331,11 @@ export default function PropertyForm({
         </div>
 
         <Field
-          label="Descripción"
+          label={t("property.form.description")}
           htmlFor="property-description"
           required
           error={errors.description}
-          hint={`${values.description.length} caracteres · describe el estado, los espacios y lo que hace especial al inmueble.`}
+          hint={t("property.form.descriptionHint", { count: values.description.length })}
         >
           <textarea
             id="property-description"
@@ -344,13 +343,13 @@ export default function PropertyForm({
             rows={5}
             value={values.description}
             onChange={update("description")}
-            placeholder="Ej. Casa remodelada con iluminación natural, cocina integral, patio interior y parqueadero cubierto."
+            placeholder={t("property.form.descriptionPlaceholder")}
             aria-invalid={Boolean(errors.description)}
           />
         </Field>
 
         <fieldset className="amenities-field">
-          <legend>Amenidades y espacios comunes</legend>
+          <legend>{t("property.form.amenities")}</legend>
           <div className="amenities-grid">
             {allAmenities.map((amenity) => (
               <label key={amenity} className="check-chip">
@@ -361,7 +360,7 @@ export default function PropertyForm({
                 />
                 <span>
                   <Check size={13} aria-hidden="true" />
-                  {amenity}
+                  {amenityLabel(amenity)}
                 </span>
               </label>
             ))}
@@ -371,8 +370,8 @@ export default function PropertyForm({
               className="form-control"
               value={customAmenity}
               onChange={(event) => setCustomAmenity(event.target.value)}
-              placeholder="Agregar otra amenidad"
-              aria-label="Agregar otra amenidad"
+              placeholder={t("property.form.amenityPlaceholder")}
+              aria-label={t("property.form.amenityAria")}
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
                   event.preventDefault();
@@ -382,7 +381,7 @@ export default function PropertyForm({
             />
             <button type="button" className="btn btn-outline-secondary" onClick={addCustomAmenity}>
               <Plus size={16} aria-hidden="true" />
-              Agregar
+              {t("property.form.add")}
             </button>
           </div>
         </fieldset>
@@ -391,8 +390,8 @@ export default function PropertyForm({
       <section className="surface form-section">
         <div className="form-section__head">
           <div>
-            <p className="eyebrow">Fotografías</p>
-            <h3>Muéstrala en su mejor luz</h3>
+            <p className="eyebrow">{t("property.form.photosEyebrow")}</p>
+            <h3>{t("property.form.photosTitle")}</h3>
           </div>
           <span className="form-section__step">03</span>
         </div>
@@ -414,19 +413,19 @@ export default function PropertyForm({
         <section className="surface form-section">
           <div className="form-section__head">
             <div>
-              <p className="eyebrow">Visibilidad</p>
-              <h3>Estado de la publicación</h3>
+              <p className="eyebrow">{t("property.form.visibilityEyebrow")}</p>
+              <h3>{t("property.form.visibilityTitle")}</h3>
             </div>
           </div>
-          <Field label="Estado" htmlFor="property-status">
+          <Field label={t("property.form.status")} htmlFor="property-status">
             <select
               id="property-status"
               className="form-select"
               value={values.status}
               onChange={update("status")}
             >
-              <option value="disponible">Publicada</option>
-              <option value="inactiva">Oculta</option>
+              <option value="disponible">{statusLabel("disponible")}</option>
+              <option value="inactiva">{statusLabel("inactiva")}</option>
             </select>
           </Field>
         </section>
@@ -435,8 +434,7 @@ export default function PropertyForm({
       {!property && (
         <p className="inline-note">
           <Info size={16} aria-hidden="true" />
-          Al guardar, la propiedad aparecerá en el catálogo público. Podrás
-          ocultarla o editarla desde tu panel.
+          {t("property.form.publishNote")}
         </p>
       )}
 
@@ -448,16 +446,20 @@ export default function PropertyForm({
             onClick={onCancelUpload}
           >
             <X size={17} aria-hidden="true" />
-            Cancelar subida
+            {t("property.form.cancelUpload")}
           </button>
         )}
         <button type="button" className="btn btn-outline-secondary" onClick={onCancel} disabled={saving}>
           <X size={17} aria-hidden="true" />
-          Cancelar
+          {t("common.cancel")}
         </button>
         <button type="submit" className="btn btn-primary" disabled={saving}>
           <Save size={17} aria-hidden="true" />
-          {saving ? "Guardando…" : property ? "Guardar cambios" : "Publicar propiedad"}
+          {saving
+            ? t("property.form.publishing")
+            : property
+              ? t("property.form.submitEdit")
+              : t("property.form.submitNew")}
         </button>
       </div>
     </form>

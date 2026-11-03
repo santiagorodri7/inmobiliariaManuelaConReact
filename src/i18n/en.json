@@ -7,5 +7,1491 @@
     "spanish": "Español",
     "english": "English",
     "invalid": "Select Español or English."
+  },
+  "common": {
+    "loading": "Loading…",
+    "loadingSpace": "Loading your space…",
+    "saving": "Saving…",
+    "sending": "Sending…",
+    "cancel": "Cancel",
+    "close": "Close",
+    "confirm": "Confirm",
+    "confirmation": "Confirmation",
+    "saveChanges": "Save changes",
+    "retry": "Try again",
+    "search": "Search",
+    "clear": "Clear",
+    "clearFilters": "Clear filters",
+    "viewAll": "View all",
+    "viewAllM": "View all",
+    "backHome": "Back to home",
+    "actions": "Actions",
+    "optional": "Optional",
+    "user": "User",
+    "notAvailable": "—",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "pagination": "Pagination",
+    "pageOf": "Page {{page}} of {{total}}",
+    "rangeOf": "{{from}}–{{to}} of {{total}}",
+    "closeNotification": "Close notification",
+    "errorTitle": "We couldn't load this information",
+    "errorDescription": "Check your connection and try again.",
+    "loadingProperties": "Loading properties",
+    "loadingData": "Loading data",
+    "genericError": "Something went wrong. Please try again."
+  },
+  "site": {
+    "role": "Real estate advisor",
+    "tagline": "A place that feels like yours.",
+    "coverage": "Medellín and the Aburrá Valley",
+    "hours": "Monday to Saturday · 8:00 a.m. – 6:00 p.m.",
+    "location": "Medellín, Colombia"
+  },
+  "nav": {
+    "home": "Home",
+    "properties": "Properties",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Sign in",
+    "register": "Create account",
+    "publish": "List a property",
+    "myPanel": "My dashboard",
+    "myProfile": "My profile",
+    "logout": "Sign out",
+    "loginAccount": "Sign in to my account",
+    "whatsapp": "Message on WhatsApp",
+    "mainNav": "Main navigation",
+    "mobileNav": "Mobile navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "explore": "Explore",
+    "account": "Account",
+    "talk": "Let's talk",
+    "buyerPanel": "Buyer dashboard",
+    "viewSite": "View public site",
+    "panel": "Dashboard",
+    "breadcrumb": "Breadcrumb",
+    "menuOf": "{{role}} menu",
+    "panelOf": "{{role}} dashboard",
+    "panelEyebrow": "{{role}} · Dashboard",
+    "dashboard": {
+      "summary": "Overview",
+      "recommendations": "Recommendations",
+      "preferences": "My preferences",
+      "publish": "List a property",
+      "properties": "My properties",
+      "adminProperties": "Properties",
+      "users": "Users",
+      "sales": "Closings",
+      "reports": "Sales report",
+      "account": "My profile",
+      "security": "Security"
+    }
+  },
+  "home": {
+    "pageTitle": "Properties for sale and rent in Medellín",
+    "pageDescription": "Find properties in Medellín and the Aburrá Valley with close, transparent real estate guidance.",
+    "hero": {
+      "eyebrow": "Manuela Bermúdez · Realtor",
+      "titleLine1": "A place that",
+      "titleLine2": "feels like",
+      "titleEm": "yours.",
+      "lead": "Properties for sale and rent in Medellín and the Aburrá Valley, with close guidance so you can decide calmly and clearly.",
+      "explore": "Explore properties",
+      "talk": "Talk to Manuela",
+      "saleRent": "Sale and rent",
+      "personalSupport": "Personal guidance",
+      "noteTitle": "Curated selection",
+      "noteText": "Every property is reviewed before it is published."
+    },
+    "search": {
+      "eyebrow": "Find your next place",
+      "title": "What are you looking for?",
+      "loading": "Loading listings…",
+      "published": "{{count}} published properties"
+    },
+    "inventory": {
+      "eyebrow": "Available listings",
+      "title": "Properties to start imagining",
+      "description": "A selection of published properties. If you like something, we can arrange a visit and review every detail with you.",
+      "results": "{{count}} results",
+      "activeFilters": "Active filters",
+      "emptyFilteredTitle": "We found no properties with those filters",
+      "emptyFilteredDescription": "Try another area, a higher budget, or fewer requirements. We can also search with you.",
+      "emptyTitle": "No properties published yet",
+      "emptyDescription": "We are preparing the listings. Tell us what you are looking for and we will let you know when something fits.",
+      "tellWhatISeek": "Tell us what I'm looking for",
+      "seeAll": "View all {{count}} properties"
+    },
+    "help": {
+      "eyebrow": "How I can help",
+      "title": "Less noise, clearer decisions",
+      "description": "It's not about showing you every property on the market, but finding the ones that make sense for you.",
+      "link": "Learn about the service"
+    },
+    "services": {
+      "find": {
+        "title": "Find your next place",
+        "text": "We filter options based on how you live, your budget, and the area you have in mind."
+      },
+      "sell": {
+        "title": "Sell with clarity",
+        "text": "We organize the listing, visits, and negotiation so the process is predictable."
+      },
+      "rent": {
+        "title": "Rent without noise",
+        "text": "We guide you through the selection, review of terms, and handover of the property."
+      }
+    },
+    "about": {
+      "eyebrow": "A more human approach",
+      "title": "Moving through the real estate market doesn't have to be confusing.",
+      "description": "My job is to translate the process into simple decisions: what to look at, what to ask, and when to move forward. With clear information and no pressure, so you can choose a place that truly feels like yours.",
+      "check1": "Direct communication throughout the process.",
+      "check2": "Support with visits, negotiation, and closing.",
+      "check3": "Focus on your priorities, not on rushing.",
+      "link": "Learn more about Manuela",
+      "imageAlt": "Terrace with a pool and a view of the city of Medellín",
+      "badgeCity": "Medellín",
+      "badgeRegion": "Aburrá Valley"
+    },
+    "process": {
+      "eyebrow": "The process",
+      "title": "Three steps, one ongoing conversation",
+      "note": "Every transaction is different. These are the moments we always take care of with you.",
+      "steps": {
+        "talk": {
+          "title": "We talk",
+          "text": "We listen to what you need, what matters to you about the place, and what your real budget is."
+        },
+        "select": {
+          "title": "We select",
+          "text": "We filter properties that fit and arrange visits without wasting your time."
+        },
+        "support": {
+          "title": "We support you",
+          "text": "We review terms, negotiation, and closing with you, with constant communication."
+        }
+      }
+    },
+    "testimonials": {
+      "eyebrow": "Real experiences",
+      "title": "What people who have been here say",
+      "link": "View all testimonials"
+    },
+    "cta": {
+      "eyebrow": "Let's talk",
+      "title": "Tell me what you are looking for.",
+      "text": "Whether you are just starting to look or ready for the next step, we can sort through the options together.",
+      "schedule": "Schedule a conversation",
+      "whatsapp": "Message on WhatsApp"
+    },
+    "whatsappMessage": "Hi {{name}}, I would like real estate guidance."
+  },
+  "about": {
+    "pageTitle": "About",
+    "pageDescription": "Get to know the approach of Manuela Bermúdez Realtor: close, transparent, and thoughtful real estate guidance in Medellín.",
+    "header": {
+      "eyebrow": "About Manuela Bermúdez Realtor",
+      "title": "A more human way to move through the real estate market.",
+      "description": "Close guidance to buy, sell, or rent in Medellín and the Aburrá Valley. No pressure, with clear information and decisions that feel like your own.",
+      "breadcrumb": "About"
+    },
+    "intro": {
+      "eyebrow": "The approach",
+      "title": "The right place is more than just an address.",
+      "p1": "It's the morning light, the commute to work, the space to welcome the people you love, and the peace of mind of knowing the decision is well supported. That's why, before showing you properties, we talk about what you really need.",
+      "p2": "Manuela Bermúdez Realtor was born to guide that process with closeness and judgment: listening, filtering, visiting, reviewing, and supporting the closing. Technology helps organize information; decisions remain human.",
+      "cta": "Let's talk",
+      "imageAlt": "Workspace with a view of the city of Medellín",
+      "quote": "“Good guidance doesn't tell you what to buy; it helps you understand what you need.”",
+      "author": "Manuela Bermúdez"
+    },
+    "values": {
+      "eyebrow": "What guides the work",
+      "title": "Four principles, one conversation",
+      "transparency": {
+        "title": "Transparency",
+        "text": "Clear information about prices, terms, and documentation. No last-minute surprises."
+      },
+      "criteria": {
+        "title": "Judgment",
+        "text": "Every recommendation starts from your priorities and the real market context, not from rushing."
+      },
+      "closeness": {
+        "title": "Closeness",
+        "text": "A direct conversation, with availability to answer questions before and after the transaction."
+      },
+      "care": {
+        "title": "Care",
+        "text": "We review the details that often go unnoticed so you can decide with peace of mind."
+      }
+    },
+    "coverage": {
+      "eyebrow": "Where we work",
+      "title": "Medellín and the Aburrá Valley",
+      "text": "We support transactions in Medellín, Envigado, Itagüí, Sabaneta, La Estrella, Bello, Copacabana, and nearby municipalities. If your property or your search is outside this area, write to us: we evaluate every case."
+    },
+    "cta": {
+      "eyebrow": "Next step",
+      "title": "Let's talk about what you need.",
+      "text": "A call or a message is enough to start sorting through the options.",
+      "write": "Write to {{name}}",
+      "whatsapp": "WhatsApp"
+    },
+    "whatsappMessage": "Hi {{name}}, I would like to learn more about your guidance."
+  },
+  "services": {
+    "pageTitle": "Real estate services",
+    "pageDescription": "Buying, selling, renting, and real estate investment in Medellín with close and transparent guidance.",
+    "header": {
+      "eyebrow": "Services",
+      "title": "Guidance for every stage of the transaction.",
+      "description": "From the first conversation to the handover, we organize the process so you can decide with clear information and no pressure.",
+      "breadcrumb": "Services"
+    },
+    "intro": {
+      "eyebrow": "What we do",
+      "title": "One service, different needs",
+      "description": "Not every process is the same. We choose the guidance that matches your moment and your type of transaction."
+    },
+    "items": {
+      "buy": {
+        "title": "Buying",
+        "text": "We define criteria, filter options, and visit together. We review price, condition, documents, and terms before you make a decision."
+      },
+      "sell": {
+        "title": "Selling",
+        "text": "We prepare the listing, organize the information, and support visits and negotiation to protect the value of your property."
+      },
+      "rent": {
+        "title": "Renting",
+        "text": "We support the search or the handover of the property, reviewing terms, timelines, and responsibilities of each party."
+      },
+      "invest": {
+        "title": "Investment",
+        "text": "We compare location, price, rental potential, and neighborhood context so you can evaluate the investment with more elements."
+      },
+      "documents": {
+        "title": "Document review",
+        "text": "We organize the basic documentation and tell you when it is advisable to rely on a lawyer or a technical expert."
+      },
+      "closing": {
+        "title": "Closing support",
+        "text": "We follow the process through to handover: commitments, dates, payments, and final details, with constant communication."
+      }
+    },
+    "process": {
+      "eyebrow": "The process",
+      "title": "What the guidance looks like",
+      "link": "Start a conversation",
+      "step1": {
+        "title": "First conversation",
+        "text": "We listen to your case, your timeline, and your budget."
+      },
+      "step2": {
+        "title": "Selection",
+        "text": "We filter properties or prepare your property to go on the market."
+      },
+      "step3": {
+        "title": "Visits and review",
+        "text": "We arrange visits and review the relevant details."
+      },
+      "step4": {
+        "title": "Closing and handover",
+        "text": "We support the negotiation, documents, and handover."
+      }
+    },
+    "testimonials": {
+      "eyebrow": "Testimonials",
+      "title": "Experiences from people who already trusted us",
+      "description": "Every process leaves a story. These are some of the ones our clients have wanted to share."
+    },
+    "cta": {
+      "eyebrow": "Let's talk",
+      "title": "Shall we start with your case?",
+      "text": "Tell us whether you want to buy, sell, or rent. We will reply with concrete next steps.",
+      "schedule": "Schedule a conversation",
+      "email": "Write by email"
+    },
+    "note": "Real estate guidance does not replace the legal or technical review of an independent professional when the case requires it. If you need that support, we will point it out clearly."
+  },
+  "contact": {
+    "pageTitle": "Contact",
+    "pageDescription": "Talk to Manuela Bermúdez Realtor. Real estate guidance in Medellín by email, phone, or WhatsApp.",
+    "header": {
+      "eyebrow": "Contact",
+      "title": "Let's talk about the place you have in mind.",
+      "description": "Tell us what you are looking for, what you want to sell, or what you need to resolve. We will reply clearly and with no obligation.",
+      "breadcrumb": "Contact"
+    },
+    "info": {
+      "eyebrow": "Direct channels",
+      "title": "We are here to listen",
+      "intro": "If you prefer a quick conversation, message us on WhatsApp. If your case has more detail, the form helps us prepare a better answer.",
+      "email": "Email",
+      "phone": "Phone",
+      "whatsapp": "WhatsApp",
+      "writeNow": "Write now",
+      "area": "Service area",
+      "hours": "Hours",
+      "imageAlt": "View of Medellín at sunset",
+      "imageCaption": "Medellín and the Aburrá Valley"
+    },
+    "devNote": "Local preview: the final email, phone, and address must be confirmed before publishing.",
+    "form": {
+      "eyebrow": "Write to us",
+      "title": "Tell us about your case",
+      "text": "Complete the form and we will reply to the email you provide."
+    },
+    "whatsappMessage": "Hi {{name}}, I have a real estate question."
+  },
+  "notFound": {
+    "pageTitle": "Page not found",
+    "pageDescription": "The page you are looking for does not exist or has moved.",
+    "eyebrow": "Page not found",
+    "title": "This place doesn't exist yet.",
+    "text": "The link may have changed or the page may no longer be available. From here you can go back home, browse the properties, or write to us so we can help you find what you are looking for.",
+    "home": "Back to home",
+    "properties": "View properties",
+    "services": "Services",
+    "contact": "Contact",
+    "login": "Sign in"
+  },
+  "property": {
+    "detail": {
+      "pageTitle": "Property details",
+      "pageDescription": "Learn about this property in Medellín and schedule a visit.",
+      "loadError": "We couldn't load this property. Please try again.",
+      "loading": "Loading property…",
+      "errorTitle": "We couldn't open this property",
+      "backCatalog": "Back to listings",
+      "unavailableEyebrow": "Property unavailable",
+      "unavailableTitle": "We couldn't find this listing",
+      "unavailableText": "It may have been removed or the link may no longer be valid. Explore the current listings or tell us what you are looking for.",
+      "viewProperties": "View properties",
+      "breadcrumbHome": "Home",
+      "breadcrumbProperties": "Properties",
+      "shareAria": "Share property",
+      "shareCopied": "Link copied to clipboard.",
+      "shareManual": "Copy the link from the browser bar.",
+      "locationPending": "Location to be confirmed",
+      "monthlyRent": "Monthly rent",
+      "salePrice": "Sale price",
+      "perMonth": "COP / month",
+      "requestVisit": "Request a visit",
+      "askWhatsapp": "Ask on WhatsApp",
+      "whatsappMessage": "Hi {{name}}, I'm interested in the property \"{{title}}\" ({{location}}). Can we talk?",
+      "directSupport": "Direct guidance",
+      "aboutEyebrow": "About this place",
+      "aboutTitle": "What makes this property special",
+      "amenitiesTitle": "Amenities and spaces",
+      "addressNote": "The exact address is shared during the visit to protect the privacy of the people living in the property.",
+      "viewArea": "View area",
+      "reviewNote": "Would you like to review this property in more detail? We can arrange a visit and review the terms, documents, and timelines of the process together.",
+      "consultEyebrow": "Let's talk about this property",
+      "consultTitle": "Schedule a visit",
+      "consultText": "Leave us your details and we will contact you to arrange a visit or answer your questions.",
+      "talkToManu": {
+        "eyebrow": "Direct contact",
+        "title": "Talk to Manu",
+        "text": "Message her on WhatsApp and tell her which property you're interested in.",
+        "availability": "Available 24/7 on WhatsApp",
+        "cta": "Message on WhatsApp",
+        "aria": "Message Manu on WhatsApp about {{title}}",
+        "message": "Hi Manu, I'm interested in the property \"{{title}}\". Here is the link: {{url}}"
+      },
+      "relatedEyebrow": "You may also like",
+      "relatedTitle": "Other properties to explore",
+      "viewCatalog": "View the full catalog",
+      "inquiryRent": "I want to rent a property",
+      "inquiryBuy": "I want to buy a property",
+      "specs": {
+        "bedrooms": "Bedrooms",
+        "bathrooms": "Bathrooms",
+        "parking": "Parking spaces",
+        "area": "Area",
+        "stratum": "Stratum"
+      }
+    },
+    "card": {
+      "imageUnavailable": "Image unavailable",
+      "bedrooms": "{{count}} bed.",
+      "bathrooms": "{{count}} bath.",
+      "parking": "{{count}} parking",
+      "perMonth": " / month",
+      "currency": " COP",
+      "locationPending": "Location to be confirmed",
+      "features": "Features",
+      "view": "View property",
+      "ariaView": "View {{title}}"
+    },
+    "grid": {
+      "errorTitle": "We couldn't load the properties",
+      "emptyTitle": "No properties published yet",
+      "emptyDescription": "Come back soon or tell us what you are looking for so we can help you find it."
+    },
+    "filters": {
+      "all": "All",
+      "sale": "Sale",
+      "rent": "Rent",
+      "operation": "Transaction",
+      "location": "Location",
+      "locationPlaceholder": "Area, city, or keyword",
+      "locationAria": "Search by location or keyword",
+      "type": "Type",
+      "typeAll": "All",
+      "typeAria": "Property type",
+      "bedrooms": "Bedrooms",
+      "bedroomsAria": "Minimum bedrooms",
+      "budget": "Max. budget",
+      "budgetPlaceholder": "No limit",
+      "budgetAria": "Maximum budget in pesos",
+      "submit": "Search",
+      "clearAria": "Clear filters",
+      "anyBedrooms": "Any",
+      "bedroomsPlus": "{{count}} or more",
+      "noLimit": "No limit"
+    },
+    "gallery": {
+      "noPhotos": "This property doesn't have photos yet",
+      "aria": "Image gallery",
+      "viewImage": "View image {{index}} of {{total}}"
+    },
+    "ownerTable": {
+      "errorTitle": "We couldn't load your properties",
+      "emptyTitle": "You haven't published any properties yet",
+      "emptyDescription": "Publish your first property and it will appear in the public catalog. You can edit or hide it whenever you want.",
+      "property": "Property",
+      "operation": "Transaction",
+      "price": "Price",
+      "status": "Status",
+      "published": "Published",
+      "actions": "Actions",
+      "noLocation": "No location",
+      "view": "View listing",
+      "viewAria": "View {{title}}",
+      "edit": "Edit property",
+      "editAria": "Edit {{title}}",
+      "hide": "Hide from catalog",
+      "hideAria": "Hide {{title}}",
+      "publish": "Publish again",
+      "publishAria": "Publish {{title}}",
+      "closed": "Property with a recorded closing"
+    },
+    "uploader": {
+      "remove": "Remove {{name}}",
+      "sizeError": "{{name}}: exceeds the 8 MB limit.",
+      "maxImages": "You can upload up to {{max}} images per property.",
+      "drag": "Drag the photos here or select them",
+      "hint": "JPG, PNG, or WebP · maximum 8 MB per image · up to 8 images.",
+      "choose": "Choose images",
+      "count": "{{total}} of {{max}} images",
+      "coverNote": "The first image will be the cover.",
+      "fallback": "Contingency mode active (development only): if Storage is unavailable, all compressed images will be saved inside Firestore (maximum 180 KB per image and 600 KB total). If they don't fit, nothing will be published and the error will be shown.",
+      "uploading": "Uploading images… {{progress}}%",
+      "removeExisting": "Remove existing image",
+      "cover": "Cover"
+    },
+    "form": {
+      "eyebrow": "The essentials",
+      "title": "Tell us what you are listing",
+      "operationAria": "Transaction",
+      "sale": "Sale",
+      "rent": "Rent",
+      "titleLabel": "Listing title",
+      "titlePlaceholder": "E.g. House with a garden and city view",
+      "type": "Property type",
+      "priceRent": "Monthly rent (COP)",
+      "priceSale": "Sale price (COP)",
+      "pricePlaceholder": "E.g. 650000000",
+      "location": "Location",
+      "locationHint": "City, neighborhood, or area. Avoid exact addresses if you prefer privacy.",
+      "locationPlaceholder": "E.g. Medellín, El Poblado",
+      "featuresEyebrow": "Features",
+      "featuresTitle": "The details that make a difference",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "parking": "Parking spaces",
+      "area": "Area (m²)",
+      "areaPlaceholder": "E.g. 120",
+      "stratum": "Stratum",
+      "stratumNone": "Not applicable",
+      "description": "Description",
+      "descriptionHint": "{{count}} characters · describe the condition, the spaces, and what makes the property special.",
+      "descriptionPlaceholder": "E.g. Renovated house with natural light, integrated kitchen, interior patio, and covered parking.",
+      "amenities": "Amenities and common spaces",
+      "amenityPlaceholder": "Add another amenity",
+      "amenityAria": "Add another amenity",
+      "add": "Add",
+      "photosEyebrow": "Photos",
+      "photosTitle": "Show it in its best light",
+      "visibilityEyebrow": "Visibility",
+      "visibilityTitle": "Listing status",
+      "status": "Status",
+      "statusPublished": "Published",
+      "statusHidden": "Hidden",
+      "publishNote": "When you save, the property will appear in the public catalog. You can hide or edit it from your dashboard.",
+      "cancelUpload": "Cancel upload",
+      "publishing": "Publishing…",
+      "submitEdit": "Save changes",
+      "submitNew": "Publish property",
+      "validationToast": "Review the highlighted fields before saving."
+    }
+  },
+  "testimonials": {
+    "grid": {
+      "errorTitle": "We couldn't load the testimonials",
+      "emptyTitle": "No testimonials published yet",
+      "emptyDescription": "Our clients' experiences will appear here."
+    },
+    "card": {
+      "client": "Client",
+      "ratingAria": "Client rating"
+    },
+    "stars": {
+      "label": "Rating",
+      "value": "{{label}}: {{value}} of 5",
+      "star": "{{star}} of 5 stars"
+    },
+    "form": {
+      "guestTitle": "Have you worked with us before?",
+      "guestText": "Sign in to share your experience. Testimonials are published with your name and linked to your account.",
+      "guestLogin": "Sign in",
+      "eyebrow": "Your experience",
+      "title": "Share what you experienced",
+      "intro": "Your opinion helps other people take the next step with confidence.",
+      "rating": "Your rating",
+      "name": "Name",
+      "profession": "Profession or occupation",
+      "professionPlaceholder": "E.g. Designer",
+      "text": "Your experience",
+      "textHint": "{{count}} characters · minimum 20",
+      "textPlaceholder": "Tell us how the buying, selling, or renting process was.",
+      "submit": "Publish testimonial",
+      "publishing": "Publishing…",
+      "validationToast": "Review the testimonial fields.",
+      "successToast": "Thank you for sharing your experience.",
+      "errorFallback": "The testimonial could not be published."
+    }
+  },
+  "auth": {
+    "layout": {
+      "eyebrow": "Manuela Bermúdez · Realtor",
+      "title": "A place that feels like yours.",
+      "description": "Close real estate guidance to buy, sell, or rent in Medellín and the Aburrá Valley.",
+      "point1": "Direct guidance at every stage.",
+      "point2": "Clear information, no fine print.",
+      "point3": "Properties selected with judgment.",
+      "secure": "Private and secure space",
+      "back": "Back to the site",
+      "rights": "© {{year}} {{name}}. All rights reserved."
+    },
+    "login": {
+      "pageTitle": "Sign in",
+      "pageDescription": "Access your Manuela Bermúdez Realtor account.",
+      "eyebrow": "Welcome back",
+      "title": "Your next place starts with a conversation.",
+      "description": "Sign in to manage your properties, review your preferences, or continue the process we started together.",
+      "point1": "Your personal dashboard based on your role.",
+      "point2": "Preferences and listings in one place.",
+      "point3": "Direct guidance, also online.",
+      "headEyebrow": "My account",
+      "headTitle": "Sign in",
+      "headText": "Sign in with the email and password you registered. If this is your first time, you can create an account in a minute.",
+      "errorTitle": "We couldn't sign you in.",
+      "errorFallback": "We couldn't sign you in.",
+      "email": "Email address",
+      "emailPlaceholder": "you@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "Your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "secure": "Secure connection with Firebase",
+      "forgot": "Forgot your password?",
+      "submit": "Sign in to my account",
+      "submitting": "Signing in…",
+      "divider": "Don't have an account yet?",
+      "create": "Create an account",
+      "note": "Admin accounts are assigned manually. If your account isn't working, write to us and we will review it with you."
+    },
+    "register": {
+      "pageTitle": "Create account",
+      "pageDescription": "Create your Manuela Bermúdez Realtor account.",
+      "eyebrow": "Create your account",
+      "title": "Start searching, listing, and deciding with clarity.",
+      "description": "An account lets you save your preferences, list your property, and keep the whole conversation in one place.",
+      "point1": "Buyers: recommendations based on their interests.",
+      "point2": "Sellers: listings and inventory tracking.",
+      "point3": "Protected data and access with your own email.",
+      "headEyebrow": "Registration",
+      "headTitle": "Create your account",
+      "headText": "Complete your details. Public registration allows Buyer and Seller accounts; admin accounts are assigned separately.",
+      "errorTitle": "We couldn't create your account.",
+      "errorFallback": "We couldn't create your account.",
+      "roleLegend": "How do you want to use the platform?",
+      "roleBuyerTitle": "I want to buy or rent",
+      "roleBuyerText": "Explore properties and save your preferences.",
+      "roleSellerTitle": "I want to list a property",
+      "roleSellerText": "Publish and manage your properties.",
+      "name": "Full name",
+      "namePlaceholder": "E.g. Laura Restrepo",
+      "id": "ID number",
+      "idPlaceholder": "Document number",
+      "birth": "Date of birth",
+      "phone": "Phone",
+      "phonePlaceholder": "+57 300 000 0000",
+      "email": "Email address",
+      "emailPlaceholder": "you@email.com",
+      "password": "Password",
+      "passwordHint": "Minimum 8 characters.",
+      "showPasswords": "Show passwords",
+      "hidePasswords": "Hide passwords",
+      "confirmPassword": "Confirm password",
+      "terms": "I accept the processing of my personal data to manage my account, receive answers to my inquiries, and use the platform's services.",
+      "submit": "Create my account",
+      "submitting": "Creating your account…",
+      "validationToast": "Review the highlighted fields before continuing.",
+      "successToast": "Your account is ready. Welcome to Manuela Bermúdez Realtor.",
+      "divider": "Already have an account?",
+      "login": "Sign in"
+    },
+    "forgot": {
+      "pageTitle": "Reset password",
+      "pageDescription": "Request a link to reset your account password.",
+      "eyebrow": "Recover access",
+      "title": "Getting back to your account is part of the process.",
+      "description": "We will send a secure link to the registered email so you can create a new password.",
+      "point1": "The link is sent only to your account email.",
+      "point2": "Also check your spam or promotions folder.",
+      "point3": "If it doesn't arrive, write to us and we will review it with you.",
+      "headEyebrow": "Security",
+      "headTitle": "Reset password",
+      "headText": "Enter the email associated with your account. For security, we won't show whether the email is registered or not.",
+      "invalidEmail": "Enter the email you used to create your account.",
+      "sentTitle": "Check your email",
+      "sentText": "If {{email}} has an account, you will receive a link to reset your password. The link expires after a while for security.",
+      "backToLogin": "Back to sign in",
+      "useAnother": "Use another email",
+      "email": "Email address",
+      "emailHint": "Use the same email you use to sign in to your account.",
+      "emailPlaceholder": "you@email.com",
+      "submit": "Send reset link",
+      "submitting": "Sending…",
+      "successToast": "We sent you a link to reset your password.",
+      "errorFallback": "We couldn't send the link. Check the email and try again.",
+      "divider": "Remembered your password?",
+      "note": "We never share your password or ask for sensitive data by email."
+    }
+  },
+  "account": {
+    "pageTitle": "My account",
+    "pageDescription": "Manage your profile and account security.",
+    "titles": {
+      "profile": "My profile",
+      "security": "Account security"
+    },
+    "subtitle": "Your personal data and account security, in one place.",
+    "goPanel": "Go to my dashboard",
+    "userFallback": "User",
+    "addressFallback": "Address to complete",
+    "memberSince": "Member since {{date}}",
+    "completion": "Profile completion",
+    "completionHint": "Completing your phone and address helps us support you better during the process.",
+    "role": "Assigned role",
+    "personal": {
+      "eyebrow": "Personal data",
+      "title": "Your contact information",
+      "text": "This data is used to communicate with you and is not shown publicly.",
+      "photo": "Profile photo",
+      "photoText": "An image helps people recognize you on the platform.",
+      "uploading": "Uploading…",
+      "changePhoto": "Change photo",
+      "cancel": "Cancel",
+      "name": "Full name",
+      "phone": "Phone",
+      "phonePlaceholder": "+57 300 000 0000",
+      "birth": "Date of birth",
+      "address": "Contact address",
+      "addressHint": "Optional",
+      "addressPlaceholder": "City and area",
+      "email": "Email address",
+      "emailHint": "The email is linked to your account.",
+      "id": "ID number",
+      "idHint": "Only the administrator can change it.",
+      "idMissing": "Not registered",
+      "emptyName": "The name cannot be empty.",
+      "saveSuccess": "Your information was updated.",
+      "saveError": "Your information could not be saved.",
+      "photoSuccess": "Profile photo updated.",
+      "photoCanceled": "Photo upload canceled.",
+      "photoError": "The photo could not be updated. Check Firebase Storage."
+    },
+    "password": {
+      "eyebrow": "Security",
+      "title": "Change password",
+      "text": "Use a password of at least 8 characters. We will ask for your current one to confirm the change.",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Confirm new password",
+      "submit": "Update password",
+      "updating": "Updating…",
+      "success": "Password updated. Keep it in a safe place.",
+      "wrong": "The current password is incorrect.",
+      "errorFallback": "The password could not be changed."
+    },
+    "danger": {
+      "eyebrow": "Privacy",
+      "title": "Your account and your data",
+      "deleteTitle": "Account deletion",
+      "deleteText": "Permanent deletion is carried out with identity verification and administrative permissions. If you need to delete your account and data, write to us from {{email}} so we can handle it securely.",
+      "request": "Request deletion",
+      "note": "Deactivating an account immediately prevents access and can be reversed. Permanent deletion is not available from the browser.",
+      "mailSubject": "Account deletion request",
+      "mailBody": "Hi {{name}},\n\nI request the deletion of my account associated with {{email}}.\n\nName: {{profileName}}"
+    }
+  },
+  "contactForm": {
+    "validationToast": "Review the form fields.",
+    "successToast": "Message sent. We will reply soon.",
+    "errorFallback": "The message could not be sent. Write to us directly.",
+    "sentEyebrow": "Message sent",
+    "sentTitle": "Thank you for writing to us",
+    "sentText": "We received your message and will reply to the email you provided. If you prefer, you can also message us on WhatsApp.",
+    "openWhatsapp": "Open WhatsApp",
+    "sendAnother": "Send another message",
+    "name": "Full name",
+    "email": "Email address",
+    "phone": "Phone",
+    "subject": "Subject",
+    "message": "Message",
+    "messageHint": "Tell us what you are looking for, in which area, and with what budget. That way we can help you better.",
+    "messagePlaceholder": "Hi, I'm looking for…",
+    "honeypot": "Do not fill in",
+    "failureTitle": "We couldn't send the email.",
+    "openMail": "Open my email",
+    "privacy": "Your data is used only to answer your inquiry. We do not share your information with third parties.",
+    "submit": "Send message",
+    "sending": "Sending…",
+    "whatsappSent": "Hi {{name}}, I just sent a message from the website.",
+    "whatsappFallback": "Hi {{name}}, I have a question from the website.",
+    "mailto": {
+      "defaultSubject": "Inquiry from {{name}}",
+      "name": "Name: {{value}}",
+      "email": "Email: {{value}}",
+      "phone": "Phone: {{value}}",
+      "property": "Property: {{value}}"
+    }
+  },
+  "dashboard": {
+    "buyer": {
+      "pageTitle": "Buyer dashboard",
+      "pageDescription": "Your recommendations and search preferences.",
+      "sectionTitles": {
+        "summary": "My overview",
+        "recommendations": "Recommendations for you",
+        "preferences": "My preferences"
+      },
+      "subtitle": "Explore options that match what you need and keep your preferences up to date.",
+      "exploreCatalog": "Explore catalog",
+      "welcomeHello": "Hi, {{name}}",
+      "welcomeDefault": "welcome",
+      "welcomeTitle": "Finding a place is also a conversation.",
+      "welcomeText": "Review the properties that match your interests and adjust your preferences whenever you want. If something catches your eye, we can arrange a visit.",
+      "talk": "Talk to Manuela",
+      "myPanel": "My dashboard",
+      "stats": {
+        "published": "Published properties",
+        "publishedHint": "Listings available today",
+        "sale": "For sale",
+        "saleHint": "Options to buy",
+        "rent": "For rent",
+        "rentHint": "Options to rent",
+        "recommendations": "Recommendations",
+        "recommendationsHintPreferences": "Based on your preferences",
+        "recommendationsHintRecent": "Recent selection"
+      },
+      "preference": {
+        "eyebrow": "Your search",
+        "title": "What you are looking for",
+        "empty": "You haven't saved any preferences yet. Tell us what you are looking for so we can filter the inventory better.",
+        "edit": "Edit",
+        "configure": "Configure",
+        "rent": "Rent",
+        "buy": "Buy",
+        "buyOrRent": "Buy or rent",
+        "anyType": "Any type",
+        "anyZone": "Any area",
+        "upTo": "Up to {{amount}}",
+        "noLimit": "No budget limit",
+        "summaryRent": "Rent",
+        "summaryBuy": "Buy",
+        "summaryIn": "in {{zone}}",
+        "summaryUpTo": "up to {{amount}}"
+      },
+      "support": {
+        "eyebrow": "Guidance",
+        "title": "Would you like us to search with you?",
+        "text": "Tell us what spaces you need, in which area, and with what budget. We filter options and arrange visits without wasting your time.",
+        "link": "Tell us what I'm looking for"
+      },
+      "start": {
+        "eyebrow": "To start",
+        "title": "Options you might like",
+        "viewAll": "View all"
+      },
+      "recommendations": {
+        "eyebrow": "Personalized selection",
+        "withPreferences": "{{count}} properties based on your preferences",
+        "withoutPreferences": "Published properties",
+        "withPreferencesText": "If there are no exact matches, we show a recent selection so you can keep exploring.",
+        "withoutPreferencesText": "Configure your preferences to receive a more precise selection.",
+        "emptyTitle": "We haven't found matches yet",
+        "emptyDescription": "Try expanding your budget or area, or tell us what you are looking for so we can help."
+      },
+      "emptyInventoryTitle": "No properties published yet",
+      "emptyInventoryDescription": "We are preparing the listings. Tell us what you are looking for and we will let you know when something fits.",
+      "preferencesForm": {
+        "eyebrow": "Personalized search",
+        "title": "Tell us what you need",
+        "text": "We use this data to organize recommendations within your account. You can change it whenever you want.",
+        "operation": "I want to",
+        "operationAny": "Buy or rent",
+        "type": "Property type",
+        "typeAny": "Any type",
+        "zone": "Area of interest",
+        "zoneHint": "City, neighborhood, or sector.",
+        "zonePlaceholder": "E.g. Laureles, Medellín",
+        "budget": "Maximum budget",
+        "save": "Save preferences",
+        "saveSuccess": "Your preferences were saved.",
+        "saveError": "Your preferences could not be saved."
+      },
+      "personalizeTitle": "Personalize your recommendations",
+      "personalizeText": "Tell us what type of property you are looking for, in which area, and with what budget so we can show more relevant options.",
+      "personalizeAction": "Configure preferences"
+    },
+    "seller": {
+      "pageTitle": "Seller dashboard",
+      "pageDescription": "Publish and manage your properties.",
+      "sectionTitles": {
+        "summary": "My overview",
+        "publish": "List a property",
+        "properties": "My properties"
+      },
+      "subtitle": "Publish your properties, review their status, and keep your inventory up to date.",
+      "export": "Export",
+      "publish": "Publish",
+      "saveEditSuccess": "The changes were saved successfully.",
+      "saveNewSuccess": "Your property is now published in the catalog.",
+      "saveError": "The property could not be saved.",
+      "uploadCanceled": "Upload canceled. The property was not modified.",
+      "publishSuccess": "The property is published again.",
+      "publishError": "The property could not be published.",
+      "hideSuccess": "The property was hidden from the public catalog.",
+      "hideError": "The property could not be hidden.",
+      "stats": {
+        "published": "Published properties",
+        "publishedHint": "Visible in the catalog",
+        "hidden": "Hidden",
+        "hiddenHint": "Not visible to the public",
+        "closed": "Recorded closings",
+        "closedHint": "Sold or rented",
+        "value": "Published value",
+        "valueHint": "Sum of active properties"
+      },
+      "welcomeHello": "Hi, {{name}}",
+      "welcomeDefault": "welcome",
+      "welcomeTitle": "Your inventory, in one place.",
+      "welcomeText": "Publish properties, review their status, and decide when to show them to the public. If you need to adjust something, you can edit them without losing the history.",
+      "publishProperty": "List a property",
+      "talk": "Talk to Manuela",
+      "activity": {
+        "eyebrow": "Activity",
+        "title": "My recent properties",
+        "text": "A quick look at the latest listings on your account.",
+        "viewAll": "View all"
+      },
+      "tips": {
+        "eyebrow": "Best practices",
+        "title": "A clear listing sells better",
+        "tip1": "Use photos with natural light and at least one of the main space.",
+        "tip2": "Describe the real condition, the area, and what makes the property special.",
+        "tip3": "Indicate an approximate area; the exact address is shared at the visit.",
+        "link": "View guidance services"
+      },
+      "editEyebrow": "Edit listing",
+      "newEyebrow": "New listing",
+      "editTitle": "Update your property information",
+      "newTitle": "Tell us about the property you want to list",
+      "formHint": "Fields marked are required. The first image will be the cover in the catalog.",
+      "cancelEdit": "Cancel editing",
+      "inventoryEyebrow": "Inventory",
+      "inventoryTitle": "All my properties",
+      "inventoryCount": "{{count}} properties linked to your account.",
+      "inventoryEmpty": "You don't have any properties linked to your account yet.",
+      "inventoryEmptyTitle": "Your inventory is empty",
+      "inventoryEmptyDescription": "Publish your first property so it appears in the catalog and you can manage it from this dashboard.",
+      "publishFirst": "List my first property",
+      "hideDialogTitle": "Hide property",
+      "hideDialogText": "\"{{title}}\" will no longer appear in the public catalog. You can publish it again whenever you want; it is not removed from your account.",
+      "hideConfirm": "Hide property"
+    },
+    "admin": {
+      "pageTitle": "Admin dashboard",
+      "pageDescription": "Manage users, properties, and closings on the platform.",
+      "sectionTitles": {
+        "summary": "Admin dashboard",
+        "properties": "Properties",
+        "users": "Users",
+        "sales": "Recorded closings"
+      },
+      "subtitle": "Real platform data: users, inventory, and recorded closings.",
+      "exportAll": "Export full workbook",
+      "exportProperties": "Export properties",
+      "exportUsers": "Export users",
+      "exportSales": "Export closings",
+      "registerSale": "Register closing",
+      "load": {
+        "usersError": "The users could not be loaded.",
+        "propertiesError": "The properties could not be loaded.",
+        "salesError": "The closings could not be loaded."
+      },
+      "userToggle": {
+        "reactivated": "The account was reactivated successfully.",
+        "deactivated": "The account was deactivated and will not be able to sign in.",
+        "error": "The account could not be updated."
+      },
+      "propertyToggle": {
+        "published": "The property was published again.",
+        "hidden": "The property was hidden from the catalog.",
+        "error": "The property could not be updated."
+      },
+      "annul": {
+        "success": "The closing was annulled and the property was published again.",
+        "error": "The closing could not be annulled."
+      },
+      "backfill": {
+        "success": "Data updated: {{properties}} properties and {{testimonials}} testimonials{{removed}}.",
+        "removed": "; {{count}} owner emails removed from public listings",
+        "error": "The legacy data could not be completed."
+      },
+      "welcomeHello": "Hi, {{name}}",
+      "welcomeDefault": "administrator",
+      "welcomeTitle": "The entire operation, with real data.",
+      "welcomeText": "Review account and inventory status, register closings, and download Excel reports. Sensitive actions are recorded to maintain traceability.",
+      "salesReport": "View sales report",
+      "stats": {
+        "users": "Registered users",
+        "usersHint": "{{count}} active accounts",
+        "published": "Published properties",
+        "publishedHint": "{{total}} total · {{closed}} with closing",
+        "sales": "Recorded closings",
+        "salesHint": "{{count}} annulled",
+        "salesValue": "Closing value",
+        "salesValueHint": "Only active closings"
+      },
+      "recent": {
+        "eyebrow": "Recent activity",
+        "title": "Latest closings",
+        "text": "Registered sales and rentals, with their value and status.",
+        "viewAll": "View all"
+      },
+      "catalog": {
+        "eyebrow": "Inventory",
+        "title": "Catalog status",
+        "published": "Published",
+        "hidden": "Hidden",
+        "closed": "With closing",
+        "value": "Published value",
+        "reviewProperties": "Review properties",
+        "reviewUsers": "Review users",
+        "openReport": "Open sales report"
+      },
+      "maintenance": {
+        "eyebrow": "Maintenance",
+        "title": "Legacy data",
+        "text": "Complete the status of properties and testimonials coming from the previous site, and remove the owner's email from the listings. This is required for secure public queries to display them.",
+        "action": "Complete data",
+        "dialogTitle": "Complete legacy data",
+        "dialogText": "The missing status will be added to old properties and testimonials, and the owner's email will be removed from public listings. Prices, images, accounts, and closings are not modified. When finished, the public catalog will be able to read the properties with the secure rules."
+      },
+      "emptyTitle": "The platform is ready to start",
+      "emptyDescription": "There are no properties or closings yet. Publish the first property or register a closing when the transaction is complete.",
+      "emptyAction": "Go to list a property",
+      "users": {
+        "eyebrow": "Accounts",
+        "title": "Registered users",
+        "summary": "{{filtered}} of {{total}} accounts match the filters. You can deactivate an account without deleting its data.",
+        "searchAria": "Search users",
+        "searchPlaceholder": "Search by name, email, ID, or phone",
+        "roleAria": "Filter by role",
+        "allRoles": "All roles",
+        "adminRole": "Administration",
+        "sellerRole": "Seller",
+        "buyerRole": "Buyer",
+        "statusAria": "Filter by status",
+        "allStatuses": "All statuses",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "properties": {
+        "eyebrow": "Inventory",
+        "title": "All properties",
+        "summary": "{{filtered}} of {{total}} properties match the filters. \"Register closing\" updates the property in a single transaction.",
+        "searchAria": "Search properties",
+        "searchPlaceholder": "Search by title, location, type, or owner",
+        "operationAria": "Filter by transaction",
+        "allOperations": "Sale and rent",
+        "sale": "Sale",
+        "rent": "Rent",
+        "statusAria": "Filter by status",
+        "allStatuses": "All statuses",
+        "published": "Published",
+        "hidden": "Hidden",
+        "sold": "Sold",
+        "rented": "Rented"
+      },
+      "sales": {
+        "eyebrow": "Closings",
+        "title": "Registered sales and rentals",
+        "summary": "{{filtered}} of {{total}} closings match the filters. Annulling a closing republishes the property.",
+        "annulTitle": "Annul closing",
+        "annulText": "The closing for \"{{title}}\" will be marked as annulled and the property will be published again. This action is recorded in the audit log.",
+        "annulConfirm": "Annul closing",
+        "annulCancel": "Keep closing"
+      }
+    },
+    "salesReport": {
+      "pageTitle": "Sales report",
+      "pageDescription": "Review and export recorded closings by date range.",
+      "title": "Sales report",
+      "subtitle": "Active and annulled closings, filtered by date, transaction, and status.",
+      "back": "Back to dashboard",
+      "export": "Export report",
+      "loadError": "The sales report could not be loaded.",
+      "stats": {
+        "closed": "Active closings",
+        "closedHint": "{{count}} annulled in the filter",
+        "total": "Total value",
+        "totalHint": "Only active closings",
+        "average": "Average ticket",
+        "averageHint": "Average per active closing",
+        "split": "Sales / rentals",
+        "splitHint": "Distribution by transaction"
+      },
+      "filters": {
+        "eyebrow": "Report filters",
+        "title": "Review recorded closings",
+        "text": "Use the date range to review a specific period. The export includes exactly the filtered closings.",
+        "results": "{{count}} results"
+      },
+      "errorTitle": "We couldn't load the report",
+      "detail": {
+        "eyebrow": "Detail",
+        "title": "Closings in the period",
+        "loading": "Loading closings…",
+        "count": "{{count}} closings match the current filters.",
+        "adminPanel": "Go to the admin dashboard"
+      },
+      "emptyFilteredTitle": "No closings match these filters",
+      "emptyFilteredDescription": "Try another date range or clear the filters to see all closings.",
+      "emptyTitle": "No closings recorded yet",
+      "emptyDescription": "When you register the first sale or rental, the report will update automatically.",
+      "emptyAction": "Go to register a closing",
+      "trend": {
+        "eyebrow": "Trend",
+        "title": "Closed value by month",
+        "text": "Recent months with closings within the current filter. Only active closings are included.",
+        "one": "{{count}} closing",
+        "other": "{{count}} closings"
+      },
+      "note": "The report values correspond to active closings (not annulled) and the applied filters. The Excel export respects the same selection."
+    }
+  },
+  "admin": {
+    "usersTable": {
+      "errorTitle": "We couldn't load the users",
+      "emptyTitle": "No users match these filters",
+      "emptyDescription": "Try another search term or clear the filters.",
+      "user": "User",
+      "id": "ID number",
+      "role": "Role",
+      "registered": "Registered",
+      "status": "Status",
+      "actions": "Actions",
+      "selfWarning": "You cannot deactivate your own account",
+      "deactivate": "Deactivate account",
+      "reactivate": "Reactivate account",
+      "deactivateAria": "Deactivate {{name}}",
+      "reactivateAria": "Reactivate {{name}}"
+    },
+    "propertiesTable": {
+      "errorTitle": "We couldn't load the properties",
+      "emptyTitle": "No properties match these filters",
+      "emptyDescription": "Adjust the search or clear the filters to see the whole inventory.",
+      "property": "Property",
+      "operation": "Transaction",
+      "price": "Price",
+      "status": "Status",
+      "registered": "Registered",
+      "actions": "Actions",
+      "noLocation": "No location",
+      "view": "View property",
+      "viewAria": "View {{title}}",
+      "registerSale": "Register closing",
+      "hide": "Hide listing",
+      "publish": "Publish",
+      "hideAria": "Hide {{title}}",
+      "publishAria": "Publish {{title}}"
+    },
+    "salesTable": {
+      "errorTitle": "We couldn't load the closings",
+      "emptyTitle": "No closings recorded yet",
+      "emptyDescription": "When you register a sale or rental, it will appear here with its value and date.",
+      "property": "Property",
+      "operation": "Transaction",
+      "buyer": "Buyer",
+      "value": "Value",
+      "date": "Date",
+      "status": "Status",
+      "actions": "Actions",
+      "sellerMissing": "Seller without a name",
+      "annul": "Annul"
+    },
+    "salesFilters": {
+      "title": "Filter closings",
+      "clear": "Clear",
+      "search": "Search",
+      "searchPlaceholder": "Property, buyer, or seller",
+      "from": "From",
+      "to": "To",
+      "operation": "Transaction",
+      "allOperations": "All",
+      "sale": "Sale",
+      "rent": "Rent",
+      "status": "Status",
+      "allStatuses": "All",
+      "closed": "Closed",
+      "annulled": "Annulled"
+    },
+    "saleForm": {
+      "success": "Closing registered. The property status changed automatically.",
+      "errorFallback": "The closing could not be registered.",
+      "title": "Register closing",
+      "eyebrow": "Transaction closed",
+      "cancel": "Cancel",
+      "submitting": "Registering…",
+      "submit": "Register closing",
+      "noProperties": "No published properties available. Publish a property before registering a closing.",
+      "intro": "The closing is saved in sales and updates the property in a single transaction. No test data is generated.",
+      "property": "Property",
+      "selectProperty": "Select a published property",
+      "operation": "Transaction",
+      "owner": "Owner",
+      "ownerMissing": "No name",
+      "publishedPrice": "Published price",
+      "buyerName": "Buyer or tenant name",
+      "buyerEmail": "Buyer email",
+      "buyerPhone": "Buyer phone",
+      "closingValue": "Closing value (COP)",
+      "closingDate": "Closing date",
+      "operationHint": "It is taken from the property; you can adjust it if the closing requires it.",
+      "sale": "Sale",
+      "rent": "Rent",
+      "notes": "Internal notes",
+      "notesHint": "Optional. Not shown on the public site.",
+      "notesPlaceholder": "E.g. Closing coordinated with the lawyer, paid by transfer."
+    },
+    "export": {
+      "defaultLabel": "Export Excel",
+      "success": "File exported.",
+      "error": "The file could not be exported.",
+      "busy": "Generating…"
+    }
+  },
+  "excel": {
+    "dateFormat": "mm/dd/yyyy",
+    "sheets": {
+      "users": "Users",
+      "properties": "Properties",
+      "sales": "Sales"
+    },
+    "file": {
+      "users": "manuela-users-{{date}}.xlsx",
+      "properties": "manuela-properties-{{date}}.xlsx",
+      "sales": "manuela-sales-{{date}}.xlsx",
+      "all": "manuela-full-report-{{date}}.xlsx"
+    },
+    "users": {
+      "name": "Name",
+      "id": "ID number",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "status": "Status",
+      "birthDate": "Date of birth",
+      "registered": "Registration date",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "properties": {
+      "title": "Title",
+      "operation": "Transaction type",
+      "type": "Type",
+      "status": "Status",
+      "price": "Price (COP)",
+      "location": "Location",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "parking": "Parking spaces",
+      "area": "Area (m²)",
+      "owner": "Owner",
+      "registered": "Registration date"
+    },
+    "sales": {
+      "property": "Property",
+      "operation": "Transaction type",
+      "seller": "Seller",
+      "buyer": "Buyer / tenant",
+      "buyerEmail": "Buyer email",
+      "buyerPhone": "Buyer phone",
+      "value": "Value (COP)",
+      "date": "Closing date",
+      "status": "Status",
+      "notes": "Notes"
+    }
+  },
+  "labels": {
+    "operation": {
+      "sale": "Sale",
+      "rent": "Rent"
+    },
+    "status": {
+      "disponible": "Published",
+      "vendida": "Sold",
+      "rentada": "Rented",
+      "inactiva": "Hidden"
+    },
+    "saleStatus": {
+      "cerrada": "Closed",
+      "anulada": "Annulled"
+    },
+    "userStatus": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "role": {
+      "admin": "Admin",
+      "seller": "Seller",
+      "buyer": "Buyer",
+      "none": "No role assigned"
+    },
+    "propertyType": {
+      "casa": "House",
+      "apartamento": "Apartment",
+      "apartaestudio": "Studio apartment",
+      "oficina": "Office",
+      "local": "Commercial space",
+      "terreno": "Land",
+      "finca": "Country property",
+      "otro": "Property"
+    },
+    "propertyTypePlural": {
+      "casa": "Houses",
+      "apartamento": "Apartments",
+      "apartaestudio": "Studio apartments",
+      "oficina": "Offices",
+      "local": "Commercial spaces",
+      "terreno": "Land",
+      "finca": "Country properties",
+      "otro": "Properties"
+    },
+    "upTo": "Up to {{amount}}",
+    "inLocation": "in {{location}}",
+    "contactSubject": {
+      "buy": "I want to buy a property",
+      "sell": "I want to sell my property",
+      "rent": "I want to rent a property",
+      "publish": "I want to list my property",
+      "advice": "I need advice",
+      "other": "Another subject"
+    },
+    "amenity": {
+      "balcony": "Balcony",
+      "terrace": "Terrace",
+      "garden": "Garden",
+      "pool": "Pool",
+      "gym": "Gym",
+      "communityRoom": "Community room",
+      "visitorParking": "Visitor parking",
+      "storage": "Storage",
+      "elevator": "Elevator",
+      "gatedCommunity": "Gated community",
+      "security": "Security",
+      "bbqArea": "BBQ area",
+      "airConditioning": "Air conditioning",
+      "fireplace": "Fireplace",
+      "studio": "Studio",
+      "panoramicView": "Panoramic view"
+    }
+  },
+  "validation": {
+    "register": {
+      "name": "Enter your full name.",
+      "id": "The ID number is required.",
+      "birth": "Select your date of birth.",
+      "email": "Enter a valid email.",
+      "role": "Select how you want to use the platform.",
+      "password": "The password must be at least 8 characters long.",
+      "confirm": "The passwords do not match.",
+      "terms": "You must accept the data processing to continue."
+    },
+    "login": {
+      "email": "Enter a valid email.",
+      "password": "Enter your password."
+    },
+    "property": {
+      "title": "The title must be at least 5 characters long.",
+      "location": "Enter the city or area.",
+      "price": "Enter a valid price.",
+      "type": "Select the property type.",
+      "operation": "Select the transaction type.",
+      "description": "Describe the property in at least 20 characters.",
+      "bedrooms": "The number of bedrooms is not valid.",
+      "bathrooms": "The number of bathrooms is not valid.",
+      "area": "The area is not valid.",
+      "stratum": "The stratum must be between 1 and 6."
+    },
+    "sale": {
+      "property": "Select a property.",
+      "buyer": "Enter the buyer or tenant name.",
+      "buyerEmail": "The buyer email is not valid.",
+      "value": "Enter the closing value.",
+      "date": "Select the closing date."
+    },
+    "contact": {
+      "name": "Enter your name.",
+      "email": "Enter a valid email.",
+      "subject": "Select or enter a subject.",
+      "message": "Tell us a little more (minimum 10 characters).",
+      "phone": "The phone number doesn't look valid."
+    },
+    "testimonial": {
+      "name": "Enter your name.",
+      "text": "Write at least 20 characters.",
+      "rating": "Select a rating."
+    },
+    "password": {
+      "current": "Enter your current password.",
+      "new": "The new password must be at least 8 characters long.",
+      "confirm": "The passwords do not match.",
+      "different": "The new password must be different."
+    }
+  },
+  "errors": {
+    "auth": {
+      "invalidCredential": "The email or password is incorrect.",
+      "invalidEmail": "Enter a valid email address.",
+      "emailInUse": "An account with this email already exists.",
+      "weakPassword": "The password must be at least 8 characters long.",
+      "tooManyRequests": "Too many attempts. Wait a few minutes and try again.",
+      "network": "We couldn't connect to the server. Check your connection.",
+      "userDisabled": "This account is deactivated.",
+      "recentLogin": "For security, sign in again before continuing.",
+      "operationNotAllowed": "Email sign-in is not enabled in Firebase.",
+      "requiresLogin": "Sign in again."
+    },
+    "permissionDenied": "You don't have permission to perform this action. If you think this is a mistake, contact the administrator.",
+    "unavailable": "The service is unavailable right now. Please try again.",
+    "storage": {
+      "unauthorized": "You don't have permission to upload this image. Check the Storage configuration.",
+      "canceled": "The image upload was canceled.",
+      "timeout": "The upload took too long. Check your connection and try again.",
+      "retry": "The connection was interrupted during the upload. Please try again.",
+      "unknown": "The image could not be uploaded. Check that Firebase Storage is enabled.",
+      "base64TooLarge": "The image still exceeds the contingency mode limit. Use a smaller image or enable Firebase Storage.",
+      "base64BatchTooLarge": "{{omitted}} of {{total}} images could not be saved in contingency mode. Enable Firebase Storage or select fewer photos; nothing was published.",
+      "notAvailable": "Firebase Storage is not available. Enable it or use contingency mode.",
+      "imageError": "The image could not be processed. Try another one.",
+      "invalidFile": "The image is not valid. Use JPG, PNG, or WebP under 8 MB.",
+      "select": "Select an image.",
+      "format": "Unsupported format. Use JPG, PNG, or WebP.",
+      "size": "Each image must be smaller than 8 MB."
+    },
+    "functions": {
+      "notFound": "The email service is not deployed yet. You can write to us directly by email or WhatsApp.",
+      "unavailable": "The email service is unavailable right now. Write to us directly.",
+      "internal": "The message could not be sent. Write to us directly by email or WhatsApp.",
+      "resourceExhausted": "You have sent several messages in a short time. Wait a few minutes.",
+      "invalidArgument": "Review the form data and try again.",
+      "failedPrecondition": "Email sending is not configured yet. Write to us directly."
+    },
+    "app": {
+      "notConfigured": "Firebase is not configured. Check the .env.local file.",
+      "firebaseMessage": "Firebase is not configured. Complete the variables in .env.local."
+    },
+    "profile": {
+      "notFound": "Your account exists, but it has no associated profile. Contact the administrator.",
+      "disabled": "Your account is deactivated. Contact the administrator.",
+      "loadError": "We couldn't load your profile."
+    },
+    "property": {
+      "notAvailable": "This property is no longer available to register a closing.",
+      "notFound": "We couldn't find this property.",
+      "locked": "This property cannot be modified right now.",
+      "invalidStatus": "You can only publish or hide a property from this dashboard."
+    },
+    "sale": {
+      "notFound": "We couldn't find this closing.",
+      "annulled": "This closing has already been annulled.",
+      "date": "Select a valid closing date.",
+      "dateFuture": "The closing date cannot be in the future."
+    },
+    "testimonial": {
+      "loginRequired": "Sign in to share your experience."
+    },
+    "contact": {
+      "notConfigured": "Email sending is not configured yet. You can write to us directly by email or WhatsApp."
+    },
+    "language": {
+      "invalid": "The selected language is not valid."
+    },
+    "export": {
+      "noRows": "There is no data to export with the current filters."
+    },
+    "invalidRole": "Public registration only allows Buyer or Seller accounts.",
+    "generic": "Something went wrong."
+  },
+  "route": {
+    "loadingAccount": "Verifying your account…",
+    "loadingSession": "Verifying your session…",
+    "loadingPermissions": "Verifying permissions…",
+    "configurationEyebrow": "Configuration pending",
+    "configurationTitle": "Firebase is not configured yet",
+    "configurationText": "Copy .env.example as .env.local and complete the project variables. Then restart the development server.",
+    "accessEyebrow": "Restricted access",
+    "accessTitle": "This dashboard doesn't match your role",
+    "accessText": "Your account is registered as {{role}}. You can continue from your assigned dashboard.",
+    "goPanel": "Go to my dashboard"
+  },
+  "fatal": {
+    "eyebrow": "Something went wrong",
+    "title": "We couldn't display this page",
+    "text": "Reload the page to try again. If the problem continues, write to us and we will review it.",
+    "reload": "Reload page"
+  },
+  "footer": {
+    "about": "Close real estate guidance to find, sell, or rent a place that feels like yours.",
+    "rights": "© {{year}} {{name}}. All rights reserved.",
+    "madeIn": "Made in Medellín",
+    "devNote": "Local preview · Contact details and the final logo must be confirmed before publishing."
+  },
+  "accessibility": {
+    "skip": "Skip to content",
+    "logoHome": "Manuela Bermúdez Realtor, go to home",
+    "backToTop": "Back to top"
   }
 }

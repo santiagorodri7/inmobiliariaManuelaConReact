@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { CircleAlert } from "lucide-react";
+import { translate } from "../../i18n/translate.js";
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -23,18 +24,15 @@ export default class ErrorBoundary extends Component {
             <span className="fatal-error__icon" aria-hidden="true">
               <CircleAlert size={30} />
             </span>
-            <p className="eyebrow">Algo salió mal</p>
-            <h1>No pudimos mostrar esta página</h1>
-            <p>
-              Recarga la página para intentarlo de nuevo. Si el problema
-              continúa, escríbenos y lo revisamos.
-            </p>
+            <p className="eyebrow">{translate("fatal.eyebrow")}</p>
+            <h1>{translate("fatal.title")}</h1>
+            <p>{translate("fatal.text")}</p>
             <button
               type="button"
               className="btn btn-primary"
               onClick={() => window.location.reload()}
             >
-              Recargar página
+              {translate("fatal.reload")}
             </button>
           </div>
         </main>

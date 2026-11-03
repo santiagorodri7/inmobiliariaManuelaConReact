@@ -1,6 +1,12 @@
 import { fileDateStamp, toDate } from "../utils/dates.js";
-import { operationLabel, statusLabel } from "../utils/property.js";
-import { roleLabel } from "../utils/roles.js";
+import {
+  operationLabel,
+  propertyTypeLabel,
+  roleLabel,
+  saleStatusLabel,
+  statusLabel,
+} from "../i18n/labels.js";
+import { translate } from "../i18n/translate.js";
 import { appError } from "../utils/errors.js";
 
 const headerStyle = {
@@ -24,7 +30,11 @@ const numberCell = (value) => {
 const dateCell = (value) => {
   const date = toDate(value);
   if (!date) return { value: "" };
-  return { value: date, format: "dd/mm/yyyy", align: "center" };
+  return {
+    value: date,
+    format: translate("excel.dateFormat"),
+    align: "center",
+  };
 };
 
 const sheetWithRows = (headers, widths, rows, sheetName) => ({
@@ -38,14 +48,14 @@ const sheetWithRows = (headers, widths, rows, sheetName) => ({
 export const usersSheet = (users = []) =>
   sheetWithRows(
     [
-      "Nombre",
-      "Cédula",
-      "Correo",
-      "Teléfono",
-      "Rol",
-      "Estado",
-      "Fecha de nacimiento",
-      "Fecha de registro",
+      translate("excel.users.name"),
+      translate("excel.users.id"),
+      translate("excel.users.email"),
+      translate("excel.users.phone"),
+      translate("excel.users.role"),
+      translate("excel.users.status"),
+      translate("excel.users.birthDate"),
+      translate("excel.users.registered"),
     ],
     [26, 16, 30, 18, 15, 12, 18, 18],
     users.map((user) => [
@@ -53,36 +63,40 @@ export const usersSheet = (users = []) =>
       textCell(user.cedula),
       textCell(user.email),
       textCell(user.telefono),
-      textCell(roleLabel(user.rol)),
-      textCell(user.activo === false ? "Inactivo" : "Activo"),
+      textCell(roleLabel(translate, user.rol)),
+      textCell(
+        translate(
+          user.activo === false ? "excel.users.inactive" : "excel.users.active",
+        ),
+      ),
       dateCell(user.fechaNacimiento),
       dateCell(user.fechaRegistro),
     ]),
-    "Usuarios",
+    translate("excel.sheets.users"),
   );
 
 export const propertiesSheet = (properties = []) =>
   sheetWithRows(
     [
-      "Título",
-      "Operación",
-      "Tipo",
-      "Estado",
-      "Precio (COP)",
-      "Ubicación",
-      "Habitaciones",
-      "Baños",
-      "Parqueaderos",
-      "Área (m²)",
-      "Propietario",
-      "Fecha de registro",
+      translate("excel.properties.title"),
+      translate("excel.properties.operation"),
+      translate("excel.properties.type"),
+      translate("excel.properties.status"),
+      translate("excel.properties.price"),
+      translate("excel.properties.location"),
+      translate("excel.properties.bedrooms"),
+      translate("excel.properties.bathrooms"),
+      translate("excel.properties.parking"),
+      translate("excel.properties.area"),
+      translate("excel.properties.owner"),
+      translate("excel.properties.registered"),
     ],
     [32, 12, 16, 12, 18, 25, 12, 10, 13, 11, 24, 18],
     properties.map((property) => [
       textCell(property.title),
-      textCell(operationLabel(property.operation)),
-      textCell(property.type),
-      textCell(statusLabel(property.status)),
+      textCell(operationLabel(translate, property.operation)),
+      textCell(propertyTypeLabel(translate, property.type)),
+      textCell(statusLabel(translate, property.status)),
       numberCell(property.price),
       textCell(property.location),
       numberCell(property.bedrooms),
@@ -92,37 +106,37 @@ export const propertiesSheet = (properties = []) =>
       textCell(property.ownerName),
       dateCell(property.createdAt || property.fechaRegistro),
     ]),
-    "Propiedades",
+    translate("excel.sheets.properties"),
   );
 
 export const salesSheet = (sales = []) =>
   sheetWithRows(
     [
-      "Propiedad",
-      "Operación",
-      "Vendedor",
-      "Comprador / arrendatario",
-      "Correo comprador",
-      "Teléfono comprador",
-      "Valor (COP)",
-      "Fecha de cierre",
-      "Estado",
-      "Notas",
+      translate("excel.sales.property"),
+      translate("excel.sales.operation"),
+      translate("excel.sales.seller"),
+      translate("excel.sales.buyer"),
+      translate("excel.sales.buyerEmail"),
+      translate("excel.sales.buyerPhone"),
+      translate("excel.sales.value"),
+      translate("excel.sales.date"),
+      translate("excel.sales.status"),
+      translate("excel.sales.notes"),
     ],
     [32, 12, 24, 26, 30, 18, 18, 16, 12, 40],
     sales.map((sale) => [
       textCell(sale.propertyTitle),
-      textCell(operationLabel(sale.operation)),
+      textCell(operationLabel(translate, sale.operation)),
       textCell(sale.sellerName),
       textCell(sale.buyerName),
       textCell(sale.buyerEmail),
       textCell(sale.buyerPhone),
       numberCell(sale.closingValue),
       dateCell(sale.closingDate),
-      textCell(sale.status === "anulada" ? "Anulada" : "Cerrada"),
+      textCell(saleStatusLabel(translate, sale.status)),
       textCell(sale.notes),
     ]),
-    "Ventas",
+    translate("excel.sheets.sales"),
   );
 
 const writeSingleSheet = async (sheet, fileName) => {
@@ -150,31 +164,31 @@ const writeWorkbook = async (sheets, fileName) => {
   ).toFile(fileName);
 };
 
-const ensureRows = (rows, label) => {
-  if (!rows.length) throw appError("export/no-rows", `No hay ${label} para exportar con los filtros actuales.`);
+const ensureRows = (rows) => {
+  if (!rows.length) throw appError("export/no-rows");
 };
 
 export const exportUsers = async (users = []) => {
-  ensureRows(users, "usuarios");
+  ensureRows(users);
   await writeSingleSheet(
     usersSheet(users),
-    `manuela-usuarios-${fileDateStamp()}.xlsx`,
+    translate("excel.file.users", { date: fileDateStamp() }),
   );
 };
 
 export const exportProperties = async (properties = []) => {
-  ensureRows(properties, "propiedades");
+  ensureRows(properties);
   await writeSingleSheet(
     propertiesSheet(properties),
-    `manuela-propiedades-${fileDateStamp()}.xlsx`,
+    translate("excel.file.properties", { date: fileDateStamp() }),
   );
 };
 
 export const exportSales = async (sales = []) => {
-  ensureRows(sales, "cierres");
+  ensureRows(sales);
   await writeSingleSheet(
     salesSheet(sales),
-    `manuela-ventas-${fileDateStamp()}.xlsx`,
+    translate("excel.file.sales", { date: fileDateStamp() }),
   );
 };
 
@@ -188,6 +202,6 @@ export const exportAll = async ({
   }
   await writeWorkbook(
     [usersSheet(users), propertiesSheet(properties), salesSheet(sales)],
-    `manuela-reporte-completo-${fileDateStamp()}.xlsx`,
+    translate("excel.file.all", { date: fileDateStamp() }),
   );
 };

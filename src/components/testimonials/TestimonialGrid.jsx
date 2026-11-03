@@ -2,6 +2,7 @@ import { MessageSquareQuote } from "lucide-react";
 import TestimonialCard from "./TestimonialCard.jsx";
 import EmptyState from "../ui/EmptyState.jsx";
 import ErrorState from "../ui/ErrorState.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 export default function TestimonialGrid({
   testimonials = [],
@@ -9,6 +10,7 @@ export default function TestimonialGrid({
   error = "",
   limit = 0,
 }) {
+  const { t } = useI18n();
   if (loading) {
     return (
       <div className="testimonial-grid">
@@ -24,15 +26,15 @@ export default function TestimonialGrid({
     );
   }
 
-  if (error) return <ErrorState title="No pudimos cargar los testimonios" description={error} compact />;
+  if (error) return <ErrorState title={t("testimonials.grid.errorTitle")} description={error} compact />;
 
   const items = limit ? testimonials.slice(0, limit) : testimonials;
   if (!items.length) {
     return (
       <EmptyState
         icon={MessageSquareQuote}
-        title="Aún no hay testimonios publicados"
-        description="Las experiencias de nuestros clientes aparecerán aquí."
+        title={t("testimonials.grid.emptyTitle")}
+        description={t("testimonials.grid.emptyDescription")}
         compact
       />
     );

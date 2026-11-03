@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 export default function PageHeader({
   eyebrow,
@@ -9,14 +10,15 @@ export default function PageHeader({
   actions = null,
   tone = "dark",
 }) {
+  const { t } = useI18n();
   return (
     <header className={`page-header page-header--${tone}`}>
       <div className="page-header__pattern" aria-hidden="true" />
       <div className="shell page-header__inner">
         <div className="page-header__copy">
           {breadcrumb.length > 0 && (
-            <nav className="breadcrumb-line" aria-label="Ruta de navegación">
-              <Link to="/">Inicio</Link>
+            <nav className="breadcrumb-line" aria-label={t("nav.breadcrumb")}>
+              <Link to="/">{t("nav.home")}</Link>
               {breadcrumb.map((item) => (
                 <span key={item.label}>
                   <ChevronRight size={13} aria-hidden="true" />

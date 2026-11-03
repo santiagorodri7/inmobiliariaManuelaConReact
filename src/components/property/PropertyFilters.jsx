@@ -3,12 +3,7 @@ import {
   bedroomOptions,
   propertyTypes,
 } from "../../config/site.js";
-
-const operationTabs = [
-  { value: "", label: "Todas" },
-  { value: "venta", label: "Venta" },
-  { value: "renta", label: "Renta" },
-];
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 export default function PropertyFilters({
   values,
@@ -18,6 +13,12 @@ export default function PropertyFilters({
   showReset = false,
   compact = false,
 }) {
+  const { t, operationLabel, propertyTypeLabel } = useI18n();
+  const operationTabs = [
+    { value: "", label: t("property.filters.all") },
+    { value: "venta", label: operationLabel("venta") },
+    { value: "renta", label: operationLabel("renta") },
+  ];
   const update = (field) => (event) =>
     onChange(field, event.target.value);
 
@@ -27,7 +28,7 @@ export default function PropertyFilters({
       onSubmit={onSubmit}
       role="search"
     >
-      <div className="property-filters__tabs" role="group" aria-label="Operación">
+      <div className="property-filters__tabs" role="group" aria-label={t("property.filters.operation")}>
         {operationTabs.map((tab) => (
           <button
             key={tab.value || "todas"}
@@ -42,52 +43,54 @@ export default function PropertyFilters({
 
       <div className="property-filters__fields">
         <label className="filter-field filter-field--search">
-          <span className="filter-field__label">Ubicación</span>
+          <span className="filter-field__label">{t("property.filters.location")}</span>
           <span className="filter-field__control">
             <Search size={17} aria-hidden="true" />
             <input
               type="search"
               value={values.location || ""}
               onChange={update("location")}
-              placeholder="Sector, ciudad o palabra clave"
-              aria-label="Buscar por ubicación o palabra clave"
+              placeholder={t("property.filters.locationPlaceholder")}
+              aria-label={t("property.filters.locationAria")}
             />
           </span>
         </label>
 
         <label className="filter-field">
-          <span className="filter-field__label">Tipo</span>
+          <span className="filter-field__label">{t("property.filters.type")}</span>
           <select
             value={values.type || ""}
             onChange={update("type")}
-            aria-label="Tipo de inmueble"
+            aria-label={t("property.filters.typeAria")}
           >
-            <option value="">Todos</option>
+            <option value="">{t("property.filters.typeAll")}</option>
             {propertyTypes.map((type) => (
               <option key={type.value} value={type.value.toLowerCase()}>
-                {type.label}
+                {propertyTypeLabel(type.value)}
               </option>
             ))}
           </select>
         </label>
 
         <label className="filter-field">
-          <span className="filter-field__label">Habitaciones</span>
+          <span className="filter-field__label">{t("property.filters.bedrooms")}</span>
           <select
             value={values.bedrooms || ""}
             onChange={update("bedrooms")}
-            aria-label="Habitaciones mínimas"
+            aria-label={t("property.filters.bedroomsAria")}
           >
             {bedroomOptions.map((option) => (
               <option key={option.value || "any"} value={option.value}>
-                {option.label}
+                {option.value
+                  ? t("property.filters.bedroomsPlus", { count: option.value })
+                  : t("property.filters.anyBedrooms")}
               </option>
             ))}
           </select>
         </label>
 
         <label className="filter-field">
-          <span className="filter-field__label">Presupuesto máx.</span>
+          <span className="filter-field__label">{t("property.filters.budget")}</span>
           <span className="filter-field__control">
             <span className="filter-field__prefix">$</span>
             <input
@@ -96,15 +99,15 @@ export default function PropertyFilters({
               step="1000000"
               value={values.maxPrice || ""}
               onChange={update("maxPrice")}
-              placeholder="Sin límite"
-              aria-label="Presupuesto máximo en pesos"
+              placeholder={t("property.filters.budgetPlaceholder")}
+              aria-label={t("property.filters.budgetAria")}
             />
           </span>
         </label>
 
         <button type="submit" className="btn btn-primary filter-submit">
           <SlidersHorizontal size={17} aria-hidden="true" />
-          Buscar
+          {t("property.filters.submit")}
         </button>
 
         {showReset && (
@@ -112,10 +115,10 @@ export default function PropertyFilters({
             type="button"
             className="filter-reset"
             onClick={onReset}
-            aria-label="Limpiar filtros"
+            aria-label={t("property.filters.clearAria")}
           >
             <X size={15} aria-hidden="true" />
-            Limpiar
+            {t("common.clear")}
           </button>
         )}
       </div>

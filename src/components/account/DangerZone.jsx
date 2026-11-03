@@ -1,13 +1,28 @@
 import { Mail, ShieldAlert } from "lucide-react";
 import { mailtoUrl, site } from "../../config/site.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
+
+const EMAIL_TOKEN = "__EMAIL__";
 
 export default function DangerZone({ profile }) {
+  const { t } = useI18n();
+  const email = profile?.email || "";
+  const [beforeEmail, afterEmail] = t("account.danger.deleteText", {
+    email: EMAIL_TOKEN,
+  }).split(EMAIL_TOKEN);
+  const subject = t("account.danger.mailSubject");
+  const body = t("account.danger.mailBody", {
+    name: site.name,
+    email,
+    profileName: profile?.nombre || "",
+  });
+
   return (
     <section className="surface danger-zone">
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">Privacidad</p>
-          <h2>Tu cuenta y tus datos</h2>
+          <p className="eyebrow">{t("account.danger.eyebrow")}</p>
+          <h2>{t("account.danger.title")}</h2>
         </div>
       </div>
       <div className="danger-zone__body">
@@ -15,29 +30,22 @@ export default function DangerZone({ profile }) {
           <ShieldAlert size={22} />
         </span>
         <div>
-          <h3>Eliminación de la cuenta</h3>
+          <h3>{t("account.danger.deleteTitle")}</h3>
           <p>
-            La eliminación definitiva se realiza con verificación de identidad y
-            permisos administrativos. Si necesitas borrar tu cuenta y tus datos,
-            escríbenos desde <strong>{profile?.email}</strong> para gestionarlo
-            de forma segura.
+            {beforeEmail}
+            <strong>{email}</strong>
+            {afterEmail}
           </p>
           <a
             className="btn btn-outline-secondary btn-sm"
-            href={mailtoUrl(
-              "Solicitud de eliminación de cuenta",
-              `Hola ${site.name},\n\nSolicito la eliminación de mi cuenta asociada a ${profile?.email}.\n\nNombre: ${profile?.nombre || ""}`,
-            )}
+            href={mailtoUrl(subject, body)}
           >
             <Mail size={15} aria-hidden="true" />
-            Solicitar eliminación
+            {t("account.danger.request")}
           </a>
         </div>
       </div>
-      <p className="danger-zone__note">
-        La desactivación de una cuenta impide el acceso de inmediato y puede
-        revertirse. El borrado permanente no está disponible desde el navegador.
-      </p>
+      <p className="danger-zone__note">{t("account.danger.note")}</p>
     </section>
   );
 }

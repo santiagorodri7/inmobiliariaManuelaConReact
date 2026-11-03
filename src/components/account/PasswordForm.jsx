@@ -2,11 +2,13 @@ import { useState } from "react";
 import { KeyRound, LoaderCircle } from "lucide-react";
 import Field from "../ui/Field.jsx";
 import { useToast } from "../ui/Toast.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { changePassword } from "../../services/authService.js";
 import { getErrorMessage } from "../../utils/errors.js";
 import { hasErrors, validatePasswordChange } from "../../utils/validation.js";
 
 export default function PasswordForm() {
+  const { t } = useI18n();
   const toast = useToast();
   const [values, setValues] = useState({
     currentPassword: "",
@@ -30,15 +32,15 @@ export default function PasswordForm() {
     setSaving(true);
     try {
       await changePassword(values.currentPassword, values.newPassword);
-      toast.success("Contraseña actualizada. Guárdala en un lugar seguro.");
+      toast.success(t("account.password.success"));
       setValues({ currentPassword: "", newPassword: "", confirmPassword: "" });
       setErrors({});
     } catch (error) {
       const message =
         error?.code === "auth/invalid-credential" ||
         error?.code === "auth/wrong-password"
-          ? "La contraseña actual no es correcta."
-          : getErrorMessage(error, "No se pudo cambiar la contraseña.");
+          ? t("account.password.wrong")
+          : getErrorMessage(error, "account.password.errorFallback");
       toast.error(message);
     } finally {
       setSaving(false);
@@ -49,17 +51,20 @@ export default function PasswordForm() {
     <form className="surface profile-form" onSubmit={handleSubmit}>
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">Seguridad</p>
-          <h2>Cambiar contraseña</h2>
-          <p>
-            Usa una contraseña de al menos 8 caracteres. Te pediremos la actual
-            para confirmar el cambio.
-          </p>
+          <p className="eyebrow">{t("account.password.eyebrow")}</p>
+          <h2>{t("account.password.title")}</h2>
+          <p>{t("account.password.text")}</p>
         </div>
       </div>
 
       <div className="form-grid form-grid--two">
-        <Field label="Contraseña actual" htmlFor="password-current" error={errors.currentPassword} className="form-field--full" required>
+        <Field
+          label={t("account.password.current")}
+          htmlFor="password-current"
+          error={errors.currentPassword}
+          className="form-field--full"
+          required
+        >
           <input
             id="password-current"
             type="password"
@@ -70,7 +75,12 @@ export default function PasswordForm() {
             aria-invalid={Boolean(errors.currentPassword)}
           />
         </Field>
-        <Field label="Nueva contraseña" htmlFor="password-new" error={errors.newPassword} required>
+        <Field
+          label={t("account.password.new")}
+          htmlFor="password-new"
+          error={errors.newPassword}
+          required
+        >
           <input
             id="password-new"
             type="password"
@@ -81,7 +91,12 @@ export default function PasswordForm() {
             aria-invalid={Boolean(errors.newPassword)}
           />
         </Field>
-        <Field label="Confirmar nueva contraseña" htmlFor="password-confirm" error={errors.confirmPassword} required>
+        <Field
+          label={t("account.password.confirm")}
+          htmlFor="password-confirm"
+          error={errors.confirmPassword}
+          required
+        >
           <input
             id="password-confirm"
             type="password"
@@ -101,7 +116,9 @@ export default function PasswordForm() {
           ) : (
             <KeyRound size={16} aria-hidden="true" />
           )}
-          {saving ? "Actualizando…" : "Actualizar contraseña"}
+          {saving
+            ? t("account.password.updating")
+            : t("account.password.submit")}
         </button>
       </div>
     </form>

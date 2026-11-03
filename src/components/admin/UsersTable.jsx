@@ -1,7 +1,7 @@
 import { Users, UserX, UserCheck } from "lucide-react";
 import Avatar from "../ui/Avatar.jsx";
 import { RolePill, UserStatusPill } from "../ui/StatusBadge.jsx";
-import { formatDate } from "../../utils/dates.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import EmptyState from "../ui/EmptyState.jsx";
 import ErrorState from "../ui/ErrorState.jsx";
 import { TableSkeleton } from "../ui/Skeleton.jsx";
@@ -15,15 +15,25 @@ export default function UsersTable({
   busyId = "",
   currentUserId = "",
 }) {
+  const { t, formatDate } = useI18n();
+
   if (loading) return <TableSkeleton rows={6} columns={5} />;
-  if (error) return <ErrorState title="No pudimos cargar los usuarios" description={error} onRetry={onRetry} compact />;
+  if (error)
+    return (
+      <ErrorState
+        title={t("admin.usersTable.errorTitle")}
+        description={error}
+        onRetry={onRetry}
+        compact
+      />
+    );
 
   if (!users.length) {
     return (
       <EmptyState
         icon={Users}
-        title="No hay usuarios con estos filtros"
-        description="Prueba con otro término de búsqueda o limpia los filtros."
+        title={t("admin.usersTable.emptyTitle")}
+        description={t("admin.usersTable.emptyDescription")}
         compact
       />
     );
@@ -34,12 +44,12 @@ export default function UsersTable({
       <table className="data-table">
         <thead>
           <tr>
-            <th>Usuario</th>
-            <th>Cédula</th>
-            <th>Rol</th>
-            <th>Registro</th>
-            <th>Estado</th>
-            <th className="text-end">Acciones</th>
+            <th>{t("admin.usersTable.user")}</th>
+            <th>{t("admin.usersTable.id")}</th>
+            <th>{t("admin.usersTable.role")}</th>
+            <th>{t("admin.usersTable.registered")}</th>
+            <th>{t("admin.usersTable.status")}</th>
+            <th className="text-end">{t("admin.usersTable.actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -70,17 +80,21 @@ export default function UsersTable({
                       disabled={busyId === user.id || isSelf}
                       title={
                         isSelf
-                          ? "No puedes desactivar tu propia cuenta"
+                          ? t("admin.usersTable.selfWarning")
                           : active
-                            ? "Desactivar cuenta"
-                            : "Reactivar cuenta"
+                            ? t("admin.usersTable.deactivate")
+                            : t("admin.usersTable.reactivate")
                       }
                       aria-label={
                         isSelf
-                          ? "No puedes desactivar tu propia cuenta"
+                          ? t("admin.usersTable.selfWarning")
                           : active
-                            ? `Desactivar a ${user.nombre}`
-                            : `Reactivar a ${user.nombre}`
+                            ? t("admin.usersTable.deactivateAria", {
+                                name: user.nombre,
+                              })
+                            : t("admin.usersTable.reactivateAria", {
+                                name: user.nombre,
+                              })
                       }
                     >
                       {active ? <UserX size={17} /> : <UserCheck size={17} />}
