@@ -1,75 +1,87 @@
-const messages = {
-  "auth/invalid-credential": "El correo o la contraseña no son correctos.",
-  "auth/invalid-login-credentials":
-    "El correo o la contraseña no son correctos.",
-  "auth/wrong-password": "El correo o la contraseña no son correctos.",
-  "auth/user-not-found": "El correo o la contraseña no son correctos.",
-  "auth/invalid-email": "Escribe un correo electrónico válido.",
-  "auth/email-already-in-use": "Ya existe una cuenta con este correo.",
-  "auth/weak-password": "La contraseña debe tener al menos 8 caracteres.",
-  "auth/too-many-requests":
-    "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
-  "auth/network-request-failed":
-    "No pudimos conectar con el servidor. Revisa tu conexión.",
-  "auth/user-disabled": "Esta cuenta está desactivada.",
-  "auth/requires-recent-login":
-    "Por seguridad, vuelve a iniciar sesión antes de continuar.",
-  "auth/operation-not-allowed":
-    "El inicio de sesión con correo no está habilitado en Firebase.",
-  "permission-denied":
-    "No tienes permisos para realizar esta acción. Si crees que es un error, contacta a la administradora.",
-  unavailable:
-    "El servicio no está disponible en este momento. Inténtalo de nuevo.",
-  "storage/unauthorized":
-    "No tienes permisos para subir esta imagen. Revisa la configuración de Storage.",
-  "storage/canceled": "La subida de la imagen fue cancelada.",
-  "storage/retry-limit-exceeded":
-    "La conexión se interrumpió durante la subida. Inténtalo de nuevo.",
-  "storage/unknown":
-    "No se pudo subir la imagen. Verifica que Firebase Storage esté habilitado.",
-  "functions/not-found":
-    "El servicio de correo aún no está desplegado. Puedes escribirnos directamente por correo o WhatsApp.",
-  "functions/unavailable":
-    "El servicio de correo no está disponible en este momento. Escríbenos directamente.",
-  "functions/internal":
-    "No se pudo enviar el mensaje. Escríbenos directamente por correo o WhatsApp.",
-  "functions/resource-exhausted":
-    "Has enviado varios mensajes en poco tiempo. Espera unos minutos.",
-  "functions/invalid-argument":
-    "Revisa los datos del formulario e inténtalo de nuevo.",
-  "functions/failed-precondition":
-    "El envío de correo aún no está configurado. Escríbenos directamente.",
-  "app/not-configured":
-    "Firebase no está configurado. Revisa el archivo .env.local.",
-  "profile/not-found":
-    "Tu cuenta existe, pero no tiene un perfil asociado. Contacta a la administradora.",
-  "profile/disabled": "Tu cuenta está desactivada. Contacta a la administradora.",
-  "property/not-available":
-    "Esta propiedad ya no está disponible para registrar un cierre.",
-  "property/not-found": "No encontramos esta propiedad.",
-  "sale/not-found": "No encontramos este cierre.",
-  "sale/already-annulled": "Este cierre ya fue anulado.",
-  "storage/base64-too-large":
-    "La imagen sigue superando el límite de 700 KB después de comprimirla. Usa una imagen más liviana o habilita Firebase Storage.",
-  "storage/not-available":
-    "Firebase Storage no está disponible. Actívalo o usa el modo de contingencia.",
-  "contact/not-configured":
-    "El envío de correo aún no está configurado. Puedes escribirnos directamente por correo o WhatsApp.",
-  "export/no-rows": "No hay datos para exportar con los filtros actuales.",
+import { translate } from "../i18n/translate.js";
+
+const messageKeys = {
+  "auth/invalid-credential": "errors.auth.invalidCredential",
+  "auth/invalid-login-credentials": "errors.auth.invalidCredential",
+  "auth/wrong-password": "errors.auth.invalidCredential",
+  "auth/user-not-found": "errors.auth.invalidCredential",
+  "auth/invalid-email": "errors.auth.invalidEmail",
+  "auth/email-already-in-use": "errors.auth.emailInUse",
+  "auth/weak-password": "errors.auth.weakPassword",
+  "auth/too-many-requests": "errors.auth.tooManyRequests",
+  "auth/network-request-failed": "errors.auth.network",
+  "auth/user-disabled": "errors.auth.userDisabled",
+  "auth/requires-recent-login": "errors.auth.recentLogin",
+  "auth/operation-not-allowed": "errors.auth.operationNotAllowed",
+  "auth/requires-login": "errors.auth.requiresLogin",
+  "auth/invalid-role": "errors.invalidRole",
+  "permission-denied": "errors.permissionDenied",
+  unavailable: "errors.unavailable",
+  "storage/unauthorized": "errors.storage.unauthorized",
+  "storage/canceled": "errors.storage.canceled",
+  "storage/timeout": "errors.storage.timeout",
+  "storage/retry-limit-exceeded": "errors.storage.retry",
+  "storage/unknown": "errors.storage.unknown",
+  "functions/not-found": "errors.functions.notFound",
+  "functions/unavailable": "errors.functions.unavailable",
+  "functions/internal": "errors.functions.internal",
+  "functions/resource-exhausted": "errors.functions.resourceExhausted",
+  "functions/invalid-argument": "errors.functions.invalidArgument",
+  "functions/failed-precondition": "errors.functions.failedPrecondition",
+  "app/not-configured": "errors.app.notConfigured",
+  "profile/not-found": "errors.profile.notFound",
+  "profile/disabled": "errors.profile.disabled",
+  "property/not-available": "errors.property.notAvailable",
+  "property/not-found": "errors.property.notFound",
+  "sale/not-found": "errors.sale.notFound",
+  "sale/already-annulled": "errors.sale.annulled",
+  "storage/base64-too-large": "errors.storage.base64TooLarge",
+  "storage/base64-batch-too-large": "errors.storage.base64BatchTooLarge",
+  "storage/not-available": "errors.storage.notAvailable",
+  "storage/image-error": "errors.storage.imageError",
+  "storage/invalid-file": "errors.storage.invalidFile",
+  "contact/not-configured": "errors.contact.notConfigured",
+  "contact/name": "validation.contact.name",
+  "contact/email": "validation.contact.email",
+  "contact/message": "validation.contact.message",
+  "language/invalid": "errors.language.invalid",
+  "export/no-rows": "errors.export.noRows",
+  "property/locked": "errors.property.locked",
+  "property/invalid-status": "errors.property.invalidStatus",
+  "sale/buyer": "validation.sale.buyer",
+  "sale/buyer-email": "validation.sale.buyerEmail",
+  "sale/value": "validation.sale.value",
+  "sale/date": "errors.sale.date",
+  "sale/date-future": "errors.sale.dateFuture",
+  "testimonial/requires-login": "errors.testimonial.loginRequired",
+  "testimonial/name": "validation.testimonial.name",
+  "testimonial/text": "validation.testimonial.text",
+  "testimonial/rating": "validation.testimonial.rating",
 };
 
+const looksLikeKey = (value) =>
+  typeof value === "string" && /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+$/.test(value);
+
+const renderFallback = (fallback) =>
+  looksLikeKey(fallback) ? translate(fallback) : fallback;
+
 export const appError = (code, message) => {
-  const error = new Error(message || messages[code] || "Ocurrió un error.");
+  const error = new Error(
+    message || (messageKeys[code] ? translate(messageKeys[code]) : translate("errors.generic")),
+  );
   error.code = code;
   return error;
 };
 
-export const getErrorMessage = (error, fallback = "Ocurrió un error.") => {
-  if (!error) return fallback;
-  if (error.code && messages[error.code]) return messages[error.code];
+export const getErrorMessage = (error, fallback = "errors.generic") => {
+  const fallbackText = renderFallback(fallback);
+  if (!error) return fallbackText;
+  if (error.code && messageKeys[error.code]) {
+    return translate(messageKeys[error.code]);
+  }
   if (typeof error === "string") return error;
   if (error.message) return error.message;
-  return fallback;
+  return fallbackText;
 };
 
 export const isPermissionError = (error) =>

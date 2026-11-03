@@ -1,3 +1,5 @@
+import { useI18n } from "../../i18n/I18nContext.jsx";
+
 export function Skeleton({ className = "", style }) {
   return (
     <span
@@ -23,8 +25,9 @@ export function PropertyCardSkeleton() {
 }
 
 export function PropertyGridSkeleton({ count = 3 }) {
+  const { t } = useI18n();
   return (
-    <div className="property-grid" aria-label="Cargando propiedades">
+    <div className="property-grid" aria-label={t("common.loadingProperties")}>
       {Array.from({ length: count }).map((_, index) => (
         <PropertyCardSkeleton key={index} />
       ))}
@@ -33,8 +36,9 @@ export function PropertyGridSkeleton({ count = 3 }) {
 }
 
 export function TableSkeleton({ rows = 5, columns = 5 }) {
+  const { t } = useI18n();
   return (
-    <div className="table-skeleton" aria-label="Cargando datos">
+    <div className="table-skeleton" aria-label={t("common.loadingData")}>
       {Array.from({ length: rows }).map((_, row) => (
         <div className="table-skeleton__row" key={row}>
           {Array.from({ length: columns }).map((__, column) => (

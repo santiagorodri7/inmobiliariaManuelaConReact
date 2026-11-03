@@ -2,18 +2,19 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Check, ShieldCheck } from "lucide-react";
 import Logo from "../ui/Logo.jsx";
 import { site } from "../../config/site.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
-export default function AuthLayout({
-  children,
-  eyebrow = "Manuela Bermúdez · Realtor",
-  title = "Un lugar que se sienta tuyo.",
-  description = "Acompañamiento inmobiliario cercano para comprar, vender o arrendar en Medellín y el Valle de Aburrá.",
-  points = [
-    "Acompañamiento directo en cada etapa.",
-    "Información clara, sin letra pequeña.",
-    "Propiedades seleccionadas con criterio.",
-  ],
-}) {
+export default function AuthLayout({ children, eyebrow, title, description, points }) {
+  const { t } = useI18n();
+  const heading = title || t("auth.layout.title");
+  const lead = description || t("auth.layout.description");
+  const items =
+    points ||
+    [
+      t("auth.layout.point1"),
+      t("auth.layout.point2"),
+      t("auth.layout.point3"),
+    ];
   return (
     <div className="auth-shell">
       <aside className="auth-aside">
@@ -24,12 +25,14 @@ export default function AuthLayout({
         <div className="auth-aside__content">
           <Logo variant="light" />
           <div className="auth-aside__copy">
-            <p className="eyebrow eyebrow--light">{eyebrow}</p>
-            <h2>{title}</h2>
-            <p>{description}</p>
+            <p className="eyebrow eyebrow--light">
+              {eyebrow || t("auth.layout.eyebrow")}
+            </p>
+            <h2>{heading}</h2>
+            <p>{lead}</p>
           </div>
           <ul className="auth-aside__points">
-            {points.map((point) => (
+            {items.map((point) => (
               <li key={point}>
                 <span aria-hidden="true">
                   <Check size={14} />
@@ -41,9 +44,9 @@ export default function AuthLayout({
           <div className="auth-aside__footer">
             <span>
               <ShieldCheck size={16} aria-hidden="true" />
-              Espacio privado y seguro
+              {t("auth.layout.secure")}
             </span>
-            <small>{site.location}</small>
+            <small>{t("site.location")}</small>
           </div>
         </div>
       </aside>
@@ -55,15 +58,17 @@ export default function AuthLayout({
           </div>
           <Link to="/" className="auth-back">
             <ArrowLeft size={16} aria-hidden="true" />
-            Volver al sitio
+            {t("auth.layout.back")}
           </Link>
         </div>
 
         <div className="auth-card">{children}</div>
 
         <p className="auth-main__legal">
-          © {new Date().getFullYear()} {site.fullName}. Todos los derechos
-          reservados.
+          {t("auth.layout.rights", {
+            year: new Date().getFullYear(),
+            name: site.fullName,
+          })}
         </p>
       </main>
     </div>

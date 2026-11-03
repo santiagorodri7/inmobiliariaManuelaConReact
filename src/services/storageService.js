@@ -6,10 +6,13 @@ import {
 } from "firebase/storage";
 import { allowBase64Fallback, requireFirebase, storage } from "./firebase.js";
 import { appError } from "../utils/errors.js";
+import { translate } from "../i18n/translate.js";
 
 const MAX_FILE_SIZE = 8 * 1024 * 1024;
-const MAX_BASE64_BYTES = 700 * 1024;
+const MAX_BASE64_BYTES = 180 * 1024;
+const MAX_BASE64_TOTAL_BYTES = 600 * 1024;
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const UPLOAD_TIMEOUT_MS = 45 * 1000;
 
 const loadImage = (file) =>
   new Promise((resolve, reject) => {
@@ -21,7 +24,7 @@ const loadImage = (file) =>
     };
     image.onerror = () => {
       URL.revokeObjectURL(url);
-      reject(appError("storage/image-error", "No se pudo leer la imagen."));
+      reject(appError("storage/image-error"));
     };
     image.src = url;
   });
@@ -31,7 +34,7 @@ const canvasToBlob = (canvas, mime, quality) =>
     canvas.toBlob(
       (blob) => {
         if (blob) resolve(blob);
-        else reject(appError("storage/image-error", "No se pudo comprimir la imagen."));
+        else reject(appError("storage/image-error"));
       },
       mime,
       quality,
@@ -43,7 +46,7 @@ const blobToDataUrl = (blob) =>
     const reader = new FileReader();
     reader.onload = () => resolve(String(reader.result || ""));
     reader.onerror = () =>
-      reject(appError("storage/image-error", "No se pudo procesar la imagen."));
+      reject(appError("storage/image-error"));
     reader.readAsDataURL(blob);
   });
 
@@ -53,12 +56,12 @@ const dataUrlBytes = (dataUrl) => {
 };
 
 export const validateImageFile = (file) => {
-  if (!file) return "Selecciona una imagen.";
+  if (!file) return translate("errors.storage.select");
   if (!ACCEPTED_TYPES.includes(file.type)) {
-    return "Formato no compatible. Usa JPG, PNG o WebP.";
+    return translate("errors.storage.format");
   }
   if (file.size > MAX_FILE_SIZE) {
-    return "Cada imagen debe pesar menos de 8 MB.";
+    return translate("errors.storage.size");
   }
   return "";
 };
@@ -76,7 +79,7 @@ export const compressImage = async (
   canvas.width = width;
   canvas.height = height;
   const context = canvas.getContext("2d");
-  if (!context) throw appError("storage/image-error", "No se pudo comprimir la imagen.");
+  if (!context) throw appError("storage/image-error");
   context.drawImage(image, 0, 0, width, height);
 
   const blob = await canvasToBlob(canvas, "image/webp", quality);
@@ -99,6 +102,9 @@ export const createBase64Fallback = async (
     { maxWidth: 720, quality: 0.5 },
     { maxWidth: 640, quality: 0.45 },
     { maxWidth: 520, quality: 0.4 },
+    { maxWidth: 480, quality: 0.35 },
+    { maxWidth: 420, quality: 0.32 },
+    { maxWidth: 360, quality: 0.3 },
   ];
 
   for (const attempt of attempts) {
@@ -116,7 +122,83 @@ export const createBase64Fallback = async (
   throw appError("storage/base64-too-large");
 };
 
-const uploadOne = async (ownerId, propertyId, file, index, onProgress) => {
+const uploadWithTimeout = (
+  storageRef,
+  file,
+  metadata,
+  { signal, onProgress, timeoutMs = UPLOAD_TIMEOUT_MS } = {},
+) => {
+  const task = uploadBytesResumable(storageRef, file, metadata);
+
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    let timeoutId = null;
+
+    const cleanup = () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      signal?.removeEventListener("abort", handleAbort);
+    };
+
+    const succeed = (url) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      resolve(url);
+    };
+
+    const fail = (error) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      try {
+        task.cancel();
+      } catch {
+        // La tarea ya había terminado; no hay nada que cancelar.
+      }
+      reject(error);
+    };
+
+    const handleAbort = () => fail(appError("storage/canceled"));
+
+    if (signal?.aborted) {
+      handleAbort();
+      return;
+    }
+
+    signal?.addEventListener("abort", handleAbort, { once: true });
+
+    timeoutId = setTimeout(() => {
+      fail(appError("storage/timeout"));
+    }, timeoutMs);
+
+    task.on(
+      "state_changed",
+      (snapshot) => {
+        if (onProgress && snapshot.totalBytes) {
+          onProgress(snapshot.bytesTransferred / snapshot.totalBytes);
+        }
+      },
+      (error) => fail(error),
+      async () => {
+        try {
+          const url = await getDownloadURL(task.snapshot.ref);
+          succeed(url);
+        } catch (error) {
+          fail(error);
+        }
+      },
+    );
+  });
+};
+
+const uploadOne = async (
+  ownerId,
+  propertyId,
+  file,
+  index,
+  onProgress,
+  signal,
+) => {
   const errorMessage = validateImageFile(file);
   if (errorMessage) {
     throw appError("storage/invalid-file", errorMessage);
@@ -128,30 +210,25 @@ const uploadOne = async (ownerId, propertyId, file, index, onProgress) => {
     .slice(2, 8)}`;
   const path = `propiedades/${ownerId}/${propertyId}/${imageId}.webp`;
   const storageRef = ref(storage, path);
-  const task = uploadBytesResumable(storageRef, compressed, {
-    contentType: "image/webp",
-    cacheControl: "public,max-age=31536000,immutable",
-  });
+  const url = await uploadWithTimeout(
+    storageRef,
+    compressed,
+    {
+      contentType: "image/webp",
+      cacheControl: "public,max-age=31536000,immutable",
+    },
+    { signal, onProgress },
+  );
 
-  return new Promise((resolve, reject) => {
-    task.on(
-      "state_changed",
-      (snapshot) => {
-        if (onProgress && snapshot.totalBytes) {
-          onProgress(snapshot.bytesTransferred / snapshot.totalBytes);
-        }
-      },
-      reject,
-      async () => {
-        try {
-          const url = await getDownloadURL(task.snapshot.ref);
-          resolve({ url, path });
-        } catch (error) {
-          reject(error);
-        }
-      },
-    );
-  });
+  return { url, path };
+};
+
+const fallbackBatchError = (omitted, total) => {
+  const error = new Error(
+    translate("errors.storage.base64BatchTooLarge", { omitted, total }),
+  );
+  error.code = "storage/base64-batch-too-large";
+  return error;
 };
 
 export const uploadPropertyImages = async (
@@ -159,6 +236,7 @@ export const uploadPropertyImages = async (
   propertyId,
   files = [],
   onProgress,
+  { signal } = {},
 ) => {
   if (!files.length) {
     return { images: [], usedFallback: false, skipped: 0 };
@@ -180,6 +258,7 @@ export const uploadPropertyImages = async (
           const overall = ((index + fraction) / files.length) * 100;
           onProgress(Math.min(99, Math.round(overall)));
         },
+        signal,
       );
       uploaded.push(image);
     }
@@ -192,27 +271,55 @@ export const uploadPropertyImages = async (
       ),
     );
 
-    if (!allowBase64Fallback) throw error;
+    if (
+      !allowBase64Fallback ||
+      signal?.aborted ||
+      error?.code === "storage/canceled" ||
+      error?.code === "storage/timeout"
+    ) {
+      throw error;
+    }
 
-    const fallback = await createBase64Fallback(files[0]);
-    if (onProgress) onProgress(100);
+    const fallbackImages = [];
+    let totalBytes = 0;
+
+    for (let index = 0; index < files.length; index += 1) {
+      let fallback;
+      try {
+        fallback = await createBase64Fallback(files[index], {
+          maxBytes: MAX_BASE64_BYTES,
+          initialWidth: 960,
+        });
+      } catch {
+        throw fallbackBatchError(files.length - index, files.length);
+      }
+
+      if (totalBytes + fallback.bytes > MAX_BASE64_TOTAL_BYTES) {
+        throw fallbackBatchError(files.length - index, files.length);
+      }
+
+      totalBytes += fallback.bytes;
+      fallbackImages.push({
+        url: fallback.dataUrl,
+        path: "",
+        fallback: true,
+        bytes: fallback.bytes,
+      });
+      if (onProgress) {
+        onProgress(Math.round(((index + 1) / files.length) * 100));
+      }
+    }
+
     return {
-      images: [
-        {
-          url: fallback.dataUrl,
-          path: "",
-          fallback: true,
-          bytes: fallback.bytes,
-        },
-      ],
+      images: fallbackImages,
       usedFallback: true,
-      skipped: Math.max(0, files.length - 1),
-      fallbackBytes: fallback.bytes,
+      skipped: 0,
+      fallbackBytes: totalBytes,
     };
   }
 };
 
-export const uploadAvatar = async (uid, file) => {
+export const uploadAvatar = async (uid, file, { signal } = {}) => {
   const errorMessage = validateImageFile(file);
   if (errorMessage) throw appError("storage/invalid-file", errorMessage);
   requireFirebase();
@@ -223,13 +330,25 @@ export const uploadAvatar = async (uid, file) => {
   const storageRef = ref(storage, path);
 
   try {
-    await uploadBytesResumable(storageRef, compressed, {
-      contentType: "image/webp",
-      cacheControl: "public,max-age=31536000,immutable",
-    });
-    return { url: await getDownloadURL(storageRef), path };
+    const url = await uploadWithTimeout(
+      storageRef,
+      compressed,
+      {
+        contentType: "image/webp",
+        cacheControl: "public,max-age=31536000,immutable",
+      },
+      { signal },
+    );
+    return { url, path };
   } catch (error) {
-    if (!allowBase64Fallback) throw error;
+    if (
+      !allowBase64Fallback ||
+      signal?.aborted ||
+      error?.code === "storage/canceled" ||
+      error?.code === "storage/timeout"
+    ) {
+      throw error;
+    }
     const fallback = await createBase64Fallback(file, {
       maxBytes: 220 * 1024,
       initialWidth: 480,

@@ -19,6 +19,7 @@ import TestimonialGrid from "../../components/testimonials/TestimonialGrid.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { useProperties } from "../../hooks/useProperties.js";
 import { useTestimonials } from "../../hooks/useTestimonials.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { filterProperties, propertySearchSummary } from "../../utils/property.js";
 import { site, whatsappUrl } from "../../config/site.js";
 
@@ -31,49 +32,16 @@ const initialFilters = {
 };
 
 const services = [
-  {
-    icon: Search,
-    title: "Encontrar tu próximo lugar",
-    text: "Filtramos opciones según tu forma de vivir, tu presupuesto y la zona que tienes en mente.",
-    link: "/servicios",
-  },
-  {
-    icon: Handshake,
-    title: "Vender con claridad",
-    text: "Organizamos la publicación, las visitas y la negociación para que el proceso sea predecible.",
-    link: "/servicios",
-  },
-  {
-    icon: KeyRound,
-    title: "Arrendar sin ruido",
-    text: "Te acompañamos en la selección, la revisión de condiciones y la entrega del inmueble.",
-    link: "/servicios",
-  },
+  { icon: Search, key: "find", link: "/servicios" },
+  { icon: Handshake, key: "sell", link: "/servicios" },
+  { icon: KeyRound, key: "rent", link: "/servicios" },
 ];
 
-const steps = [
-  {
-    number: "01",
-    title: "Conversamos",
-    text: "Escuchamos qué necesitas, qué te importa del lugar y cuál es tu presupuesto real.",
-  },
-  {
-    number: "02",
-    title: "Seleccionamos",
-    text: "Filtramos propiedades que encajan y coordinamos visitas sin hacerte perder tiempo.",
-  },
-  {
-    number: "03",
-    title: "Acompañamos",
-    text: "Revisamos condiciones, negociación y cierre contigo, con comunicación constante.",
-  },
-];
+const steps = ["talk", "select", "support"];
 
 export default function HomePage() {
-  usePageTitle(
-    "Propiedades en venta y arriendo en Medellín",
-    "Encuentra propiedades en Medellín y el Valle de Aburrá con asesoría inmobiliaria cercana y transparente.",
-  );
+  const { t } = useI18n();
+  usePageTitle(t("home.pageTitle"), t("home.pageDescription"));
 
   const { properties, loading, error, reload } = useProperties({ publicOnly: true });
   const { testimonials, loading: testimonialsLoading } = useTestimonials();
@@ -108,44 +76,39 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero__content">
           <div className="hero__copy">
-            <p className="eyebrow eyebrow--light">
-              Manuela Bermúdez · Realtor
-            </p>
+            <p className="eyebrow eyebrow--light">{t("home.hero.eyebrow")}</p>
             <h1>
-              Un lugar que
+              {t("home.hero.titleLine1")}
               <br />
-              se sienta <em>tuyo.</em>
+              {t("home.hero.titleLine2")} <em>{t("home.hero.titleEm")}</em>
             </h1>
-            <p className="hero__lead">
-              Propiedades en venta y arriendo en Medellín y el Valle de Aburrá,
-              con una asesoría cercana para decidir con calma y con claridad.
-            </p>
+            <p className="hero__lead">{t("home.hero.lead")}</p>
             <div className="hero__actions">
               <button
                 type="button"
                 className="btn btn-primary btn-lg"
                 onClick={() => document.getElementById("propiedades")?.scrollIntoView({ behavior: "smooth" })}
               >
-                Explorar propiedades
+                {t("home.hero.explore")}
                 <ArrowRight size={18} aria-hidden="true" />
               </button>
               <Link to="/contacto" className="btn btn-ghost btn-lg">
-                Hablar con Manuela
+                {t("home.hero.talk")}
                 <ArrowUpRight size={18} aria-hidden="true" />
               </Link>
             </div>
             <ul className="hero__trust">
               <li>
                 <Compass size={17} aria-hidden="true" />
-                Venta y arriendo
+                {t("home.hero.saleRent")}
               </li>
               <li>
                 <MapPin size={17} aria-hidden="true" />
-                {site.coverage}
+                {t("site.coverage")}
               </li>
               <li>
                 <Sparkles size={17} aria-hidden="true" />
-                Acompañamiento personal
+                {t("home.hero.personalSupport")}
               </li>
             </ul>
           </div>
@@ -162,8 +125,8 @@ export default function HomePage() {
                 <Building2 size={19} />
               </span>
               <div>
-                <strong>Selección cuidada</strong>
-                <span>Cada propiedad se revisa antes de publicarse.</span>
+                <strong>{t("home.hero.noteTitle")}</strong>
+                <span>{t("home.hero.noteText")}</span>
               </div>
             </div>
           </div>
@@ -175,11 +138,13 @@ export default function HomePage() {
           <div className="hero-search-card">
             <div className="hero-search-card__head">
               <div>
-                <p className="eyebrow">Encuentra tu próximo lugar</p>
-                <h2>¿Qué estás buscando?</h2>
+                <p className="eyebrow">{t("home.search.eyebrow")}</p>
+                <h2>{t("home.search.title")}</h2>
               </div>
               <span className="hero-search-card__hint">
-                {loading ? "Cargando inventario…" : `${properties.length} propiedades publicadas`}
+                {loading
+                  ? t("home.search.loading")
+                  : t("home.search.published", { count: properties.length })}
               </span>
             </div>
             <PropertyFilters
@@ -198,24 +163,21 @@ export default function HomePage() {
         <div className="shell">
           <div className="section-heading section-heading--split">
             <div>
-              <p className="eyebrow">Inventario disponible</p>
-              <h2>Propiedades para empezar a imaginar</h2>
-              <p>
-                Una selección de inmuebles publicados. Si algo te gusta, podemos
-                coordinar una visita y revisar cada detalle contigo.
-              </p>
+              <p className="eyebrow">{t("home.inventory.eyebrow")}</p>
+              <h2>{t("home.inventory.title")}</h2>
+              <p>{t("home.inventory.description")}</p>
             </div>
             <div className="section-heading__aside">
-              <span>{filtered.length} resultados</span>
+              <span>{t("home.inventory.results", { count: filtered.length })}</span>
               {summary && <small>{summary}</small>}
             </div>
           </div>
 
           {hasFilters && (
             <div className="active-filters">
-              <span>{summary || "Filtros activos"}</span>
+              <span>{summary || t("home.inventory.activeFilters")}</span>
               <button type="button" onClick={resetFilters}>
-                Limpiar filtros
+                {t("common.clearFilters")}
               </button>
             </div>
           )}
@@ -225,15 +187,19 @@ export default function HomePage() {
             loading={loading}
             error={error}
             onRetry={reload}
-            emptyTitle={hasFilters ? "No encontramos propiedades con esos filtros" : "Aún no hay propiedades publicadas"}
+            emptyTitle={
+              hasFilters
+                ? t("home.inventory.emptyFilteredTitle")
+                : t("home.inventory.emptyTitle")
+            }
             emptyDescription={
               hasFilters
-                ? "Prueba con otra zona, un presupuesto mayor o menos requisitos. También podemos buscar contigo."
-                : "Estamos preparando el inventario. Cuéntanos qué buscas y te avisamos cuando llegue algo que encaje."
+                ? t("home.inventory.emptyFilteredDescription")
+                : t("home.inventory.emptyDescription")
             }
             emptyAction={
               <Link to="/contacto" className="btn btn-primary">
-                Contar qué busco
+                {t("home.inventory.tellWhatISeek")}
                 <ArrowRight size={17} aria-hidden="true" />
               </Link>
             }
@@ -242,7 +208,7 @@ export default function HomePage() {
           {!showAll && filtered.length > 6 && (
             <div className="section-more">
               <button type="button" className="btn btn-outline-secondary" onClick={() => setShowAll(true)}>
-                Ver las {filtered.length} propiedades
+                {t("home.inventory.seeAll", { count: filtered.length })}
                 <ArrowRight size={16} aria-hidden="true" />
               </button>
             </div>
@@ -253,23 +219,20 @@ export default function HomePage() {
       <section className="section section--sand" id="servicios">
         <div className="shell">
           <div className="section-heading">
-            <p className="eyebrow">Cómo puedo ayudarte</p>
-            <h2>Menos ruido, más decisiones claras</h2>
-            <p>
-              No se trata de mostrarte todas las propiedades del mercado, sino
-              de encontrar las que tienen sentido para ti.
-            </p>
+            <p className="eyebrow">{t("home.help.eyebrow")}</p>
+            <h2>{t("home.help.title")}</h2>
+            <p>{t("home.help.description")}</p>
           </div>
           <div className="service-preview-grid">
-            {services.map(({ icon: Icon, title, text, link }) => (
-              <article className="service-preview" key={title}>
+            {services.map(({ icon: Icon, key, link }) => (
+              <article className="service-preview" key={key}>
                 <span className="service-preview__icon" aria-hidden="true">
                   <Icon size={22} />
                 </span>
-                <h3>{title}</h3>
-                <p>{text}</p>
+                <h3>{t(`home.services.${key}.title`)}</h3>
+                <p>{t(`home.services.${key}.text`)}</p>
                 <Link to={link}>
-                  Conocer el servicio
+                  {t("home.help.link")}
                   <ArrowUpRight size={15} aria-hidden="true" />
                 </Link>
               </article>
@@ -281,36 +244,30 @@ export default function HomePage() {
       <section className="section">
         <div className="shell about-teaser">
           <div className="about-teaser__media">
-            <img src="/img/about-2.png" alt="Terraza con piscina y vista a la ciudad de Medellín" loading="lazy" />
+            <img
+              src="/img/about-2.png"
+              alt={t("home.about.imageAlt")}
+              loading="lazy"
+            />
             <div className="about-teaser__badge">
-              <span>Medellín</span>
-              <strong>Valle de Aburrá</strong>
+              <span>{t("home.about.badgeCity")}</span>
+              <strong>{t("home.about.badgeRegion")}</strong>
             </div>
           </div>
           <div className="about-teaser__copy">
-            <p className="eyebrow">Una forma más humana</p>
-            <h2>Moverte por el mercado inmobiliario no tiene por qué ser confuso.</h2>
-            <p>
-              Mi trabajo es traducir el proceso a decisiones simples: qué mirar,
-              qué preguntar y cuándo avanzar. Con información clara y sin
-              presión, para que elijas un lugar que realmente se sienta tuyo.
-            </p>
+            <p className="eyebrow">{t("home.about.eyebrow")}</p>
+            <h2>{t("home.about.title")}</h2>
+            <p>{t("home.about.description")}</p>
             <ul className="check-list">
-              <li>
-                <Check size={17} aria-hidden="true" />
-                Comunicación directa durante todo el proceso.
-              </li>
-              <li>
-                <Check size={17} aria-hidden="true" />
-                Acompañamiento en visitas, negociación y cierre.
-              </li>
-              <li>
-                <Check size={17} aria-hidden="true" />
-                Enfoque en tus prioridades, no en la prisa.
-              </li>
+              {["check1", "check2", "check3"].map((key) => (
+                <li key={key}>
+                  <Check size={17} aria-hidden="true" />
+                  {t(`home.about.${key}`)}
+                </li>
+              ))}
             </ul>
             <Link to="/nosotros" className="text-link">
-              Conocer más sobre Manuela
+              {t("home.about.link")}
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
@@ -321,20 +278,19 @@ export default function HomePage() {
         <div className="shell">
           <div className="section-heading section-heading--split">
             <div>
-              <p className="eyebrow">El proceso</p>
-              <h2>Tres pasos, una conversación constante</h2>
+              <p className="eyebrow">{t("home.process.eyebrow")}</p>
+              <h2>{t("home.process.title")}</h2>
             </div>
-            <p className="section-heading__note">
-              Cada operación es distinta. Estos son los momentos que siempre
-              cuidamos contigo.
-            </p>
+            <p className="section-heading__note">{t("home.process.note")}</p>
           </div>
           <div className="process-grid">
-            {steps.map((step) => (
-              <article className="process-step" key={step.number}>
-                <span className="process-step__number">{step.number}</span>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
+            {steps.map((key, index) => (
+              <article className="process-step" key={key}>
+                <span className="process-step__number">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3>{t(`home.process.steps.${key}.title`)}</h3>
+                <p>{t(`home.process.steps.${key}.text`)}</p>
               </article>
             ))}
           </div>
@@ -346,11 +302,11 @@ export default function HomePage() {
           <div className="shell">
             <div className="section-heading section-heading--split">
               <div>
-                <p className="eyebrow">Experiencias reales</p>
-                <h2>Lo que dicen quienes ya pasaron por aquí</h2>
+                <p className="eyebrow">{t("home.testimonials.eyebrow")}</p>
+                <h2>{t("home.testimonials.title")}</h2>
               </div>
               <Link to="/servicios#testimonios" className="text-link">
-                Ver todos los testimonios
+                {t("home.testimonials.link")}
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
             </div>
@@ -369,26 +325,23 @@ export default function HomePage() {
         </div>
         <div className="shell cta-band__inner">
           <div>
-            <p className="eyebrow eyebrow--light">Hablemos</p>
-            <h2>Cuéntame qué estás buscando.</h2>
-            <p>
-              Ya sea que estés empezando a mirar o listo para dar el siguiente
-              paso, podemos ordenar las opciones juntos.
-            </p>
+            <p className="eyebrow eyebrow--light">{t("home.cta.eyebrow")}</p>
+            <h2>{t("home.cta.title")}</h2>
+            <p>{t("home.cta.text")}</p>
           </div>
           <div className="cta-band__actions">
             <Link to="/contacto" className="btn btn-primary btn-lg">
-              Agendar una conversación
+              {t("home.cta.schedule")}
               <ArrowRight size={18} aria-hidden="true" />
             </Link>
             <a
-              href={whatsappUrl(`Hola ${site.name}, quiero recibir asesoría inmobiliaria.`)}
+              href={whatsappUrl(t("home.whatsappMessage", { name: site.name }))}
               target="_blank"
               rel="noreferrer"
               className="btn btn-ghost btn-lg"
             >
               <MessageCircle size={18} aria-hidden="true" />
-              Escribir por WhatsApp
+              {t("home.cta.whatsapp")}
             </a>
           </div>
         </div>

@@ -1,8 +1,9 @@
 import { httpsCallable } from "firebase/functions";
 import { functions } from "./firebase.js";
-import { appError, getErrorMessage } from "../utils/errors.js";
+import { appError } from "../utils/errors.js";
 import { isValidEmail } from "../utils/validation.js";
 import { mailtoUrl, site } from "../config/site.js";
+import { translate } from "../i18n/translate.js";
 
 const CONTACT_FUNCTION = "sendContactEmail";
 
@@ -16,13 +17,7 @@ const withTimeout = (promise, ms = 18000) =>
     promise,
     new Promise((_, reject) =>
       setTimeout(
-        () =>
-          reject(
-            appError(
-              "functions/unavailable",
-              "El envío tardó demasiado. Inténtalo de nuevo o escríbenos directamente.",
-            ),
-          ),
+        () => reject(appError("functions/unavailable")),
         ms,
       ),
     ),
@@ -43,13 +38,13 @@ export const sendContactMessage = async (values) => {
 
   if (payload.honeypot) return { ok: true };
   if (payload.name.length < 2) {
-    throw appError("contact/name", "Escribe tu nombre.");
+    throw appError("contact/name");
   }
   if (!isValidEmail(payload.email)) {
-    throw appError("contact/email", "Escribe un correo válido.");
+    throw appError("contact/email");
   }
   if (payload.message.length < 10) {
-    throw appError("contact/message", "Cuéntanos un poco más.");
+    throw appError("contact/message");
   }
 
   if (functions) {
@@ -85,10 +80,7 @@ export const sendContactMessage = async (values) => {
         code === "functions/failed-precondition" ||
         code === "functions/internal"
       ) {
-        throw appError(
-          "contact/not-configured",
-          getErrorMessage(error, "No se pudo enviar el mensaje."),
-        );
+        throw appError("contact/not-configured");
       }
       throw error;
     }
@@ -102,10 +94,7 @@ export const sendContactMessage = async (values) => {
       body: JSON.stringify(payload),
     });
     if (!response.ok) {
-      throw appError(
-        "contact/not-configured",
-        "No se pudo enviar el mensaje. Escríbenos directamente.",
-      );
+      throw appError("contact/not-configured");
     }
     return { ok: true, fallback: "php" };
   }
@@ -116,14 +105,22 @@ export const sendContactMessage = async (values) => {
 export const buildContactMailto = (values = {}) => {
   const payload = contactPayload(values);
   const body = [
-    `Nombre: ${payload.name}`,
-    `Correo: ${payload.email}`,
-    payload.phone ? `Teléfono: ${payload.phone}` : "",
-    payload.propertyId ? `Propiedad: ${payload.propertyId}` : "",
+    translate("contactForm.mailto.name", { value: payload.name }),
+    translate("contactForm.mailto.email", { value: payload.email }),
+    payload.phone
+      ? translate("contactForm.mailto.phone", { value: payload.phone })
+      : "",
+    payload.propertyId
+      ? translate("contactForm.mailto.property", { value: payload.propertyId })
+      : "",
     "",
     payload.message,
   ]
     .filter(Boolean)
     .join("\n");
-  return mailtoUrl(payload.subject || `Consulta desde ${site.fullName}`, body);
+  return mailtoUrl(
+    payload.subject ||
+      translate("contactForm.mailto.defaultSubject", { name: site.fullName }),
+    body,
+  );
 };

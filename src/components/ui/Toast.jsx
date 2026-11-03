@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { CheckCircle2, CircleAlert, Info, X } from "lucide-react";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 const ToastContext = createContext(null);
 
@@ -16,6 +17,7 @@ const icons = {
 };
 
 export function ToastProvider({ children }) {
+  const { t } = useI18n();
   const [toasts, setToasts] = useState([]);
 
   const dismiss = useCallback((id) => {
@@ -73,7 +75,7 @@ export function ToastProvider({ children }) {
                 type="button"
                 className="toast-item__close"
                 onClick={() => dismiss(item.id)}
-                aria-label="Cerrar notificación"
+                aria-label={t("common.closeNotification")}
               >
                 <X size={16} aria-hidden="true" />
               </button>

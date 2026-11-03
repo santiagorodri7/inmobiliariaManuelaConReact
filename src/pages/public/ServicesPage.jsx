@@ -16,83 +16,50 @@ import TestimonialForm from "../../components/testimonials/TestimonialForm.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { useTestimonials } from "../../hooks/useTestimonials.js";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { site } from "../../config/site.js";
 
-const services = [
-  {
-    icon: Search,
-    title: "Compra",
-    text: "Definimos criterios, filtramos opciones y visitamos juntos. Revisamos precio, estado, documentos y condiciones antes de que tomes una decisión.",
-  },
-  {
-    icon: Handshake,
-    title: "Venta",
-    text: "Preparamos la publicación, ordenamos la información y acompañamos las visitas y la negociación para cuidar el valor de tu inmueble.",
-  },
-  {
-    icon: KeyRound,
-    title: "Arriendo",
-    text: "Acompañamos la búsqueda o la entrega del inmueble, revisando condiciones, tiempos y responsabilidades de cada parte.",
-  },
-  {
-    icon: LineChart,
-    title: "Inversión",
-    text: "Comparamos ubicación, precio, potencial de renta y contexto del sector para que evalúes la inversión con más elementos.",
-  },
-  {
-    icon: ClipboardCheck,
-    title: "Revisión de documentos",
-    text: "Organizamos la documentación base y te indicamos cuándo conviene apoyarte en un abogado o en un experto técnico.",
-  },
-  {
-    icon: Building2,
-    title: "Acompañamiento de cierre",
-    text: "Seguimos el proceso hasta la entrega: compromisos, fechas, pagos y detalles finales, con comunicación constante.",
-  },
-];
+const serviceIcons = {
+  buy: Search,
+  sell: Handshake,
+  rent: KeyRound,
+  invest: LineChart,
+  documents: ClipboardCheck,
+  closing: Building2,
+};
 
-const process = [
-  ["01", "Primera conversación", "Escuchamos tu caso, tus tiempos y tu presupuesto."],
-  ["02", "Selección", "Filtramos propiedades o preparamos tu inmueble para salir al mercado."],
-  ["03", "Visitas y revisión", "Coordinamos visitas y revisamos los detalles relevantes."],
-  ["04", "Cierre y entrega", "Acompañamos la negociación, los documentos y la entrega."],
-];
+const processIcons = ["step1", "step2", "step3", "step4"];
 
 export default function ServicesPage() {
-  usePageTitle(
-    "Servicios inmobiliarios",
-    "Compra, venta, arriendo e inversión inmobiliaria en Medellín con acompañamiento cercano y transparente.",
-  );
+  const { t } = useI18n();
+  usePageTitle(t("services.pageTitle"), t("services.pageDescription"));
   const { testimonials, loading, error, setTestimonials } = useTestimonials();
   const { profile } = useAuth();
 
   return (
     <>
       <PageHeader
-        eyebrow="Servicios"
-        title="Acompañamiento para cada momento de la operación."
-        description="Desde la primera conversación hasta la entrega, ordenamos el proceso para que puedas decidir con información clara y sin presión."
-        breadcrumb={[{ label: "Servicios" }]}
+        eyebrow={t("services.header.eyebrow")}
+        title={t("services.header.title")}
+        description={t("services.header.description")}
+        breadcrumb={[{ label: t("services.header.breadcrumb") }]}
       />
 
       <section className="section">
         <div className="shell">
           <div className="section-heading">
-            <p className="eyebrow">Qué hacemos</p>
-            <h2>Un servicio, distintas necesidades</h2>
-            <p>
-              No todos los procesos son iguales. Elegimos el acompañamiento que
-              corresponde a tu momento y a tu tipo de operación.
-            </p>
+            <p className="eyebrow">{t("services.intro.eyebrow")}</p>
+            <h2>{t("services.intro.title")}</h2>
+            <p>{t("services.intro.description")}</p>
           </div>
           <div className="services-grid">
-            {services.map(({ icon: Icon, title, text }) => (
-              <article className="service-card" key={title}>
+            {Object.entries(serviceIcons).map(([key, Icon]) => (
+              <article className="service-card" key={key}>
                 <span className="service-card__icon" aria-hidden="true">
                   <Icon size={23} />
                 </span>
-                <h3>{title}</h3>
-                <p>{text}</p>
+                <h3>{t(`services.items.${key}.title`)}</h3>
+                <p>{t(`services.items.${key}.text`)}</p>
               </article>
             ))}
           </div>
@@ -103,20 +70,22 @@ export default function ServicesPage() {
         <div className="shell">
           <div className="section-heading section-heading--split">
             <div>
-              <p className="eyebrow">El proceso</p>
-              <h2>Así se ve el acompañamiento</h2>
+              <p className="eyebrow">{t("services.process.eyebrow")}</p>
+              <h2>{t("services.process.title")}</h2>
             </div>
             <Link to="/contacto" className="text-link">
-              Empezar una conversación
+              {t("services.process.link")}
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
           <div className="process-grid process-grid--four">
-            {process.map(([number, title, text]) => (
-              <article className="process-step" key={number}>
-                <span className="process-step__number">{number}</span>
-                <h3>{title}</h3>
-                <p>{text}</p>
+            {processIcons.map((key, index) => (
+              <article className="process-step" key={key}>
+                <span className="process-step__number">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3>{t(`services.process.${key}.title`)}</h3>
+                <p>{t(`services.process.${key}.text`)}</p>
               </article>
             ))}
           </div>
@@ -126,12 +95,9 @@ export default function ServicesPage() {
       <section className="section" id="testimonios">
         <div className="shell">
           <div className="section-heading">
-            <p className="eyebrow">Testimonios</p>
-            <h2>Experiencias de quienes ya confiaron</h2>
-            <p>
-              Cada proceso deja una historia. Estas son algunas de las que
-              nuestros clientes han querido compartir.
-            </p>
+            <p className="eyebrow">{t("services.testimonials.eyebrow")}</p>
+            <h2>{t("services.testimonials.title")}</h2>
+            <p>{t("services.testimonials.description")}</p>
           </div>
           <TestimonialGrid testimonials={testimonials} loading={loading} error={error} />
           <div className="testimonial-form-wrap">
@@ -146,20 +112,17 @@ export default function ServicesPage() {
       <section className="cta-band cta-band--compact">
         <div className="shell cta-band__inner">
           <div>
-            <p className="eyebrow eyebrow--light">Hablemos</p>
-            <h2>¿Empezamos por tu caso?</h2>
-            <p>
-              Cuéntanos si quieres comprar, vender o arrendar. Te respondemos con
-              los siguientes pasos concretos.
-            </p>
+            <p className="eyebrow eyebrow--light">{t("services.cta.eyebrow")}</p>
+            <h2>{t("services.cta.title")}</h2>
+            <p>{t("services.cta.text")}</p>
           </div>
           <div className="cta-band__actions">
             <Link to="/contacto" className="btn btn-primary btn-lg">
-              Agendar conversación
+              {t("services.cta.schedule")}
               <ArrowRight size={18} aria-hidden="true" />
             </Link>
             <a href={`mailto:${site.email}`} className="btn btn-ghost btn-lg">
-              Escribir por correo
+              {t("services.cta.email")}
             </a>
           </div>
         </div>
@@ -167,11 +130,7 @@ export default function ServicesPage() {
 
       <div className="shell services-note">
         <Compass size={18} aria-hidden="true" />
-        <p>
-          La asesoría inmobiliaria no reemplaza la revisión jurídica o técnica de
-          un profesional independiente cuando el caso lo requiere. Si necesitas
-          ese apoyo, te lo indicamos con claridad.
-        </p>
+        <p>{t("services.note")}</p>
       </div>
     </>
   );

@@ -40,6 +40,11 @@ service cloud.firestore {
       return value is string && value.size() >= min && value.size() <= max;
     }
 
+    function hasValidLanguage(data) {
+      return !data.keys().hasAny(['idioma'])
+        || data.idioma in ['es', 'en'];
+    }
+
     // Solo los inmuebles publicados son legibles sin autenticación.
     // Los documentos heredados sin `status` deben completarse desde el panel
     // administrativo antes de aparecer en el catálogo.
@@ -53,6 +58,8 @@ service cloud.firestore {
 
     // ---------------------------------------------------------------------
     // usuarios: perfil privado. Solo el propio usuario o un administrador.
+    // `idioma` es opcional y solo admite 'es' o 'en'. Los documentos antiguos
+    // sin el campo se interpretan como español en el cliente.
     // ---------------------------------------------------------------------
 
     match /usuarios/{userId} {
@@ -65,6 +72,7 @@ service cloud.firestore {
         && request.resource.data.rol in ['Comprador', 'Vendedor']
         && validText(request.resource.data.nombre, 2, 120)
         && validText(request.resource.data.email, 5, 180)
+        && hasValidLanguage(request.resource.data)
         && request.resource.data.keys().hasOnly([
           'nombre',
           'cedula',
@@ -75,6 +83,7 @@ service cloud.firestore {
           'avatar',
           'rol',
           'activo',
+          'idioma',
           'fechaRegistro',
           'createdAt',
           'updatedAt'
@@ -90,13 +99,15 @@ service cloud.firestore {
           'direccion',
           'avatar',
           'fechaNacimiento',
+          'idioma',
           'preferences',
           'updatedAt'
         ])
         && validText(request.resource.data.nombre, 2, 120)
         && request.resource.data.email == resource.data.email
         && request.resource.data.rol == resource.data.rol
-        && request.resource.data.activo == resource.data.activo;
+        && request.resource.data.activo == resource.data.activo
+        && hasValidLanguage(request.resource.data);
 
       allow update: if isAdmin()
         && changedFields().hasOnly([
@@ -108,6 +119,7 @@ service cloud.firestore {
           'avatar',
           'rol',
           'activo',
+          'idioma',
           'deactivatedAt',
           'deactivatedBy',
           'fechaRegistro',
@@ -115,7 +127,8 @@ service cloud.firestore {
         ])
         && (!request.resource.data.keys().hasAny(['rol'])
           || !changedFields().hasAny(['rol'])
-          || request.resource.data.rol in ['Admin', 'Vendedor', 'Comprador']);
+          || request.resource.data.rol in ['Admin', 'Vendedor', 'Comprador'])
+        && hasValidLanguage(request.resource.data);
 
       allow delete: if isAdmin();
     }

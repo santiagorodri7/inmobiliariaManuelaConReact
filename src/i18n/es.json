@@ -1,0 +1,1497 @@
+{
+  "language": {
+    "label": "Idioma",
+    "hint": "Puedes cambiarlo cuando quieras.",
+    "registerHint": "Se guardará en tu cuenta y se aplicará al iniciar sesión.",
+    "profileHint": "El cambio se aplica al guardar tu información.",
+    "spanish": "Español",
+    "english": "English",
+    "invalid": "Selecciona Español o English."
+  },
+  "common": {
+    "loading": "Cargando…",
+    "loadingSpace": "Cargando tu espacio…",
+    "saving": "Guardando…",
+    "sending": "Enviando…",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "confirmation": "Confirmación",
+    "saveChanges": "Guardar cambios",
+    "retry": "Reintentar",
+    "search": "Buscar",
+    "clear": "Limpiar",
+    "clearFilters": "Limpiar filtros",
+    "viewAll": "Ver todas",
+    "viewAllM": "Ver todos",
+    "backHome": "Volver al inicio",
+    "actions": "Acciones",
+    "optional": "Opcional",
+    "user": "Usuario",
+    "notAvailable": "—",
+    "previousPage": "Página anterior",
+    "nextPage": "Página siguiente",
+    "pagination": "Paginación",
+    "pageOf": "Página {{page}} de {{total}}",
+    "rangeOf": "{{from}}–{{to}} de {{total}}",
+    "closeNotification": "Cerrar notificación",
+    "errorTitle": "No pudimos cargar esta información",
+    "errorDescription": "Revisa tu conexión e inténtalo de nuevo.",
+    "loadingProperties": "Cargando propiedades",
+    "loadingData": "Cargando datos",
+    "genericError": "Ocurrió un error. Inténtalo de nuevo."
+  },
+  "site": {
+    "role": "Asesora inmobiliaria",
+    "tagline": "Un lugar que se sienta tuyo.",
+    "coverage": "Medellín y el Valle de Aburrá",
+    "hours": "Lunes a sábado · 8:00 a. m. – 6:00 p. m.",
+    "location": "Medellín, Colombia"
+  },
+  "nav": {
+    "home": "Inicio",
+    "properties": "Propiedades",
+    "services": "Servicios",
+    "about": "Nosotros",
+    "contact": "Contacto",
+    "login": "Ingresar",
+    "register": "Crear cuenta",
+    "publish": "Publicar propiedad",
+    "myPanel": "Mi panel",
+    "myProfile": "Mi perfil",
+    "logout": "Cerrar sesión",
+    "loginAccount": "Ingresar a mi cuenta",
+    "whatsapp": "Escribir por WhatsApp",
+    "mainNav": "Navegación principal",
+    "mobileNav": "Navegación móvil",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "explore": "Explorar",
+    "account": "Cuenta",
+    "talk": "Hablemos",
+    "buyerPanel": "Panel comprador",
+    "viewSite": "Ver sitio público",
+    "panel": "Panel",
+    "breadcrumb": "Ruta de navegación",
+    "menuOf": "Menú de {{role}}",
+    "panelOf": "Panel de {{role}}",
+    "panelEyebrow": "{{role}} · Panel",
+    "dashboard": {
+      "summary": "Resumen",
+      "recommendations": "Recomendaciones",
+      "preferences": "Mis preferencias",
+      "publish": "Publicar propiedad",
+      "properties": "Mis propiedades",
+      "adminProperties": "Propiedades",
+      "users": "Usuarios",
+      "sales": "Cierres",
+      "reports": "Reporte de ventas",
+      "account": "Mi perfil",
+      "security": "Seguridad"
+    }
+  },
+  "home": {
+    "pageTitle": "Propiedades en venta y arriendo en Medellín",
+    "pageDescription": "Encuentra propiedades en Medellín y el Valle de Aburrá con asesoría inmobiliaria cercana y transparente.",
+    "hero": {
+      "eyebrow": "Manuela Bermúdez · Realtor",
+      "titleLine1": "Un lugar que",
+      "titleLine2": "se sienta",
+      "titleEm": "tuyo.",
+      "lead": "Propiedades en venta y arriendo en Medellín y el Valle de Aburrá, con una asesoría cercana para decidir con calma y con claridad.",
+      "explore": "Explorar propiedades",
+      "talk": "Hablar con Manuela",
+      "saleRent": "Venta y arriendo",
+      "personalSupport": "Acompañamiento personal",
+      "noteTitle": "Selección cuidada",
+      "noteText": "Cada propiedad se revisa antes de publicarse."
+    },
+    "search": {
+      "eyebrow": "Encuentra tu próximo lugar",
+      "title": "¿Qué estás buscando?",
+      "loading": "Cargando inventario…",
+      "published": "{{count}} propiedades publicadas"
+    },
+    "inventory": {
+      "eyebrow": "Inventario disponible",
+      "title": "Propiedades para empezar a imaginar",
+      "description": "Una selección de inmuebles publicados. Si algo te gusta, podemos coordinar una visita y revisar cada detalle contigo.",
+      "results": "{{count}} resultados",
+      "activeFilters": "Filtros activos",
+      "emptyFilteredTitle": "No encontramos propiedades con esos filtros",
+      "emptyFilteredDescription": "Prueba con otra zona, un presupuesto mayor o menos requisitos. También podemos buscar contigo.",
+      "emptyTitle": "Aún no hay propiedades publicadas",
+      "emptyDescription": "Estamos preparando el inventario. Cuéntanos qué buscas y te avisamos cuando llegue algo que encaje.",
+      "tellWhatISeek": "Contar qué busco",
+      "seeAll": "Ver las {{count}} propiedades"
+    },
+    "help": {
+      "eyebrow": "Cómo puedo ayudarte",
+      "title": "Menos ruido, más decisiones claras",
+      "description": "No se trata de mostrarte todas las propiedades del mercado, sino de encontrar las que tienen sentido para ti.",
+      "link": "Conocer el servicio"
+    },
+    "services": {
+      "find": {
+        "title": "Encontrar tu próximo lugar",
+        "text": "Filtramos opciones según tu forma de vivir, tu presupuesto y la zona que tienes en mente."
+      },
+      "sell": {
+        "title": "Vender con claridad",
+        "text": "Organizamos la publicación, las visitas y la negociación para que el proceso sea predecible."
+      },
+      "rent": {
+        "title": "Arrendar sin ruido",
+        "text": "Te acompañamos en la selección, la revisión de condiciones y la entrega del inmueble."
+      }
+    },
+    "about": {
+      "eyebrow": "Una forma más humana",
+      "title": "Moverte por el mercado inmobiliario no tiene por qué ser confuso.",
+      "description": "Mi trabajo es traducir el proceso a decisiones simples: qué mirar, qué preguntar y cuándo avanzar. Con información clara y sin presión, para que elijas un lugar que realmente se sienta tuyo.",
+      "check1": "Comunicación directa durante todo el proceso.",
+      "check2": "Acompañamiento en visitas, negociación y cierre.",
+      "check3": "Enfoque en tus prioridades, no en la prisa.",
+      "link": "Conocer más sobre Manuela",
+      "imageAlt": "Terraza con piscina y vista a la ciudad de Medellín",
+      "badgeCity": "Medellín",
+      "badgeRegion": "Valle de Aburrá"
+    },
+    "process": {
+      "eyebrow": "El proceso",
+      "title": "Tres pasos, una conversación constante",
+      "note": "Cada operación es distinta. Estos son los momentos que siempre cuidamos contigo.",
+      "steps": {
+        "talk": {
+          "title": "Conversamos",
+          "text": "Escuchamos qué necesitas, qué te importa del lugar y cuál es tu presupuesto real."
+        },
+        "select": {
+          "title": "Seleccionamos",
+          "text": "Filtramos propiedades que encajan y coordinamos visitas sin hacerte perder tiempo."
+        },
+        "support": {
+          "title": "Acompañamos",
+          "text": "Revisamos condiciones, negociación y cierre contigo, con comunicación constante."
+        }
+      }
+    },
+    "testimonials": {
+      "eyebrow": "Experiencias reales",
+      "title": "Lo que dicen quienes ya pasaron por aquí",
+      "link": "Ver todos los testimonios"
+    },
+    "cta": {
+      "eyebrow": "Hablemos",
+      "title": "Cuéntame qué estás buscando.",
+      "text": "Ya sea que estés empezando a mirar o listo para dar el siguiente paso, podemos ordenar las opciones juntos.",
+      "schedule": "Agendar una conversación",
+      "whatsapp": "Escribir por WhatsApp"
+    },
+    "whatsappMessage": "Hola {{name}}, quiero recibir asesoría inmobiliaria."
+  },
+  "about": {
+    "pageTitle": "Nosotros",
+    "pageDescription": "Conoce el enfoque de Manuela Bermúdez Realtor: asesoría inmobiliaria cercana, transparente y con criterio en Medellín.",
+    "header": {
+      "eyebrow": "Sobre Manuela Bermúdez Realtor",
+      "title": "Una forma más humana de moverte por el mercado inmobiliario.",
+      "description": "Acompañamiento cercano para comprar, vender o arrendar en Medellín y el Valle de Aburrá. Sin presión, con información clara y decisiones que se sienten propias.",
+      "breadcrumb": "Nosotros"
+    },
+    "intro": {
+      "eyebrow": "El enfoque",
+      "title": "El lugar correcto no es solo una dirección.",
+      "p1": "Es la luz de la mañana, el trayecto al trabajo, el espacio para recibir a quien quieres y la tranquilidad de saber que la decisión está bien sustentada. Por eso, antes de mostrarte propiedades, conversamos sobre lo que realmente necesitas.",
+      "p2": "Manuela Bermúdez Realtor nace para acompañar ese proceso con cercanía y criterio: escuchar, filtrar, visitar, revisar y acompañar el cierre. La tecnología ayuda a ordenar la información; las decisiones siguen siendo humanas.",
+      "cta": "Conversemos",
+      "imageAlt": "Espacio de trabajo con vista a la ciudad de Medellín",
+      "quote": "“Un buen acompañamiento no te dice qué comprar; te ayuda a entender qué necesitas.”",
+      "author": "Manuela Bermúdez"
+    },
+    "values": {
+      "eyebrow": "Lo que guía el trabajo",
+      "title": "Cuatro principios, una misma conversación",
+      "transparency": {
+        "title": "Transparencia",
+        "text": "Información clara sobre precios, condiciones y documentación. Sin sorpresas de último momento."
+      },
+      "criteria": {
+        "title": "Criterio",
+        "text": "Cada recomendación parte de tus prioridades y del contexto real del mercado, no de la prisa."
+      },
+      "closeness": {
+        "title": "Cercanía",
+        "text": "Una conversación directa, con disponibilidad para resolver dudas antes y después de la operación."
+      },
+      "care": {
+        "title": "Cuidado",
+        "text": "Revisamos los detalles que suelen pasar desapercibidos para que puedas decidir con tranquilidad."
+      }
+    },
+    "coverage": {
+      "eyebrow": "Dónde trabajamos",
+      "title": "Medellín y el Valle de Aburrá",
+      "text": "Acompañamos operaciones en Medellín, Envigado, Itagüí, Sabaneta, La Estrella, Bello, Copacabana y municipios cercanos. Si tu propiedad o tu búsqueda está por fuera de esta zona, escríbenos: evaluamos cada caso."
+    },
+    "cta": {
+      "eyebrow": "Siguiente paso",
+      "title": "Conversemos sobre lo que necesitas.",
+      "text": "Una llamada o un mensaje es suficiente para empezar a ordenar las opciones.",
+      "write": "Escribir a {{name}}",
+      "whatsapp": "WhatsApp"
+    },
+    "whatsappMessage": "Hola {{name}}, quiero conocer más sobre tu acompañamiento."
+  },
+  "services": {
+    "pageTitle": "Servicios inmobiliarios",
+    "pageDescription": "Compra, venta, arriendo e inversión inmobiliaria en Medellín con acompañamiento cercano y transparente.",
+    "header": {
+      "eyebrow": "Servicios",
+      "title": "Acompañamiento para cada momento de la operación.",
+      "description": "Desde la primera conversación hasta la entrega, ordenamos el proceso para que puedas decidir con información clara y sin presión.",
+      "breadcrumb": "Servicios"
+    },
+    "intro": {
+      "eyebrow": "Qué hacemos",
+      "title": "Un servicio, distintas necesidades",
+      "description": "No todos los procesos son iguales. Elegimos el acompañamiento que corresponde a tu momento y a tu tipo de operación."
+    },
+    "items": {
+      "buy": {
+        "title": "Compra",
+        "text": "Definimos criterios, filtramos opciones y visitamos juntos. Revisamos precio, estado, documentos y condiciones antes de que tomes una decisión."
+      },
+      "sell": {
+        "title": "Venta",
+        "text": "Preparamos la publicación, ordenamos la información y acompañamos las visitas y la negociación para cuidar el valor de tu inmueble."
+      },
+      "rent": {
+        "title": "Arriendo",
+        "text": "Acompañamos la búsqueda o la entrega del inmueble, revisando condiciones, tiempos y responsabilidades de cada parte."
+      },
+      "invest": {
+        "title": "Inversión",
+        "text": "Comparamos ubicación, precio, potencial de renta y contexto del sector para que evalúes la inversión con más elementos."
+      },
+      "documents": {
+        "title": "Revisión de documentos",
+        "text": "Organizamos la documentación base y te indicamos cuándo conviene apoyarte en un abogado o en un experto técnico."
+      },
+      "closing": {
+        "title": "Acompañamiento de cierre",
+        "text": "Seguimos el proceso hasta la entrega: compromisos, fechas, pagos y detalles finales, con comunicación constante."
+      }
+    },
+    "process": {
+      "eyebrow": "El proceso",
+      "title": "Así se ve el acompañamiento",
+      "link": "Empezar una conversación",
+      "step1": {
+        "title": "Primera conversación",
+        "text": "Escuchamos tu caso, tus tiempos y tu presupuesto."
+      },
+      "step2": {
+        "title": "Selección",
+        "text": "Filtramos propiedades o preparamos tu inmueble para salir al mercado."
+      },
+      "step3": {
+        "title": "Visitas y revisión",
+        "text": "Coordinamos visitas y revisamos los detalles relevantes."
+      },
+      "step4": {
+        "title": "Cierre y entrega",
+        "text": "Acompañamos la negociación, los documentos y la entrega."
+      }
+    },
+    "testimonials": {
+      "eyebrow": "Testimonios",
+      "title": "Experiencias de quienes ya confiaron",
+      "description": "Cada proceso deja una historia. Estas son algunas de las que nuestros clientes han querido compartir."
+    },
+    "cta": {
+      "eyebrow": "Hablemos",
+      "title": "¿Empezamos por tu caso?",
+      "text": "Cuéntanos si quieres comprar, vender o arrendar. Te respondemos con los siguientes pasos concretos.",
+      "schedule": "Agendar conversación",
+      "email": "Escribir por correo"
+    },
+    "note": "La asesoría inmobiliaria no reemplaza la revisión jurídica o técnica de un profesional independiente cuando el caso lo requiere. Si necesitas ese apoyo, te lo indicamos con claridad."
+  },
+  "contact": {
+    "pageTitle": "Contacto",
+    "pageDescription": "Habla con Manuela Bermúdez Realtor. Asesoría inmobiliaria en Medellín por correo, teléfono o WhatsApp.",
+    "header": {
+      "eyebrow": "Contacto",
+      "title": "Conversemos sobre el lugar que tienes en mente.",
+      "description": "Cuéntanos qué buscas, qué quieres vender o qué necesitas resolver. Te responderemos con claridad y sin compromiso.",
+      "breadcrumb": "Contacto"
+    },
+    "info": {
+      "eyebrow": "Canales directos",
+      "title": "Estamos para escucharte",
+      "intro": "Si prefieres una conversación rápida, escríbenos por WhatsApp. Si tu caso tiene más detalle, el formulario nos ayuda a preparar una respuesta mejor.",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "whatsapp": "WhatsApp",
+      "writeNow": "Escribir ahora",
+      "area": "Zona de atención",
+      "hours": "Horario",
+      "imageAlt": "Vista de Medellín al atardecer",
+      "imageCaption": "Medellín y el Valle de Aburrá"
+    },
+    "devNote": "Vista previa local: el correo, teléfono y dirección definitivos deben confirmarse antes de publicar.",
+    "form": {
+      "eyebrow": "Escríbenos",
+      "title": "Cuéntanos tu caso",
+      "text": "Completa el formulario y te responderemos al correo que indiques."
+    },
+    "whatsappMessage": "Hola {{name}}, quiero hacer una consulta inmobiliaria."
+  },
+  "notFound": {
+    "pageTitle": "Página no encontrada",
+    "pageDescription": "La página que buscas no existe o cambió de dirección.",
+    "eyebrow": "Página no encontrada",
+    "title": "Este lugar todavía no existe.",
+    "text": "Puede que el enlace haya cambiado o que la página ya no esté disponible. Desde aquí puedes volver al inicio, revisar las propiedades o escribirnos para ayudarte a encontrar lo que buscas.",
+    "home": "Volver al inicio",
+    "properties": "Ver propiedades",
+    "services": "Servicios",
+    "contact": "Contacto",
+    "login": "Iniciar sesión"
+  },
+  "property": {
+    "detail": {
+      "pageTitle": "Detalle de propiedad",
+      "pageDescription": "Conoce esta propiedad en Medellín y agenda una visita.",
+      "loadError": "No pudimos cargar esta propiedad. Inténtalo de nuevo.",
+      "loading": "Cargando propiedad…",
+      "errorTitle": "No pudimos abrir esta propiedad",
+      "backCatalog": "Volver al catálogo",
+      "unavailableEyebrow": "Propiedad no disponible",
+      "unavailableTitle": "No encontramos esta publicación",
+      "unavailableText": "Puede que haya sido retirada o que el enlace ya no sea válido. Explora el catálogo actual o cuéntanos qué estás buscando.",
+      "viewProperties": "Ver propiedades",
+      "breadcrumbHome": "Inicio",
+      "breadcrumbProperties": "Propiedades",
+      "shareAria": "Compartir propiedad",
+      "shareCopied": "Enlace copiado al portapapeles.",
+      "shareManual": "Copia el enlace desde la barra del navegador.",
+      "locationPending": "Ubicación por confirmar",
+      "monthlyRent": "Canon mensual",
+      "salePrice": "Precio de venta",
+      "perMonth": "COP / mes",
+      "requestVisit": "Solicitar una visita",
+      "askWhatsapp": "Preguntar por WhatsApp",
+      "whatsappMessage": "Hola {{name}}, me interesa la propiedad \"{{title}}\" ({{location}}). ¿Podemos hablar?",
+      "directSupport": "Acompañamiento directo",
+      "aboutEyebrow": "Sobre este lugar",
+      "aboutTitle": "Lo que hace especial esta propiedad",
+      "amenitiesTitle": "Amenidades y espacios",
+      "addressNote": "La dirección exacta se comparte durante la visita para cuidar la privacidad de quienes viven en el inmueble.",
+      "viewArea": "Ver zona",
+      "reviewNote": "¿Quieres revisar esta propiedad con más detalle? Podemos coordinar una visita y revisar juntos las condiciones, documentos y tiempos del proceso.",
+      "consultEyebrow": "Hablemos de esta propiedad",
+      "consultTitle": "Agenda una visita",
+      "consultText": "Déjanos tus datos y te contactamos para coordinar una visita o resolver tus dudas.",
+      "talkToManu": {
+        "eyebrow": "Contacto directo",
+        "title": "Habla con Manu",
+        "text": "Escríbele por WhatsApp y cuéntale qué propiedad te interesa.",
+        "availability": "Disponible 24/7 por WhatsApp",
+        "cta": "Escribir por WhatsApp",
+        "aria": "Escribir a Manu por WhatsApp sobre {{title}}",
+        "message": "Hola Manu, me interesa la propiedad \"{{title}}\". Te comparto el enlace: {{url}}"
+      },
+      "relatedEyebrow": "También te puede interesar",
+      "relatedTitle": "Otras propiedades para explorar",
+      "viewCatalog": "Ver todo el catálogo",
+      "inquiryRent": "Quiero arrendar una propiedad",
+      "inquiryBuy": "Quiero comprar una propiedad",
+      "specs": {
+        "bedrooms": "Habitaciones",
+        "bathrooms": "Baños",
+        "parking": "Parqueaderos",
+        "area": "Área",
+        "stratum": "Estrato"
+      }
+    },
+    "card": {
+      "imageUnavailable": "Imagen no disponible",
+      "bedrooms": "{{count}} hab.",
+      "bathrooms": "{{count}} baños",
+      "parking": "{{count}} parq.",
+      "perMonth": " / mes",
+      "currency": " COP",
+      "locationPending": "Ubicación por confirmar",
+      "features": "Características",
+      "view": "Ver propiedad",
+      "ariaView": "Ver {{title}}"
+    },
+    "grid": {
+      "errorTitle": "No pudimos cargar las propiedades",
+      "emptyTitle": "Todavía no hay propiedades publicadas",
+      "emptyDescription": "Vuelve pronto o cuéntanos qué estás buscando para ayudarte a encontrarlo."
+    },
+    "filters": {
+      "all": "Todas",
+      "sale": "Venta",
+      "rent": "Renta",
+      "operation": "Operación",
+      "location": "Ubicación",
+      "locationPlaceholder": "Sector, ciudad o palabra clave",
+      "locationAria": "Buscar por ubicación o palabra clave",
+      "type": "Tipo",
+      "typeAll": "Todos",
+      "typeAria": "Tipo de inmueble",
+      "bedrooms": "Habitaciones",
+      "bedroomsAria": "Habitaciones mínimas",
+      "budget": "Presupuesto máx.",
+      "budgetPlaceholder": "Sin límite",
+      "budgetAria": "Presupuesto máximo en pesos",
+      "submit": "Buscar",
+      "clearAria": "Limpiar filtros",
+      "anyBedrooms": "Cualquiera",
+      "bedroomsPlus": "{{count}} o más",
+      "noLimit": "Sin límite"
+    },
+    "gallery": {
+      "noPhotos": "Este inmueble aún no tiene fotografías",
+      "aria": "Galería de imágenes",
+      "viewImage": "Ver imagen {{index}} de {{total}}"
+    },
+    "ownerTable": {
+      "errorTitle": "No pudimos cargar tus propiedades",
+      "emptyTitle": "Aún no has publicado propiedades",
+      "emptyDescription": "Publica tu primer inmueble y aparecerá en el catálogo público. Podrás editarlo u ocultarlo cuando quieras.",
+      "property": "Propiedad",
+      "operation": "Operación",
+      "price": "Precio",
+      "status": "Estado",
+      "published": "Publicada",
+      "actions": "Acciones",
+      "noLocation": "Sin ubicación",
+      "view": "Ver publicación",
+      "viewAria": "Ver {{title}}",
+      "edit": "Editar propiedad",
+      "editAria": "Editar {{title}}",
+      "hide": "Ocultar del catálogo",
+      "hideAria": "Ocultar {{title}}",
+      "publish": "Volver a publicar",
+      "publishAria": "Publicar {{title}}",
+      "closed": "Propiedad con cierre registrado"
+    },
+    "uploader": {
+      "remove": "Quitar {{name}}",
+      "sizeError": "{{name}}: supera el límite de 8 MB.",
+      "maxImages": "Puedes subir hasta {{max}} imágenes por propiedad.",
+      "drag": "Arrastra las fotos aquí o selecciónalas",
+      "hint": "JPG, PNG o WebP · máximo 8 MB por imagen · hasta 8 imágenes.",
+      "choose": "Elegir imágenes",
+      "count": "{{total}} de {{max}} imágenes",
+      "coverNote": "La primera imagen será la portada.",
+      "fallback": "Modo de contingencia activo (solo desarrollo): si Storage no está disponible, se intentarán guardar todas las imágenes comprimidas dentro de Firestore (máximo 180 KB por imagen y 600 KB en total). Si no caben, no se publicará nada y se mostrará el error.",
+      "uploading": "Subiendo imágenes… {{progress}}%",
+      "removeExisting": "Quitar imagen existente",
+      "cover": "Portada"
+    },
+    "form": {
+      "eyebrow": "Lo esencial",
+      "title": "Cuéntanos qué estás publicando",
+      "operationAria": "Operación",
+      "sale": "Venta",
+      "rent": "Renta",
+      "titleLabel": "Título de la publicación",
+      "titlePlaceholder": "Ej. Casa con jardín y vista a la ciudad",
+      "type": "Tipo de inmueble",
+      "priceRent": "Canon mensual (COP)",
+      "priceSale": "Precio de venta (COP)",
+      "pricePlaceholder": "Ej. 650000000",
+      "location": "Ubicación",
+      "locationHint": "Ciudad, barrio o sector. Evita direcciones exactas si prefieres privacidad.",
+      "locationPlaceholder": "Ej. Medellín, El Poblado",
+      "featuresEyebrow": "Características",
+      "featuresTitle": "Los detalles que hacen la diferencia",
+      "bedrooms": "Habitaciones",
+      "bathrooms": "Baños",
+      "parking": "Parqueaderos",
+      "area": "Área (m²)",
+      "areaPlaceholder": "Ej. 120",
+      "stratum": "Estrato",
+      "stratumNone": "No aplica",
+      "description": "Descripción",
+      "descriptionHint": "{{count}} caracteres · describe el estado, los espacios y lo que hace especial al inmueble.",
+      "descriptionPlaceholder": "Ej. Casa remodelada con iluminación natural, cocina integral, patio interior y parqueadero cubierto.",
+      "amenities": "Amenidades y espacios comunes",
+      "amenityPlaceholder": "Agregar otra amenidad",
+      "amenityAria": "Agregar otra amenidad",
+      "add": "Agregar",
+      "photosEyebrow": "Fotografías",
+      "photosTitle": "Muéstrala en su mejor luz",
+      "visibilityEyebrow": "Visibilidad",
+      "visibilityTitle": "Estado de la publicación",
+      "status": "Estado",
+      "statusPublished": "Publicada",
+      "statusHidden": "Oculta",
+      "publishNote": "Al guardar, la propiedad aparecerá en el catálogo público. Podrás ocultarla o editarla desde tu panel.",
+      "cancelUpload": "Cancelar subida",
+      "publishing": "Publicando…",
+      "submitEdit": "Guardar cambios",
+      "submitNew": "Publicar propiedad",
+      "validationToast": "Revisa los campos marcados antes de guardar."
+    }
+  },
+  "testimonials": {
+    "grid": {
+      "errorTitle": "No pudimos cargar los testimonios",
+      "emptyTitle": "Aún no hay testimonios publicados",
+      "emptyDescription": "Las experiencias de nuestros clientes aparecerán aquí."
+    },
+    "card": {
+      "client": "Cliente",
+      "ratingAria": "Calificación del cliente"
+    },
+    "stars": {
+      "label": "Calificación",
+      "value": "{{label}}: {{value}} de 5",
+      "star": "{{star}} de 5 estrellas"
+    },
+    "form": {
+      "guestTitle": "¿Ya trabajaste con nosotros?",
+      "guestText": "Inicia sesión para compartir tu experiencia. Los testimonios se publican con tu nombre y quedan asociados a tu cuenta.",
+      "guestLogin": "Iniciar sesión",
+      "eyebrow": "Tu experiencia",
+      "title": "Comparte lo que viviste",
+      "intro": "Tu opinión ayuda a otras personas a dar el siguiente paso con confianza.",
+      "rating": "Tu calificación",
+      "name": "Nombre",
+      "profession": "Profesión u ocupación",
+      "professionPlaceholder": "Ej. Diseñadora",
+      "text": "Tu experiencia",
+      "textHint": "{{count}} caracteres · mínimo 20",
+      "textPlaceholder": "Cuéntanos cómo fue el proceso de compra, venta o arriendo.",
+      "submit": "Publicar testimonio",
+      "publishing": "Publicando…",
+      "validationToast": "Revisa los campos del testimonio.",
+      "successToast": "Gracias por compartir tu experiencia.",
+      "errorFallback": "No se pudo publicar el testimonio."
+    }
+  },
+  "auth": {
+    "layout": {
+      "eyebrow": "Manuela Bermúdez · Realtor",
+      "title": "Un lugar que se sienta tuyo.",
+      "description": "Acompañamiento inmobiliario cercano para comprar, vender o arrendar en Medellín y el Valle de Aburrá.",
+      "point1": "Acompañamiento directo en cada etapa.",
+      "point2": "Información clara, sin letra pequeña.",
+      "point3": "Propiedades seleccionadas con criterio.",
+      "secure": "Espacio privado y seguro",
+      "back": "Volver al sitio",
+      "rights": "© {{year}} {{name}}. Todos los derechos reservados."
+    },
+    "login": {
+      "pageTitle": "Iniciar sesión",
+      "pageDescription": "Accede a tu cuenta de Manuela Bermúdez Realtor.",
+      "eyebrow": "Bienvenida de nuevo",
+      "title": "Tu próximo lugar empieza con una conversación.",
+      "description": "Ingresa para gestionar tus propiedades, revisar tus preferencias o continuar el proceso que empezamos juntos.",
+      "point1": "Tu panel personal según tu rol.",
+      "point2": "Preferencias y publicaciones en un solo lugar.",
+      "point3": "Acompañamiento directo, también en línea.",
+      "headEyebrow": "Mi cuenta",
+      "headTitle": "Iniciar sesión",
+      "headText": "Ingresa con el correo y la contraseña que registraste. Si es tu primera vez, puedes crear una cuenta en un minuto.",
+      "errorTitle": "No pudimos ingresar.",
+      "errorFallback": "No pudimos iniciar sesión.",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu@correo.com",
+      "password": "Contraseña",
+      "passwordPlaceholder": "Tu contraseña",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
+      "secure": "Conexión segura con Firebase",
+      "forgot": "¿Olvidaste tu contraseña?",
+      "submit": "Ingresar a mi cuenta",
+      "submitting": "Ingresando…",
+      "divider": "¿Aún no tienes cuenta?",
+      "create": "Crear una cuenta",
+      "note": "Las cuentas de administración se asignan manualmente. Si tu cuenta no funciona, escríbenos y la revisamos contigo."
+    },
+    "register": {
+      "pageTitle": "Crear cuenta",
+      "pageDescription": "Crea tu cuenta en Manuela Bermúdez Realtor.",
+      "eyebrow": "Crea tu cuenta",
+      "title": "Empieza a buscar, publicar y decidir con claridad.",
+      "description": "Una cuenta te permite guardar tus preferencias, publicar tu inmueble y mantener toda la conversación en un solo lugar.",
+      "point1": "Compradores: recomendaciones según sus intereses.",
+      "point2": "Vendedores: publicaciones y seguimiento del inventario.",
+      "point3": "Datos protegidos y acceso con tu propio correo.",
+      "headEyebrow": "Registro",
+      "headTitle": "Crea tu cuenta",
+      "headText": "Completa tus datos. El registro público permite cuentas de Comprador y Vendedor; las cuentas de administración se asignan por separado.",
+      "errorTitle": "No pudimos crear tu cuenta.",
+      "errorFallback": "No pudimos crear tu cuenta.",
+      "roleLegend": "¿Cómo quieres usar la plataforma?",
+      "roleBuyerTitle": "Quiero comprar o arrendar",
+      "roleBuyerText": "Explora propiedades y guarda tus preferencias.",
+      "roleSellerTitle": "Quiero publicar un inmueble",
+      "roleSellerText": "Publica y administra tus propiedades.",
+      "name": "Nombre completo",
+      "namePlaceholder": "Ej. Laura Restrepo",
+      "id": "Cédula",
+      "idPlaceholder": "Número de documento",
+      "birth": "Fecha de nacimiento",
+      "phone": "Teléfono",
+      "phonePlaceholder": "+57 300 000 0000",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu@correo.com",
+      "password": "Contraseña",
+      "passwordHint": "Mínimo 8 caracteres.",
+      "showPasswords": "Mostrar contraseñas",
+      "hidePasswords": "Ocultar contraseñas",
+      "confirmPassword": "Confirmar contraseña",
+      "terms": "Acepto el tratamiento de mis datos personales para gestionar mi cuenta, recibir respuestas a mis consultas y usar los servicios de la plataforma.",
+      "submit": "Crear mi cuenta",
+      "submitting": "Creando tu cuenta…",
+      "validationToast": "Revisa los campos marcados antes de continuar.",
+      "successToast": "Tu cuenta está lista. Bienvenido a Manuela Bermúdez Realtor.",
+      "divider": "¿Ya tienes una cuenta?",
+      "login": "Iniciar sesión"
+    },
+    "forgot": {
+      "pageTitle": "Recuperar contraseña",
+      "pageDescription": "Solicita un enlace para restablecer la contraseña de tu cuenta.",
+      "eyebrow": "Recuperar acceso",
+      "title": "Volver a tu cuenta es parte del proceso.",
+      "description": "Te enviaremos un enlace seguro al correo registrado para que puedas crear una nueva contraseña.",
+      "point1": "El enlace se envía solo al correo de tu cuenta.",
+      "point2": "Revisa también la carpeta de spam o promociones.",
+      "point3": "Si no llega, escríbenos y lo revisamos contigo.",
+      "headEyebrow": "Seguridad",
+      "headTitle": "Recuperar contraseña",
+      "headText": "Escribe el correo asociado a tu cuenta. Por seguridad, no mostraremos si el correo está registrado o no.",
+      "invalidEmail": "Escribe el correo con el que creaste tu cuenta.",
+      "sentTitle": "Revisa tu correo",
+      "sentText": "Si {{email}} tiene una cuenta, recibirás un enlace para restablecer tu contraseña. El enlace vence después de un tiempo por seguridad.",
+      "backToLogin": "Volver a iniciar sesión",
+      "useAnother": "Usar otro correo",
+      "email": "Correo electrónico",
+      "emailHint": "Usa el mismo correo con el que ingresas a tu cuenta.",
+      "emailPlaceholder": "tu@correo.com",
+      "submit": "Enviar enlace de recuperación",
+      "submitting": "Enviando…",
+      "successToast": "Te enviamos un enlace para restablecer tu contraseña.",
+      "errorFallback": "No pudimos enviar el enlace. Revisa el correo e inténtalo de nuevo.",
+      "divider": "¿Recordaste tu contraseña?",
+      "note": "Nunca compartimos tu contraseña ni pedimos datos sensibles por correo."
+    }
+  },
+  "account": {
+    "pageTitle": "Mi cuenta",
+    "pageDescription": "Gestiona tu perfil y la seguridad de tu cuenta.",
+    "titles": {
+      "profile": "Mi perfil",
+      "security": "Seguridad de la cuenta"
+    },
+    "subtitle": "Tus datos personales y la seguridad de tu cuenta, en un solo lugar.",
+    "goPanel": "Ir a mi panel",
+    "userFallback": "Usuario",
+    "addressFallback": "Dirección por completar",
+    "memberSince": "Miembro desde {{date}}",
+    "completion": "Perfil completado",
+    "completionHint": "Completar tu teléfono y dirección nos ayuda a acompañarte mejor durante el proceso.",
+    "role": "Rol asignado",
+    "personal": {
+      "eyebrow": "Datos personales",
+      "title": "Tu información de contacto",
+      "text": "Estos datos se usan para comunicarnos contigo y no se muestran públicamente.",
+      "photo": "Foto de perfil",
+      "photoText": "Una imagen ayuda a reconocerte dentro de la plataforma.",
+      "uploading": "Subiendo…",
+      "changePhoto": "Cambiar foto",
+      "cancel": "Cancelar",
+      "name": "Nombre completo",
+      "phone": "Teléfono",
+      "phonePlaceholder": "+57 300 000 0000",
+      "birth": "Fecha de nacimiento",
+      "address": "Dirección de contacto",
+      "addressHint": "Opcional",
+      "addressPlaceholder": "Ciudad y sector",
+      "email": "Correo electrónico",
+      "emailHint": "El correo está vinculado a tu cuenta.",
+      "id": "Cédula",
+      "idHint": "Solo la administradora puede modificarla.",
+      "idMissing": "No registrada",
+      "emptyName": "El nombre no puede quedar vacío.",
+      "saveSuccess": "Tu información se actualizó.",
+      "saveError": "No se pudo guardar tu información.",
+      "photoSuccess": "Foto de perfil actualizada.",
+      "photoCanceled": "Subida de la foto cancelada.",
+      "photoError": "No se pudo actualizar la foto. Verifica Firebase Storage."
+    },
+    "password": {
+      "eyebrow": "Seguridad",
+      "title": "Cambiar contraseña",
+      "text": "Usa una contraseña de al menos 8 caracteres. Te pediremos la actual para confirmar el cambio.",
+      "current": "Contraseña actual",
+      "new": "Nueva contraseña",
+      "confirm": "Confirmar nueva contraseña",
+      "submit": "Actualizar contraseña",
+      "updating": "Actualizando…",
+      "success": "Contraseña actualizada. Guárdala en un lugar seguro.",
+      "wrong": "La contraseña actual no es correcta.",
+      "errorFallback": "No se pudo cambiar la contraseña."
+    },
+    "danger": {
+      "eyebrow": "Privacidad",
+      "title": "Tu cuenta y tus datos",
+      "deleteTitle": "Eliminación de la cuenta",
+      "deleteText": "La eliminación definitiva se realiza con verificación de identidad y permisos administrativos. Si necesitas borrar tu cuenta y tus datos, escríbenos desde {{email}} para gestionarlo de forma segura.",
+      "request": "Solicitar eliminación",
+      "note": "La desactivación de una cuenta impide el acceso de inmediato y puede revertirse. El borrado permanente no está disponible desde el navegador.",
+      "mailSubject": "Solicitud de eliminación de cuenta",
+      "mailBody": "Hola {{name}},\n\nSolicito la eliminación de mi cuenta asociada a {{email}}.\n\nNombre: {{profileName}}"
+    }
+  },
+  "contactForm": {
+    "validationToast": "Revisa los campos del formulario.",
+    "successToast": "Mensaje enviado. Te responderemos pronto.",
+    "errorFallback": "No se pudo enviar el mensaje. Escríbenos directamente.",
+    "sentEyebrow": "Mensaje enviado",
+    "sentTitle": "Gracias por escribirnos",
+    "sentText": "Recibimos tu mensaje y te responderemos al correo que indicaste. Si prefieres, también puedes escribirnos por WhatsApp.",
+    "openWhatsapp": "Abrir WhatsApp",
+    "sendAnother": "Enviar otro mensaje",
+    "name": "Nombre completo",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "subject": "Asunto",
+    "message": "Mensaje",
+    "messageHint": "Cuéntanos qué buscas, en qué zona y con qué presupuesto. Así podemos ayudarte mejor.",
+    "messagePlaceholder": "Hola, estoy buscando…",
+    "honeypot": "No completar",
+    "failureTitle": "No pudimos enviar el correo.",
+    "openMail": "Abrir mi correo",
+    "privacy": "Tus datos se usan únicamente para responder tu consulta. No compartimos tu información con terceros.",
+    "submit": "Enviar mensaje",
+    "sending": "Enviando…",
+    "whatsappSent": "Hola {{name}}, acabo de enviar un mensaje desde el sitio web.",
+    "whatsappFallback": "Hola {{name}}, quiero hacer una consulta desde el sitio web.",
+    "mailto": {
+      "defaultSubject": "Consulta desde {{name}}",
+      "name": "Nombre: {{value}}",
+      "email": "Correo: {{value}}",
+      "phone": "Teléfono: {{value}}",
+      "property": "Propiedad: {{value}}"
+    }
+  },
+  "dashboard": {
+    "buyer": {
+      "pageTitle": "Panel de comprador",
+      "pageDescription": "Tus recomendaciones y preferencias de búsqueda.",
+      "sectionTitles": {
+        "summary": "Mi resumen",
+        "recommendations": "Recomendaciones para ti",
+        "preferences": "Mis preferencias"
+      },
+      "subtitle": "Explora opciones que se ajustan a lo que necesitas y mantén tus preferencias al día.",
+      "exploreCatalog": "Explorar catálogo",
+      "welcomeHello": "Hola, {{name}}",
+      "welcomeDefault": "bienvenido",
+      "welcomeTitle": "Encontrar un lugar también es una conversación.",
+      "welcomeText": "Revisa las propiedades que coinciden con tus intereses y ajusta tus preferencias cuando quieras. Si algo te llama la atención, podemos coordinar una visita.",
+      "talk": "Hablar con Manuela",
+      "myPanel": "Mi panel",
+      "stats": {
+        "published": "Propiedades publicadas",
+        "publishedHint": "Inventario disponible hoy",
+        "sale": "En venta",
+        "saleHint": "Opciones para comprar",
+        "rent": "En arriendo",
+        "rentHint": "Opciones para arrendar",
+        "recommendations": "Recomendaciones",
+        "recommendationsHintPreferences": "Según tus preferencias",
+        "recommendationsHintRecent": "Selección reciente"
+      },
+      "preference": {
+        "eyebrow": "Tu búsqueda",
+        "title": "Lo que estás buscando",
+        "empty": "Aún no has guardado preferencias. Cuéntanos qué buscas para filtrar mejor el inventario.",
+        "edit": "Editar",
+        "configure": "Configurar",
+        "rent": "Arriendo",
+        "buy": "Compra",
+        "buyOrRent": "Compra o arriendo",
+        "anyType": "Cualquier tipo",
+        "anyZone": "Cualquier zona",
+        "upTo": "Hasta {{amount}}",
+        "noLimit": "Sin límite de presupuesto",
+        "summaryRent": "Arriendo",
+        "summaryBuy": "Compra",
+        "summaryIn": "en {{zone}}",
+        "summaryUpTo": "hasta {{amount}}"
+      },
+      "support": {
+        "eyebrow": "Acompañamiento",
+        "title": "¿Quieres que busquemos contigo?",
+        "text": "Cuéntanos qué espacios necesitas, en qué zona y con qué presupuesto. Filtramos opciones y coordinamos visitas sin hacerte perder tiempo.",
+        "link": "Contar qué busco"
+      },
+      "start": {
+        "eyebrow": "Para empezar",
+        "title": "Opciones que podrían interesarte",
+        "viewAll": "Ver todas"
+      },
+      "recommendations": {
+        "eyebrow": "Selección personalizada",
+        "withPreferences": "{{count}} propiedades según tus preferencias",
+        "withoutPreferences": "Propiedades publicadas",
+        "withPreferencesText": "Si no hay coincidencias exactas, mostramos una selección reciente para que sigas explorando.",
+        "withoutPreferencesText": "Configura tus preferencias para recibir una selección más precisa.",
+        "emptyTitle": "No encontramos coincidencias todavía",
+        "emptyDescription": "Prueba ampliando el presupuesto o la zona, o cuéntanos qué buscas para ayudarte."
+      },
+      "emptyInventoryTitle": "Aún no hay propiedades publicadas",
+      "emptyInventoryDescription": "Estamos preparando el inventario. Cuéntanos qué buscas y te avisamos cuando llegue algo que encaje.",
+      "preferencesForm": {
+        "eyebrow": "Búsqueda personalizada",
+        "title": "Cuéntanos qué necesitas",
+        "text": "Usamos estos datos para ordenar las recomendaciones dentro de tu cuenta. Puedes cambiarlos cuando quieras.",
+        "operation": "Quiero",
+        "operationAny": "Comprar o arrendar",
+        "type": "Tipo de inmueble",
+        "typeAny": "Cualquier tipo",
+        "zone": "Zona de interés",
+        "zoneHint": "Ciudad, barrio o sector.",
+        "zonePlaceholder": "Ej. Laureles, Medellín",
+        "budget": "Presupuesto máximo",
+        "save": "Guardar preferencias",
+        "saveSuccess": "Tus preferencias se guardaron.",
+        "saveError": "No se pudieron guardar tus preferencias."
+      },
+      "personalizeTitle": "Personaliza tus recomendaciones",
+      "personalizeText": "Cuéntanos qué tipo de propiedad buscas, en qué zona y con qué presupuesto para mostrar opciones más relevantes.",
+      "personalizeAction": "Configurar preferencias"
+    },
+    "seller": {
+      "pageTitle": "Panel de vendedor",
+      "pageDescription": "Publica y administra tus propiedades.",
+      "sectionTitles": {
+        "summary": "Mi resumen",
+        "publish": "Publicar propiedad",
+        "properties": "Mis propiedades"
+      },
+      "subtitle": "Publica tus inmuebles, revisa su estado y mantén tu inventario al día.",
+      "export": "Exportar",
+      "publish": "Publicar",
+      "saveEditSuccess": "Los cambios se guardaron correctamente.",
+      "saveNewSuccess": "Tu propiedad ya está publicada en el catálogo.",
+      "saveError": "No se pudo guardar la propiedad.",
+      "uploadCanceled": "Subida cancelada. La propiedad no se modificó.",
+      "publishSuccess": "La propiedad volvió a estar publicada.",
+      "publishError": "No se pudo publicar la propiedad.",
+      "hideSuccess": "La propiedad se ocultó del catálogo público.",
+      "hideError": "No se pudo ocultar la propiedad.",
+      "stats": {
+        "published": "Propiedades publicadas",
+        "publishedHint": "Visibles en el catálogo",
+        "hidden": "Ocultas",
+        "hiddenHint": "No visibles al público",
+        "closed": "Cierres registrados",
+        "closedHint": "Vendidas o rentadas",
+        "value": "Valor publicado",
+        "valueHint": "Suma de propiedades activas"
+      },
+      "welcomeHello": "Hola, {{name}}",
+      "welcomeDefault": "bienvenido",
+      "welcomeTitle": "Tu inventario, en un solo lugar.",
+      "welcomeText": "Publica propiedades, revisa su estado y decide cuándo mostrarlas al público. Si necesitas ajustar algo, puedes editarlas sin perder el historial.",
+      "publishProperty": "Publicar propiedad",
+      "talk": "Hablar con Manuela",
+      "activity": {
+        "eyebrow": "Actividad",
+        "title": "Mis propiedades recientes",
+        "text": "Un vistazo rápido a las últimas publicaciones de tu cuenta.",
+        "viewAll": "Ver todas"
+      },
+      "tips": {
+        "eyebrow": "Buenas prácticas",
+        "title": "Una publicación clara vende mejor",
+        "tip1": "Usa fotos con luz natural y al menos una del espacio principal.",
+        "tip2": "Describe el estado real, el área y lo que hace especial al inmueble.",
+        "tip3": "Indica una zona aproximada; la dirección exacta se comparte en la visita.",
+        "link": "Ver servicios de acompañamiento"
+      },
+      "editEyebrow": "Editar publicación",
+      "newEyebrow": "Nueva publicación",
+      "editTitle": "Actualiza la información de tu propiedad",
+      "newTitle": "Cuéntanos sobre el inmueble que quieres publicar",
+      "formHint": "Los campos marcados son obligatorios. La primera imagen será la portada en el catálogo.",
+      "cancelEdit": "Cancelar edición",
+      "inventoryEyebrow": "Inventario",
+      "inventoryTitle": "Todas mis propiedades",
+      "inventoryCount": "{{count}} propiedades asociadas a tu cuenta.",
+      "inventoryEmpty": "Aún no tienes propiedades asociadas a tu cuenta.",
+      "inventoryEmptyTitle": "Tu inventario está vacío",
+      "inventoryEmptyDescription": "Publica tu primera propiedad para que aparezca en el catálogo y puedas gestionarla desde este panel.",
+      "publishFirst": "Publicar mi primera propiedad",
+      "hideDialogTitle": "Ocultar propiedad",
+      "hideDialogText": "“{{title}}” dejará de aparecer en el catálogo público. Podrás volver a publicarla cuando quieras; no se elimina de tu cuenta.",
+      "hideConfirm": "Ocultar propiedad"
+    },
+    "admin": {
+      "pageTitle": "Panel de administración",
+      "pageDescription": "Gestiona usuarios, propiedades y cierres de la plataforma.",
+      "sectionTitles": {
+        "summary": "Panel de administración",
+        "properties": "Propiedades",
+        "users": "Usuarios",
+        "sales": "Cierres registrados"
+      },
+      "subtitle": "Datos reales de la plataforma: usuarios, inventario y cierres registrados.",
+      "exportAll": "Exportar libro completo",
+      "exportProperties": "Exportar propiedades",
+      "exportUsers": "Exportar usuarios",
+      "exportSales": "Exportar cierres",
+      "registerSale": "Registrar cierre",
+      "load": {
+        "usersError": "No se pudieron cargar los usuarios.",
+        "propertiesError": "No se pudieron cargar las propiedades.",
+        "salesError": "No se pudieron cargar los cierres."
+      },
+      "userToggle": {
+        "reactivated": "La cuenta se reactivó correctamente.",
+        "deactivated": "La cuenta quedó desactivada y no podrá ingresar.",
+        "error": "No se pudo actualizar la cuenta."
+      },
+      "propertyToggle": {
+        "published": "La propiedad volvió a publicarse.",
+        "hidden": "La propiedad se ocultó del catálogo.",
+        "error": "No se pudo actualizar la propiedad."
+      },
+      "annul": {
+        "success": "El cierre quedó anulado y la propiedad volvió a publicarse.",
+        "error": "No se pudo anular el cierre."
+      },
+      "backfill": {
+        "success": "Datos actualizados: {{properties}} propiedades y {{testimonials}} testimonios{{removed}}.",
+        "removed": "; {{count}} correos de propietario retirados de las fichas públicas",
+        "error": "No se pudieron completar los datos heredados."
+      },
+      "welcomeHello": "Hola, {{name}}",
+      "welcomeDefault": "administradora",
+      "welcomeTitle": "La operación completa, con datos reales.",
+      "welcomeText": "Revisa el estado de las cuentas y el inventario, registra cierres y descarga reportes en Excel. Las acciones sensibles quedan registradas para mantener la trazabilidad.",
+      "salesReport": "Ver reporte de ventas",
+      "stats": {
+        "users": "Usuarios registrados",
+        "usersHint": "{{count}} cuentas activas",
+        "published": "Propiedades publicadas",
+        "publishedHint": "{{total}} en total · {{closed}} con cierre",
+        "sales": "Cierres registrados",
+        "salesHint": "{{count}} anulados",
+        "salesValue": "Valor de cierres",
+        "salesValueHint": "Solo cierres vigentes"
+      },
+      "recent": {
+        "eyebrow": "Movimiento reciente",
+        "title": "Últimos cierres",
+        "text": "Ventas y arriendos registrados, con su valor y su estado.",
+        "viewAll": "Ver todos"
+      },
+      "catalog": {
+        "eyebrow": "Inventario",
+        "title": "Estado del catálogo",
+        "published": "Publicadas",
+        "hidden": "Ocultas",
+        "closed": "Con cierre",
+        "value": "Valor publicado",
+        "reviewProperties": "Revisar propiedades",
+        "reviewUsers": "Revisar usuarios",
+        "openReport": "Abrir reporte de ventas"
+      },
+      "maintenance": {
+        "eyebrow": "Mantenimiento",
+        "title": "Datos heredados",
+        "text": "Completa el estado de las propiedades y los testimonios que vienen del sitio anterior, y retira de las fichas el correo del propietario. Es necesario para que las consultas públicas seguras los muestren.",
+        "action": "Completar datos",
+        "dialogTitle": "Completar datos heredados",
+        "dialogText": "Se agregará el estado faltante a las propiedades y los testimonios antiguos, y se retirará el correo del propietario de las fichas públicas. No se modifican precios, imágenes, cuentas ni cierres. Al terminar, el catálogo público podrá leer los inmuebles con las reglas seguras."
+      },
+      "emptyTitle": "La plataforma está lista para empezar",
+      "emptyDescription": "Aún no hay propiedades ni cierres. Publica el primer inmueble o registra un cierre cuando la operación esté cerrada.",
+      "emptyAction": "Ir a publicar una propiedad",
+      "users": {
+        "eyebrow": "Cuentas",
+        "title": "Usuarios registrados",
+        "summary": "{{filtered}} de {{total}} cuentas según los filtros. Puedes desactivar una cuenta sin eliminar sus datos.",
+        "searchAria": "Buscar usuarios",
+        "searchPlaceholder": "Buscar por nombre, correo, cédula o teléfono",
+        "roleAria": "Filtrar por rol",
+        "allRoles": "Todos los roles",
+        "adminRole": "Administración",
+        "sellerRole": "Vendedor",
+        "buyerRole": "Comprador",
+        "statusAria": "Filtrar por estado",
+        "allStatuses": "Todos los estados",
+        "active": "Activos",
+        "inactive": "Inactivos"
+      },
+      "properties": {
+        "eyebrow": "Inventario",
+        "title": "Todas las propiedades",
+        "summary": "{{filtered}} de {{total}} propiedades según los filtros. “Registrar cierre” actualiza la propiedad en una sola transacción.",
+        "searchAria": "Buscar propiedades",
+        "searchPlaceholder": "Buscar por título, ubicación, tipo o propietario",
+        "operationAria": "Filtrar por operación",
+        "allOperations": "Venta y renta",
+        "sale": "Venta",
+        "rent": "Renta",
+        "statusAria": "Filtrar por estado",
+        "allStatuses": "Todos los estados",
+        "published": "Publicadas",
+        "hidden": "Ocultas",
+        "sold": "Vendidas",
+        "rented": "Rentadas"
+      },
+      "sales": {
+        "eyebrow": "Cierres",
+        "title": "Ventas y arriendos registrados",
+        "summary": "{{filtered}} de {{total}} cierres según los filtros. Anular un cierre vuelve a publicar la propiedad.",
+        "annulTitle": "Anular cierre",
+        "annulText": "El cierre de “{{title}}” quedará marcado como anulado y la propiedad volverá a estar publicada. Esta acción queda registrada en la auditoría.",
+        "annulConfirm": "Anular cierre",
+        "annulCancel": "Conservar cierre"
+      }
+    },
+    "salesReport": {
+      "pageTitle": "Reporte de ventas",
+      "pageDescription": "Consulta y exporta los cierres registrados por rango de fechas.",
+      "title": "Reporte de ventas",
+      "subtitle": "Cierres vigentes y anulados, filtrados por fecha, operación y estado.",
+      "back": "Volver al panel",
+      "export": "Exportar reporte",
+      "loadError": "No se pudo cargar el reporte de ventas.",
+      "stats": {
+        "closed": "Cierres vigentes",
+        "closedHint": "{{count}} anulados en el filtro",
+        "total": "Valor total",
+        "totalHint": "Solo cierres vigentes",
+        "average": "Ticket promedio",
+        "averageHint": "Promedio por cierre vigente",
+        "split": "Ventas / arriendos",
+        "splitHint": "Distribución por operación"
+      },
+      "filters": {
+        "eyebrow": "Filtros del reporte",
+        "title": "Consulta los cierres registrados",
+        "text": "Usa el rango de fechas para revisar un período específico. La exportación incluye exactamente los cierres filtrados.",
+        "results": "{{count}} resultados"
+      },
+      "errorTitle": "No pudimos cargar el reporte",
+      "detail": {
+        "eyebrow": "Detalle",
+        "title": "Cierres del período",
+        "loading": "Cargando cierres…",
+        "count": "{{count}} cierres coinciden con los filtros actuales.",
+        "adminPanel": "Ir al panel de administración"
+      },
+      "emptyFilteredTitle": "No hay cierres con estos filtros",
+      "emptyFilteredDescription": "Prueba con otro rango de fechas o limpia los filtros para ver todos los cierres.",
+      "emptyTitle": "Aún no hay cierres registrados",
+      "emptyDescription": "Cuando registres la primera venta o arriendo, el reporte se actualizará automáticamente.",
+      "emptyAction": "Ir a registrar un cierre",
+      "trend": {
+        "eyebrow": "Tendencia",
+        "title": "Valor cerrado por mes",
+        "text": "Últimos meses con cierres dentro del filtro actual. Solo se incluyen cierres vigentes.",
+        "one": "{{count}} cierre",
+        "other": "{{count}} cierres"
+      },
+      "note": "Los valores del reporte corresponden a los cierres vigentes (no anulados) y a los filtros aplicados. La exportación en Excel respeta la misma selección."
+    }
+  },
+  "admin": {
+    "usersTable": {
+      "errorTitle": "No pudimos cargar los usuarios",
+      "emptyTitle": "No hay usuarios con estos filtros",
+      "emptyDescription": "Prueba con otro término de búsqueda o limpia los filtros.",
+      "user": "Usuario",
+      "id": "Cédula",
+      "role": "Rol",
+      "registered": "Registro",
+      "status": "Estado",
+      "actions": "Acciones",
+      "selfWarning": "No puedes desactivar tu propia cuenta",
+      "deactivate": "Desactivar cuenta",
+      "reactivate": "Reactivar cuenta",
+      "deactivateAria": "Desactivar a {{name}}",
+      "reactivateAria": "Reactivar a {{name}}"
+    },
+    "propertiesTable": {
+      "errorTitle": "No pudimos cargar las propiedades",
+      "emptyTitle": "No hay propiedades con estos filtros",
+      "emptyDescription": "Ajusta la búsqueda o limpia los filtros para ver todo el inventario.",
+      "property": "Propiedad",
+      "operation": "Operación",
+      "price": "Precio",
+      "status": "Estado",
+      "registered": "Registro",
+      "actions": "Acciones",
+      "noLocation": "Sin ubicación",
+      "view": "Ver propiedad",
+      "viewAria": "Ver {{title}}",
+      "registerSale": "Registrar cierre",
+      "hide": "Ocultar publicación",
+      "publish": "Publicar",
+      "hideAria": "Ocultar {{title}}",
+      "publishAria": "Publicar {{title}}"
+    },
+    "salesTable": {
+      "errorTitle": "No pudimos cargar los cierres",
+      "emptyTitle": "Aún no hay cierres registrados",
+      "emptyDescription": "Cuando registres una venta o un arriendo, aparecerá aquí con su valor y su fecha.",
+      "property": "Propiedad",
+      "operation": "Operación",
+      "buyer": "Comprador",
+      "value": "Valor",
+      "date": "Fecha",
+      "status": "Estado",
+      "actions": "Acciones",
+      "sellerMissing": "Vendedor sin nombre",
+      "annul": "Anular"
+    },
+    "salesFilters": {
+      "title": "Filtrar cierres",
+      "clear": "Limpiar",
+      "search": "Buscar",
+      "searchPlaceholder": "Propiedad, comprador o vendedor",
+      "from": "Desde",
+      "to": "Hasta",
+      "operation": "Operación",
+      "allOperations": "Todas",
+      "sale": "Venta",
+      "rent": "Renta",
+      "status": "Estado",
+      "allStatuses": "Todos",
+      "closed": "Cerrada",
+      "annulled": "Anulada"
+    },
+    "saleForm": {
+      "success": "Cierre registrado. La propiedad cambió de estado automáticamente.",
+      "errorFallback": "No se pudo registrar el cierre.",
+      "title": "Registrar cierre",
+      "eyebrow": "Operación cerrada",
+      "cancel": "Cancelar",
+      "submitting": "Registrando…",
+      "submit": "Registrar cierre",
+      "noProperties": "No hay propiedades publicadas disponibles. Publica una propiedad antes de registrar un cierre.",
+      "intro": "El cierre se guarda en ventas y actualiza la propiedad en una sola transacción. No se generan datos de prueba.",
+      "property": "Propiedad",
+      "selectProperty": "Selecciona una propiedad publicada",
+      "operation": "Operación",
+      "owner": "Propietario",
+      "ownerMissing": "Sin nombre",
+      "publishedPrice": "Precio publicado",
+      "buyerName": "Nombre del comprador o arrendatario",
+      "buyerEmail": "Correo del comprador",
+      "buyerPhone": "Teléfono del comprador",
+      "closingValue": "Valor del cierre (COP)",
+      "closingDate": "Fecha del cierre",
+      "operationHint": "Se toma de la propiedad; puedes ajustarla si el cierre lo requiere.",
+      "sale": "Venta",
+      "rent": "Renta",
+      "notes": "Notas internas",
+      "notesHint": "Opcional. No se muestran en el sitio público.",
+      "notesPlaceholder": "Ej. Cierre coordinado con el abogado, pagado por transferencia."
+    },
+    "export": {
+      "defaultLabel": "Exportar Excel",
+      "success": "Archivo exportado.",
+      "error": "No se pudo exportar el archivo.",
+      "busy": "Generando…"
+    }
+  },
+  "excel": {
+    "dateFormat": "dd/mm/yyyy",
+    "sheets": {
+      "users": "Usuarios",
+      "properties": "Propiedades",
+      "sales": "Ventas"
+    },
+    "file": {
+      "users": "manuela-usuarios-{{date}}.xlsx",
+      "properties": "manuela-propiedades-{{date}}.xlsx",
+      "sales": "manuela-ventas-{{date}}.xlsx",
+      "all": "manuela-reporte-completo-{{date}}.xlsx"
+    },
+    "users": {
+      "name": "Nombre",
+      "id": "Cédula",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "role": "Rol",
+      "status": "Estado",
+      "birthDate": "Fecha de nacimiento",
+      "registered": "Fecha de registro",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "properties": {
+      "title": "Título",
+      "operation": "Operación",
+      "type": "Tipo",
+      "status": "Estado",
+      "price": "Precio (COP)",
+      "location": "Ubicación",
+      "bedrooms": "Habitaciones",
+      "bathrooms": "Baños",
+      "parking": "Parqueaderos",
+      "area": "Área (m²)",
+      "owner": "Propietario",
+      "registered": "Fecha de registro"
+    },
+    "sales": {
+      "property": "Propiedad",
+      "operation": "Operación",
+      "seller": "Vendedor",
+      "buyer": "Comprador / arrendatario",
+      "buyerEmail": "Correo comprador",
+      "buyerPhone": "Teléfono comprador",
+      "value": "Valor (COP)",
+      "date": "Fecha de cierre",
+      "status": "Estado",
+      "notes": "Notas"
+    }
+  },
+  "labels": {
+    "operation": {
+      "sale": "Venta",
+      "rent": "Renta"
+    },
+    "status": {
+      "disponible": "Publicada",
+      "vendida": "Vendida",
+      "rentada": "Rentada",
+      "inactiva": "Oculta"
+    },
+    "saleStatus": {
+      "cerrada": "Cerrada",
+      "anulada": "Anulada"
+    },
+    "userStatus": {
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "role": {
+      "admin": "Admin",
+      "seller": "Vendedor",
+      "buyer": "Comprador",
+      "none": "Sin rol asignado"
+    },
+    "propertyType": {
+      "casa": "Casa",
+      "apartamento": "Apartamento",
+      "apartaestudio": "Apartaestudio",
+      "oficina": "Oficina",
+      "local": "Local comercial",
+      "terreno": "Terreno",
+      "finca": "Finca",
+      "otro": "Inmueble"
+    },
+    "propertyTypePlural": {
+      "casa": "Casas",
+      "apartamento": "Apartamentos",
+      "apartaestudio": "Apartaestudios",
+      "oficina": "Oficinas",
+      "local": "Locales",
+      "terreno": "Terrenos",
+      "finca": "Fincas",
+      "otro": "Inmuebles"
+    },
+    "upTo": "Hasta {{amount}}",
+    "inLocation": "en {{location}}",
+    "contactSubject": {
+      "buy": "Quiero comprar una propiedad",
+      "sell": "Quiero vender mi propiedad",
+      "rent": "Quiero arrendar una propiedad",
+      "publish": "Quiero publicar mi inmueble",
+      "advice": "Necesito asesoría",
+      "other": "Otro asunto"
+    },
+    "amenity": {
+      "balcony": "Balcón",
+      "terrace": "Terraza",
+      "garden": "Jardín",
+      "pool": "Piscina",
+      "gym": "Gimnasio",
+      "communityRoom": "Salón comunal",
+      "visitorParking": "Parqueadero visitantes",
+      "storage": "Depósito",
+      "elevator": "Ascensor",
+      "gatedCommunity": "Conjunto cerrado",
+      "security": "Vigilancia",
+      "bbqArea": "Zona de BBQ",
+      "airConditioning": "Aire acondicionado",
+      "fireplace": "Chimenea",
+      "studio": "Estudio",
+      "panoramicView": "Vista panorámica"
+    }
+  },
+  "validation": {
+    "register": {
+      "name": "Escribe tu nombre completo.",
+      "id": "La cédula es obligatoria.",
+      "birth": "Selecciona tu fecha de nacimiento.",
+      "email": "Escribe un correo válido.",
+      "role": "Selecciona cómo quieres usar la plataforma.",
+      "password": "La contraseña debe tener al menos 8 caracteres.",
+      "confirm": "Las contraseñas no coinciden.",
+      "terms": "Debes aceptar el tratamiento de datos para continuar."
+    },
+    "login": {
+      "email": "Escribe un correo válido.",
+      "password": "Escribe tu contraseña."
+    },
+    "property": {
+      "title": "El título debe tener al menos 5 caracteres.",
+      "location": "Indica la ciudad o el sector.",
+      "price": "Ingresa un precio válido.",
+      "type": "Selecciona el tipo de inmueble.",
+      "operation": "Selecciona la operación.",
+      "description": "Describe la propiedad con al menos 20 caracteres.",
+      "bedrooms": "El número de habitaciones no es válido.",
+      "bathrooms": "El número de baños no es válido.",
+      "area": "El área no es válida.",
+      "stratum": "El estrato debe estar entre 1 y 6."
+    },
+    "sale": {
+      "property": "Selecciona una propiedad.",
+      "buyer": "Escribe el nombre del comprador o arrendatario.",
+      "buyerEmail": "El correo del comprador no es válido.",
+      "value": "Ingresa el valor del cierre.",
+      "date": "Selecciona la fecha del cierre."
+    },
+    "contact": {
+      "name": "Escribe tu nombre.",
+      "email": "Escribe un correo válido.",
+      "subject": "Selecciona o escribe un asunto.",
+      "message": "Cuéntanos un poco más (mínimo 10 caracteres).",
+      "phone": "El teléfono no parece válido."
+    },
+    "testimonial": {
+      "name": "Escribe tu nombre.",
+      "text": "Escribe al menos 20 caracteres.",
+      "rating": "Selecciona una calificación."
+    },
+    "password": {
+      "current": "Escribe tu contraseña actual.",
+      "new": "La nueva contraseña debe tener al menos 8 caracteres.",
+      "confirm": "Las contraseñas no coinciden.",
+      "different": "La nueva contraseña debe ser diferente."
+    }
+  },
+  "errors": {
+    "auth": {
+      "invalidCredential": "El correo o la contraseña no son correctos.",
+      "invalidEmail": "Escribe un correo electrónico válido.",
+      "emailInUse": "Ya existe una cuenta con este correo.",
+      "weakPassword": "La contraseña debe tener al menos 8 caracteres.",
+      "tooManyRequests": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
+      "network": "No pudimos conectar con el servidor. Revisa tu conexión.",
+      "userDisabled": "Esta cuenta está desactivada.",
+      "recentLogin": "Por seguridad, vuelve a iniciar sesión antes de continuar.",
+      "operationNotAllowed": "El inicio de sesión con correo no está habilitado en Firebase.",
+      "requiresLogin": "Inicia sesión de nuevo."
+    },
+    "permissionDenied": "No tienes permisos para realizar esta acción. Si crees que es un error, contacta a la administradora.",
+    "unavailable": "El servicio no está disponible en este momento. Inténtalo de nuevo.",
+    "storage": {
+      "unauthorized": "No tienes permisos para subir esta imagen. Revisa la configuración de Storage.",
+      "canceled": "La subida de la imagen fue cancelada.",
+      "timeout": "La subida tardó demasiado. Revisa tu conexión e inténtalo de nuevo.",
+      "retry": "La conexión se interrumpió durante la subida. Inténtalo de nuevo.",
+      "unknown": "No se pudo subir la imagen. Verifica que Firebase Storage esté habilitado.",
+      "base64TooLarge": "La imagen sigue superando el límite del modo de contingencia. Usa una imagen más liviana o activa Firebase Storage.",
+      "base64BatchTooLarge": "No se pudieron guardar {{omitted}} de {{total}} imágenes en el modo de contingencia. Activa Firebase Storage o selecciona menos fotos; no se publicó nada.",
+      "notAvailable": "Firebase Storage no está disponible. Actívalo o usa el modo de contingencia.",
+      "imageError": "No se pudo procesar la imagen. Inténtalo con otra.",
+      "invalidFile": "La imagen no es válida. Usa JPG, PNG o WebP de menos de 8 MB.",
+      "select": "Selecciona una imagen.",
+      "format": "Formato no compatible. Usa JPG, PNG o WebP.",
+      "size": "Cada imagen debe pesar menos de 8 MB."
+    },
+    "functions": {
+      "notFound": "El servicio de correo aún no está desplegado. Puedes escribirnos directamente por correo o WhatsApp.",
+      "unavailable": "El servicio de correo no está disponible en este momento. Escríbenos directamente.",
+      "internal": "No se pudo enviar el mensaje. Escríbenos directamente por correo o WhatsApp.",
+      "resourceExhausted": "Has enviado varios mensajes en poco tiempo. Espera unos minutos.",
+      "invalidArgument": "Revisa los datos del formulario e inténtalo de nuevo.",
+      "failedPrecondition": "El envío de correo aún no está configurado. Escríbenos directamente."
+    },
+    "app": {
+      "notConfigured": "Firebase no está configurado. Revisa el archivo .env.local.",
+      "firebaseMessage": "Firebase no está configurado. Completa las variables en .env.local."
+    },
+    "profile": {
+      "notFound": "Tu cuenta existe, pero no tiene un perfil asociado. Contacta a la administradora.",
+      "disabled": "Tu cuenta está desactivada. Contacta a la administradora.",
+      "loadError": "No se pudo cargar tu perfil."
+    },
+    "property": {
+      "notAvailable": "Esta propiedad ya no está disponible para registrar un cierre.",
+      "notFound": "No encontramos esta propiedad.",
+      "locked": "Esta propiedad no se puede modificar en este momento.",
+      "invalidStatus": "Solo puedes publicar u ocultar una propiedad desde este panel."
+    },
+    "sale": {
+      "notFound": "No encontramos este cierre.",
+      "annulled": "Este cierre ya fue anulado.",
+      "date": "Selecciona una fecha de cierre válida.",
+      "dateFuture": "La fecha del cierre no puede ser futura."
+    },
+    "testimonial": {
+      "loginRequired": "Inicia sesión para compartir tu experiencia."
+    },
+    "contact": {
+      "notConfigured": "El envío de correo aún no está configurado. Puedes escribirnos directamente por correo o WhatsApp."
+    },
+    "language": {
+      "invalid": "El idioma seleccionado no es válido."
+    },
+    "export": {
+      "noRows": "No hay datos para exportar con los filtros actuales."
+    },
+    "invalidRole": "El registro público solo permite cuentas de Comprador o Vendedor.",
+    "generic": "Ocurrió un error."
+  },
+  "route": {
+    "loadingAccount": "Verificando tu cuenta…",
+    "loadingSession": "Verificando tu sesión…",
+    "loadingPermissions": "Verificando permisos…",
+    "configurationEyebrow": "Configuración pendiente",
+    "configurationTitle": "Firebase aún no está configurado",
+    "configurationText": "Copia .env.example como .env.local y completa las variables del proyecto. Después reinicia el servidor de desarrollo.",
+    "accessEyebrow": "Acceso restringido",
+    "accessTitle": "Este panel no corresponde a tu rol",
+    "accessText": "Tu cuenta está registrada como {{role}}. Puedes continuar desde tu panel asignado.",
+    "goPanel": "Ir a mi panel"
+  },
+  "fatal": {
+    "eyebrow": "Algo salió mal",
+    "title": "No pudimos mostrar esta página",
+    "text": "Recarga la página para intentarlo de nuevo. Si el problema continúa, escríbenos y lo revisamos.",
+    "reload": "Recargar página"
+  },
+  "footer": {
+    "about": "Acompañamiento inmobiliario cercano para encontrar, vender o arrendar un lugar que se sienta tuyo.",
+    "rights": "© {{year}} {{name}}. Todos los derechos reservados.",
+    "madeIn": "Hecho en Medellín",
+    "devNote": "Vista previa local · Los datos de contacto y el logo definitivo deben confirmarse antes de publicar."
+  },
+  "accessibility": {
+    "skip": "Saltar al contenido",
+    "logoHome": "Manuela Bermúdez Realtor, ir al inicio",
+    "backToTop": "Volver arriba"
+  }
+}

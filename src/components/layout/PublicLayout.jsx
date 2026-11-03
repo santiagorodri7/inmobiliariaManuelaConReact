@@ -3,12 +3,14 @@ import Navbar from "./Navbar.jsx";
 import Footer from "./Footer.jsx";
 import BackToTop from "./BackToTop.jsx";
 import ScrollToTop from "./ScrollToTop.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 export default function PublicLayout() {
+  const { t } = useI18n();
   return (
     <>
       <a href="#contenido" className="skip-link">
-        Saltar al contenido
+        {t("accessibility.skip")}
       </a>
       <ScrollToTop />
       <Navbar />

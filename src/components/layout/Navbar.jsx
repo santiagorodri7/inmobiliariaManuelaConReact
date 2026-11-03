@@ -14,10 +14,20 @@ import Logo from "../ui/Logo.jsx";
 import Avatar from "../ui/Avatar.jsx";
 import { navigation, site, whatsappUrl } from "../../config/site.js";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { roleHome, roleLabel } from "../../utils/roles.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
+import { roleHome } from "../../utils/roles.js";
+
+const navKeys = {
+  "/": "nav.home",
+  "/#propiedades": "nav.properties",
+  "/servicios": "nav.services",
+  "/nosotros": "nav.about",
+  "/contacto": "nav.contact",
+};
 
 export default function Navbar() {
   const { profile, loading, logout } = useAuth();
+  const { t, roleLabel } = useI18n();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const location = useLocation();
@@ -52,30 +62,32 @@ export default function Navbar() {
   };
 
   const panelPath = roleHome(profile);
+  const whatsappMessage = t("home.whatsappMessage", { name: site.name });
 
   return (
     <header className="site-header">
       <div className="nav-shell">
         <Logo />
 
-        <nav className="nav-links" aria-label="Navegación principal">
-          {navigation.map((item) =>
-            item.to.startsWith("/#") ? (
-              <Link key={item.label} to={item.to} className="nav-link">
-                {item.label}
+        <nav className="nav-links" aria-label={t("nav.mainNav")}>
+          {navigation.map((item) => {
+            const label = t(navKeys[item.to] || "nav.home");
+            return item.to.startsWith("/#") ? (
+              <Link key={item.to} to={item.to} className="nav-link">
+                {label}
               </Link>
             ) : (
               <NavLink
-                key={item.label}
+                key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
                   `nav-link${isActive ? " is-active" : ""}`
                 }
               >
-                {item.label}
+                {label}
               </NavLink>
-            ),
-          )}
+            );
+          })}
         </nav>
 
         <div className="nav-actions">
@@ -90,7 +102,7 @@ export default function Navbar() {
               >
                 <Avatar profile={profile} size="sm" />
                 <span className="account-trigger__copy">
-                  <strong>{profile.nombre?.split(" ")[0] || "Mi cuenta"}</strong>
+                  <strong>{profile.nombre?.split(" ")[0] || t("nav.account")}</strong>
                   <small>{roleLabel(profile.rol)}</small>
                 </span>
                 <ChevronDown size={15} aria-hidden="true" />
@@ -102,11 +114,11 @@ export default function Navbar() {
                   </div>
                   <Link to={panelPath} className="account-dropdown__item" role="menuitem">
                     <LayoutDashboard size={17} aria-hidden="true" />
-                    Mi panel
+                    {t("nav.myPanel")}
                   </Link>
                   <Link to="/cuenta" className="account-dropdown__item" role="menuitem">
                     <UserRound size={17} aria-hidden="true" />
-                    Mi perfil
+                    {t("nav.myProfile")}
                   </Link>
                   <button
                     type="button"
@@ -115,20 +127,20 @@ export default function Navbar() {
                     role="menuitem"
                   >
                     <LogOut size={17} aria-hidden="true" />
-                    Cerrar sesión
+                    {t("nav.logout")}
                   </button>
                 </div>
               )}
             </div>
           ) : (
             <Link to="/login" className="nav-login">
-              Ingresar
+              {t("nav.login")}
             </Link>
           )}
 
           <Link to="/registro?rol=Vendedor" className="btn btn-primary btn-sm nav-cta">
             <Plus size={16} aria-hidden="true" />
-            Publicar propiedad
+            {t("nav.publish")}
           </Link>
 
           <button
@@ -137,7 +149,7 @@ export default function Navbar() {
             onClick={() => setMobileOpen((open) => !open)}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
-            aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-label={mobileOpen ? t("nav.closeMenu") : t("nav.openMenu")}
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -146,10 +158,14 @@ export default function Navbar() {
 
       {mobileOpen && (
         <div className="mobile-menu" id="mobile-menu">
-          <nav aria-label="Navegación móvil">
+          <nav aria-label={t("nav.mobileNav")}>
             {navigation.map((item) => (
-              <Link key={item.label} to={item.to} className="mobile-menu__link">
-                {item.label}
+              <Link
+                key={item.to}
+                to={item.to}
+                className="mobile-menu__link"
+              >
+                {t(navKeys[item.to] || "nav.home")}
               </Link>
             ))}
           </nav>
@@ -158,34 +174,34 @@ export default function Navbar() {
             <>
               <Link to={panelPath} className="mobile-menu__link">
                 <LayoutDashboard size={18} aria-hidden="true" />
-                Mi panel
+                {t("nav.myPanel")}
               </Link>
               <Link to="/cuenta" className="mobile-menu__link">
                 <UserRound size={18} aria-hidden="true" />
-                Mi perfil
+                {t("nav.myProfile")}
               </Link>
               <button type="button" className="mobile-menu__link" onClick={handleLogout}>
                 <LogOut size={18} aria-hidden="true" />
-                Cerrar sesión
+                {t("nav.logout")}
               </button>
             </>
           ) : (
             <Link to="/login" className="mobile-menu__link">
               <UserRound size={18} aria-hidden="true" />
-              Ingresar a mi cuenta
+              {t("nav.loginAccount")}
             </Link>
           )}
           <a
-            href={whatsappUrl(`Hola ${site.name}, quiero recibir asesoría inmobiliaria.`)}
+            href={whatsappUrl(whatsappMessage)}
             target="_blank"
             rel="noreferrer"
             className="mobile-menu__link"
           >
             <MessageCircle size={18} aria-hidden="true" />
-            Escribir por WhatsApp
+            {t("nav.whatsapp")}
           </a>
           <Link to="/registro?rol=Vendedor" className="btn btn-primary w-100 mt-2">
-            Publicar propiedad
+            {t("nav.publish")}
           </Link>
         </div>
       )}

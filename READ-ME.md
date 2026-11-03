@@ -31,7 +31,7 @@ Completa `.env.local` con la configuración pública de la app web de Firebase:
 | `VITE_FIREBASE_MESSAGING_SENDER_ID` | Sender ID |
 | `VITE_FIREBASE_APP_ID` | App ID |
 | `VITE_FUNCTIONS_REGION` | Región de las Cloud Functions |
-| `VITE_ALLOW_BASE64_FALLBACK` | `true` solo en desarrollo; en producción `false` |
+| `VITE_ALLOW_BASE64_FALLBACK` | `true` solo en desarrollo; el build de producción lo desactiva |
 | `VITE_CONTACT_FALLBACK_URL` | Endpoint PHP opcional de contingencia |
 
 El proyecto usa `registrologininmobiliaria` por defecto (`.firebaserc`).
@@ -152,7 +152,9 @@ inmuebles con la consulta segura `where("status", "==", "disponible")`.
 ## Seguridad antes de publicar
 
 - Revisa en Firebase Console que las reglas desplegadas sean las de este repo.
-- Mantén `VITE_ALLOW_BASE64_FALLBACK=false` en producción.
+- El respaldo Base64 está desactivado en cualquier build de producción. En
+  desarrollo guarda todas las fotos o falla con un error explícito; nunca
+  omite imágenes en silencio.
 - Confirma que `usuarios` no sea legible públicamente.
 - No publiques `ownerEmail` en `propiedades`; la migración lo retira de los
   documentos antiguos.

@@ -9,6 +9,7 @@ import {
   Car,
   Check,
   ChevronRight,
+  Clock3,
   ExternalLink,
   MapPin,
   Maximize,
@@ -27,13 +28,22 @@ import { useToast } from "../../components/ui/Toast.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { useProperties } from "../../hooks/useProperties.js";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { getPropertyById } from "../../services/propertiesService.js";
-import { formatArea, formatCOP } from "../../utils/format.js";
 import { isAdmin } from "../../utils/roles.js";
+import { isAvailable } from "../../utils/property.js";
+import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
 import { site, whatsappUrl } from "../../config/site.js";
 
 export default function PropertyDetailPage() {
   const { id } = useParams();
+  const {
+    t,
+    formatArea,
+    formatCOP,
+    propertyTypeLabel,
+    amenityLabel,
+  } = useI18n();
   const { profile } = useAuth();
   const toast = useToast();
   const [property, setProperty] = useState(null);
@@ -42,8 +52,8 @@ export default function PropertyDetailPage() {
   const { properties: publicProperties } = useProperties({ publicOnly: true });
 
   usePageTitle(
-    property?.title || "Detalle de propiedad",
-    property?.description || "Conoce esta propiedad en Medellín y agenda una visita.",
+    property?.title || t("property.detail.pageTitle"),
+    property?.description || t("property.detail.pageDescription"),
   );
 
   useEffect(() => {
@@ -61,7 +71,7 @@ export default function PropertyDetailPage() {
           setProperty(null);
           return;
         }
-        setError("No pudimos cargar esta propiedad. Inténtalo de nuevo.");
+        setError(t("property.detail.loadError"));
       })
       .finally(() => {
         if (active) setLoading(false);
@@ -69,7 +79,7 @@ export default function PropertyDetailPage() {
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [id, t]);
 
   const canSee = useMemo(() => {
     if (!property) return false;
@@ -90,30 +100,43 @@ export default function PropertyDetailPage() {
       .slice(0, 3);
   }, [publicProperties, property]);
 
+  const isActive = isAvailable(property);
+
+  const manuWhatsappHref = useMemo(() => {
+    if (!property || !isActive || !isWhatsappConfigured) return "";
+    const propertyUrl = `${window.location.origin}/propiedad/${encodeURIComponent(property.id)}`;
+    return buildWhatsappUrl(
+      t("property.detail.talkToManu.message", {
+        title: property.title,
+        url: propertyUrl,
+      }),
+    );
+  }, [property, isActive, t]);
+
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      toast.success("Enlace copiado al portapapeles.");
+      toast.success(t("property.detail.shareCopied"));
     } catch {
-      toast.info("Copia el enlace desde la barra del navegador.");
+      toast.info(t("property.detail.shareManual"));
     }
   };
 
-  if (loading) return <PageLoader message="Cargando propiedad…" />;
+  if (loading) return <PageLoader message={t("property.detail.loading")} />;
 
   if (error) {
     return (
       <section className="section">
         <div className="shell">
           <ErrorState
-            title="No pudimos abrir esta propiedad"
+            title={t("property.detail.errorTitle")}
             description={error}
             onRetry={() => window.location.reload()}
           />
           <div className="text-center mt-4">
             <Link to="/" className="btn btn-outline-secondary">
               <ArrowLeft size={16} aria-hidden="true" />
-              Volver al catálogo
+              {t("property.detail.backCatalog")}
             </Link>
           </div>
         </div>
@@ -127,14 +150,11 @@ export default function PropertyDetailPage() {
         <div className="shell">
           <div className="not-found-card">
             <Building2 size={30} aria-hidden="true" />
-            <p className="eyebrow">Propiedad no disponible</p>
-            <h1>No encontramos esta publicación</h1>
-            <p>
-              Puede que haya sido retirada o que el enlace ya no sea válido.
-              Explora el catálogo actual o cuéntanos qué estás buscando.
-            </p>
+            <p className="eyebrow">{t("property.detail.unavailableEyebrow")}</p>
+            <h1>{t("property.detail.unavailableTitle")}</h1>
+            <p>{t("property.detail.unavailableText")}</p>
             <Link to="/" className="btn btn-primary">
-              Ver propiedades
+              {t("property.detail.viewProperties")}
               <ArrowRight size={17} aria-hidden="true" />
             </Link>
           </div>
@@ -144,26 +164,48 @@ export default function PropertyDetailPage() {
   }
 
   const specs = [
-    property.bedrooms > 0 && { icon: BedDouble, label: "Habitaciones", value: property.bedrooms },
-    property.bathrooms > 0 && { icon: Bath, label: "Baños", value: property.bathrooms },
-    property.parking > 0 && { icon: Car, label: "Parqueaderos", value: property.parking },
-    property.area > 0 && { icon: Maximize, label: "Área", value: formatArea(property.area) },
-    property.stratum > 0 && { icon: Building2, label: "Estrato", value: property.stratum },
+    property.bedrooms > 0 && {
+      icon: BedDouble,
+      label: t("property.detail.specs.bedrooms"),
+      value: property.bedrooms,
+    },
+    property.bathrooms > 0 && {
+      icon: Bath,
+      label: t("property.detail.specs.bathrooms"),
+      value: property.bathrooms,
+    },
+    property.parking > 0 && {
+      icon: Car,
+      label: t("property.detail.specs.parking"),
+      value: property.parking,
+    },
+    property.area > 0 && {
+      icon: Maximize,
+      label: t("property.detail.specs.area"),
+      value: formatArea(property.area),
+    },
+    property.stratum > 0 && {
+      icon: Building2,
+      label: t("property.detail.specs.stratum"),
+      value: property.stratum,
+    },
   ].filter(Boolean);
 
   const inquirySubject =
     property.operation === "renta"
-      ? "Quiero arrendar una propiedad"
-      : "Quiero comprar una propiedad";
+      ? t("labels.contactSubject.rent")
+      : t("labels.contactSubject.buy");
+
+  const location = property.location || t("property.detail.locationPending");
 
   return (
     <>
       <section className="property-detail-hero">
         <div className="shell">
-          <nav className="breadcrumb-line" aria-label="Ruta de navegación">
-            <Link to="/">Inicio</Link>
+          <nav className="breadcrumb-line" aria-label={t("nav.breadcrumb")}>
+            <Link to="/">{t("property.detail.breadcrumbHome")}</Link>
             <ChevronRight size={13} aria-hidden="true" />
-            <Link to="/#propiedades">Propiedades</Link>
+            <Link to="/#propiedades">{t("property.detail.breadcrumbProperties")}</Link>
             <ChevronRight size={13} aria-hidden="true" />
             <span>{property.title}</span>
           </nav>
@@ -179,22 +221,35 @@ export default function PropertyDetailPage() {
                 {property.status !== "disponible" && (
                   <PropertyStatusPill status={property.status} />
                 )}
-                <button type="button" className="icon-button" onClick={handleShare} aria-label="Compartir propiedad">
+                <button
+                  type="button"
+                  className="icon-button"
+                  onClick={handleShare}
+                  aria-label={t("property.detail.shareAria")}
+                >
                   <Share2 size={18} aria-hidden="true" />
                 </button>
               </div>
 
-              <p className="property-summary__type">{property.type}</p>
+              <p className="property-summary__type">
+                {propertyTypeLabel(property.type)}
+              </p>
               <h1>{property.title}</h1>
               <p className="property-summary__location">
                 <MapPin size={17} aria-hidden="true" />
-                {property.location || "Ubicación por confirmar"}
+                {location}
               </p>
 
               <div className="property-summary__price">
-                <span>{property.operation === "renta" ? "Canon mensual" : "Precio de venta"}</span>
+                <span>
+                  {property.operation === "renta"
+                    ? t("property.detail.monthlyRent")
+                    : t("property.detail.salePrice")}
+                </span>
                 <strong>{formatCOP(property.price)}</strong>
-                {property.operation === "renta" && <small>COP / mes</small>}
+                {property.operation === "renta" && (
+                  <small>{t("property.detail.perMonth")}</small>
+                )}
               </div>
 
               {specs.length > 0 && (
@@ -211,19 +266,23 @@ export default function PropertyDetailPage() {
 
               <div className="property-summary__actions">
                 <a href="#consulta" className="btn btn-primary w-100">
-                  Solicitar una visita
+                  {t("property.detail.requestVisit")}
                   <ArrowRight size={17} aria-hidden="true" />
                 </a>
                 <a
                   href={whatsappUrl(
-                    `Hola ${site.name}, me interesa la propiedad "${property.title}" (${property.location}). ¿Podemos hablar?`,
+                    t("property.detail.whatsappMessage", {
+                      name: site.name,
+                      title: property.title,
+                      location,
+                    }),
                   )}
                   target="_blank"
                   rel="noreferrer"
                   className="btn btn-outline-secondary w-100"
                 >
                   <MessageCircle size={17} aria-hidden="true" />
-                  Preguntar por WhatsApp
+                  {t("property.detail.askWhatsapp")}
                 </a>
               </div>
 
@@ -231,9 +290,12 @@ export default function PropertyDetailPage() {
                 <span className="agent-mini-card__mark" aria-hidden="true">MB</span>
                 <div>
                   <strong>{site.name}</strong>
-                  <span>{site.role}</span>
+                  <span>{t("site.role")}</span>
                 </div>
-                <ShieldCheck size={19} aria-label="Acompañamiento directo" />
+                <ShieldCheck
+                  size={19}
+                  aria-label={t("property.detail.directSupport")}
+                />
               </div>
             </aside>
           </div>
@@ -245,20 +307,20 @@ export default function PropertyDetailPage() {
           <div className="property-detail-copy">
             <div className="panel-heading">
               <div>
-                <p className="eyebrow">Sobre este lugar</p>
-                <h2>Lo que hace especial esta propiedad</h2>
+                <p className="eyebrow">{t("property.detail.aboutEyebrow")}</p>
+                <h2>{t("property.detail.aboutTitle")}</h2>
               </div>
             </div>
             <p className="property-description">{property.description}</p>
 
             {property.amenities.length > 0 && (
               <div className="amenities-block">
-                <h3>Amenidades y espacios</h3>
+                <h3>{t("property.detail.amenitiesTitle")}</h3>
                 <ul>
                   {property.amenities.map((amenity) => (
                     <li key={amenity}>
                       <Check size={15} aria-hidden="true" />
-                      {amenity}
+                      {amenityLabel(amenity)}
                     </li>
                   ))}
                 </ul>
@@ -270,43 +332,71 @@ export default function PropertyDetailPage() {
                 <MapPin size={22} />
               </span>
               <div>
-                <h3>{property.location || "Ubicación por confirmar"}</h3>
-                <p>
-                  La dirección exacta se comparte durante la visita para cuidar
-                  la privacidad de quienes viven en el inmueble.
-                </p>
+                <h3>{location}</h3>
+                <p>{t("property.detail.addressNote")}</p>
               </div>
               <a
                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                  `${property.location || "Medellín"}, Colombia`,
+                  `${property.location || t("property.detail.locationPending")}, Colombia`,
                 )}`}
                 target="_blank"
                 rel="noreferrer"
                 className="btn btn-outline-secondary btn-sm"
               >
-                Ver zona
+                {t("property.detail.viewArea")}
                 <ExternalLink size={15} aria-hidden="true" />
               </a>
             </div>
 
             <div className="property-detail-note">
               <Sparkles size={18} aria-hidden="true" />
-              <p>
-                ¿Quieres revisar esta propiedad con más detalle? Podemos
-                coordinar una visita y revisar juntos las condiciones,
-                documentos y tiempos del proceso.
-              </p>
+              <p>{t("property.detail.reviewNote")}</p>
             </div>
           </div>
 
           <aside className="property-detail-aside">
-            <div className="surface property-consult-card">
-              <p className="eyebrow">Hablemos de esta propiedad</p>
-              <h2>Agenda una visita</h2>
-              <p>
-                Déjanos tus datos y te contactamos para coordinar una visita o
-                resolver tus dudas.
-              </p>
+            {isActive && manuWhatsappHref && (
+              <section
+                className="surface manu-contact-card"
+                aria-labelledby="manu-contact-title"
+              >
+                <div className="manu-contact-card__head">
+                  <span className="manu-contact-card__icon" aria-hidden="true">
+                    <MessageCircle size={22} />
+                  </span>
+                  <div>
+                    <p className="eyebrow">
+                      {t("property.detail.talkToManu.eyebrow")}
+                    </p>
+                    <h2 id="manu-contact-title">
+                      {t("property.detail.talkToManu.title")}
+                    </h2>
+                  </div>
+                </div>
+                <p>{t("property.detail.talkToManu.text")}</p>
+                <span className="manu-contact-card__availability">
+                  <Clock3 size={15} aria-hidden="true" />
+                  {t("property.detail.talkToManu.availability")}
+                </span>
+                <a
+                  href={manuWhatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary w-100"
+                  aria-label={t("property.detail.talkToManu.aria", {
+                    title: property.title,
+                  })}
+                >
+                  <MessageCircle size={17} aria-hidden="true" />
+                  {t("property.detail.talkToManu.cta")}
+                </a>
+              </section>
+            )}
+
+            <div className="surface property-consult-card" id="consulta">
+              <p className="eyebrow">{t("property.detail.consultEyebrow")}</p>
+              <h2>{t("property.detail.consultTitle")}</h2>
+              <p>{t("property.detail.consultText")}</p>
               <ContactForm
                 propertyId={property.id}
                 defaultSubject={inquirySubject}
@@ -322,11 +412,11 @@ export default function PropertyDetailPage() {
           <div className="shell">
             <div className="section-heading section-heading--split">
               <div>
-                <p className="eyebrow">También te puede interesar</p>
-                <h2>Otras propiedades para explorar</h2>
+                <p className="eyebrow">{t("property.detail.relatedEyebrow")}</p>
+                <h2>{t("property.detail.relatedTitle")}</h2>
               </div>
               <Link to="/#propiedades" className="text-link">
-                Ver todo el catálogo
+                {t("property.detail.viewCatalog")}
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
             </div>

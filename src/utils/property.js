@@ -1,5 +1,11 @@
 import { normalizeText, safeString } from "./format.js";
 import { toDate } from "./dates.js";
+import { translate } from "../i18n/translate.js";
+import {
+  operationLabel as translateOperation,
+  propertyTypeKey,
+  statusLabel as translateStatus,
+} from "../i18n/labels.js";
 
 const validImage = (value) =>
   typeof value === "string" &&
@@ -129,17 +135,9 @@ export const isAvailable = (property) => property?.status === "disponible";
 export const isPublicProperty = (property) => property?.status === "disponible";
 
 export const operationLabel = (operation) =>
-  operation === "renta" ? "Renta" : "Venta";
+  translateOperation(translate, operation);
 
-export const statusLabel = (status) => {
-  const labels = {
-    disponible: "Publicada",
-    vendida: "Vendida",
-    rentada: "Rentada",
-    inactiva: "Oculta",
-  };
-  return labels[status] || "Publicada";
-};
+export const statusLabel = (status) => translateStatus(translate, status);
 
 export const sortProperties = (properties = []) =>
   [...properties].sort((a, b) => {
@@ -204,20 +202,16 @@ export const propertySearchSummary = (filters = {}) => {
     parts.push(operationLabel(filters.operation));
   }
   if (filters.type) {
-    const found = {
-      casa: "Casas",
-      apartamento: "Apartamentos",
-      apartaestudio: "Apartaestudios",
-      oficina: "Oficinas",
-      local: "Locales",
-      terreno: "Terrenos",
-      finca: "Fincas",
-      otro: "Inmuebles",
-    }[filters.type];
-    if (found) parts.push(found);
+    parts.push(
+      translate(`labels.propertyTypePlural.${propertyTypeKey(filters.type)}`),
+    );
   }
   if (filters.location || filters.search) {
-    parts.push(`en ${filters.location || filters.search}`);
+    parts.push(
+      translate("labels.inLocation", {
+        location: filters.location || filters.search,
+      }),
+    );
   }
   return parts.join(" · ");
 };

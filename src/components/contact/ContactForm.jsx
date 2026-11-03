@@ -3,6 +3,7 @@ import { CheckCircle2, LoaderCircle, Mail, MessageCircle, Send } from "lucide-re
 import Field from "../ui/Field.jsx";
 import { useToast } from "../ui/Toast.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { buildContactMailto, sendContactMessage } from "../../services/contactService.js";
 import { getErrorMessage } from "../../utils/errors.js";
 import { hasErrors, validateContact } from "../../utils/validation.js";
@@ -15,6 +16,7 @@ export default function ContactForm({
   onSent,
 }) {
   const { profile } = useAuth();
+  const { t, contactSubjectLabel } = useI18n();
   const toast = useToast();
   const [values, setValues] = useState({
     name: "",
@@ -50,7 +52,7 @@ export default function ContactForm({
     const nextErrors = validateContact(values);
     setErrors(nextErrors);
     if (hasErrors(nextErrors)) {
-      toast.error("Revisa los campos del formulario.");
+      toast.error(t("contactForm.validationToast"));
       return;
     }
 
@@ -58,13 +60,10 @@ export default function ContactForm({
     try {
       await sendContactMessage({ ...values, propertyId });
       setSent(true);
-      toast.success("Mensaje enviado. Te responderemos pronto.");
+      toast.success(t("contactForm.successToast"));
       onSent?.();
     } catch (error) {
-      const message = getErrorMessage(
-        error,
-        "No se pudo enviar el mensaje. Escríbenos directamente.",
-      );
+      const message = getErrorMessage(error, "contactForm.errorFallback");
       setFailure(message);
       toast.error(message);
     } finally {
@@ -78,21 +77,18 @@ export default function ContactForm({
         <span className="contact-success__icon" aria-hidden="true">
           <CheckCircle2 size={30} />
         </span>
-        <p className="eyebrow">Mensaje enviado</p>
-        <h3>Gracias por escribirnos</h3>
-        <p>
-          Recibimos tu mensaje y te responderemos al correo que indicaste. Si
-          prefieres, también puedes escribirnos por WhatsApp.
-        </p>
+        <p className="eyebrow">{t("contactForm.sentEyebrow")}</p>
+        <h3>{t("contactForm.sentTitle")}</h3>
+        <p>{t("contactForm.sentText")}</p>
         <div className="contact-success__actions">
           <a
-            href={whatsappUrl(`Hola ${site.name}, acabo de enviar un mensaje desde el sitio web.`)}
+            href={whatsappUrl(t("contactForm.whatsappSent", { name: site.name }))}
             target="_blank"
             rel="noreferrer"
             className="btn btn-primary"
           >
             <MessageCircle size={17} aria-hidden="true" />
-            Abrir WhatsApp
+            {t("contactForm.openWhatsapp")}
           </a>
           <button
             type="button"
@@ -102,7 +98,7 @@ export default function ContactForm({
               setValues((current) => ({ ...current, message: "" }));
             }}
           >
-            Enviar otro mensaje
+            {t("contactForm.sendAnother")}
           </button>
         </div>
       </div>
@@ -112,7 +108,7 @@ export default function ContactForm({
   return (
     <form className={`contact-form${compact ? " contact-form--compact" : ""}`} onSubmit={handleSubmit} noValidate>
       <div className="form-grid form-grid--two">
-        <Field label="Nombre completo" htmlFor="contact-name" required error={errors.name}>
+        <Field label={t("contactForm.name")} htmlFor="contact-name" required error={errors.name}>
           <input
             id="contact-name"
             className="form-control"
@@ -122,7 +118,7 @@ export default function ContactForm({
             aria-invalid={Boolean(errors.name)}
           />
         </Field>
-        <Field label="Correo electrónico" htmlFor="contact-email" required error={errors.email}>
+        <Field label={t("contactForm.email")} htmlFor="contact-email" required error={errors.email}>
           <input
             id="contact-email"
             type="email"
@@ -133,7 +129,7 @@ export default function ContactForm({
             aria-invalid={Boolean(errors.email)}
           />
         </Field>
-        <Field label="Teléfono" htmlFor="contact-phone" error={errors.phone} hint="Opcional">
+        <Field label={t("contactForm.phone")} htmlFor="contact-phone" error={errors.phone} hint={t("common.optional")}>
           <input
             id="contact-phone"
             type="tel"
@@ -144,7 +140,7 @@ export default function ContactForm({
             aria-invalid={Boolean(errors.phone)}
           />
         </Field>
-        <Field label="Asunto" htmlFor="contact-subject" required error={errors.subject}>
+        <Field label={t("contactForm.subject")} htmlFor="contact-subject" required error={errors.subject}>
           <select
             id="contact-subject"
             className="form-select"
@@ -154,7 +150,7 @@ export default function ContactForm({
           >
             {contactSubjects.map((subject) => (
               <option key={subject} value={subject}>
-                {subject}
+                {contactSubjectLabel(subject)}
               </option>
             ))}
           </select>
@@ -162,11 +158,11 @@ export default function ContactForm({
       </div>
 
       <Field
-        label="Mensaje"
+        label={t("contactForm.message")}
         htmlFor="contact-message"
         required
         error={errors.message}
-        hint="Cuéntanos qué buscas, en qué zona y con qué presupuesto. Así podemos ayudarte mejor."
+        hint={t("contactForm.messageHint")}
       >
         <textarea
           id="contact-message"
@@ -174,13 +170,13 @@ export default function ContactForm({
           rows={compact ? 4 : 5}
           value={values.message}
           onChange={update("message")}
-          placeholder="Hola, estoy buscando…"
+          placeholder={t("contactForm.messagePlaceholder")}
           aria-invalid={Boolean(errors.message)}
         />
       </Field>
 
       <div className="honeypot" aria-hidden="true">
-        <label htmlFor="contact-website">No completar</label>
+        <label htmlFor="contact-website">{t("contactForm.honeypot")}</label>
         <input
           id="contact-website"
           name="website"
@@ -193,15 +189,15 @@ export default function ContactForm({
 
       {failure && (
         <div className="alert alert-warning" role="alert">
-          <strong>No pudimos enviar el correo.</strong>
+          <strong>{t("contactForm.failureTitle")}</strong>
           <p>{failure}</p>
           <div className="alert-actions">
             <a href={buildContactMailto(values)} className="btn btn-outline-secondary btn-sm">
               <Mail size={15} aria-hidden="true" />
-              Abrir mi correo
+              {t("contactForm.openMail")}
             </a>
             <a
-              href={whatsappUrl(`Hola ${site.name}, quiero hacer una consulta desde el sitio web.`)}
+              href={whatsappUrl(t("contactForm.whatsappFallback", { name: site.name }))}
               target="_blank"
               rel="noreferrer"
               className="btn btn-outline-secondary btn-sm"
@@ -214,17 +210,14 @@ export default function ContactForm({
       )}
 
       <div className="contact-form__footer">
-        <p>
-          Tus datos se usan únicamente para responder tu consulta. No compartimos
-          tu información con terceros.
-        </p>
+        <p>{t("contactForm.privacy")}</p>
         <button type="submit" className="btn btn-primary" disabled={sending}>
           {sending ? (
             <LoaderCircle size={17} className="spin" aria-hidden="true" />
           ) : (
             <Send size={17} aria-hidden="true" />
           )}
-          {sending ? "Enviando…" : "Enviar mensaje"}
+          {sending ? t("contactForm.sending") : t("contactForm.submit")}
         </button>
       </div>
     </form>

@@ -4,13 +4,15 @@ import { Eye, EyeOff, LoaderCircle, LogIn, Mail } from "lucide-react";
 import AuthLayout from "../../components/auth/AuthLayout.jsx";
 import Field from "../../components/ui/Field.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { getErrorMessage } from "../../utils/errors.js";
 import { roleHome } from "../../utils/roles.js";
 import { hasErrors, validateLogin } from "../../utils/validation.js";
 
 export default function LoginPage() {
-  usePageTitle("Iniciar sesión", "Accede a tu cuenta de Manuela Bermúdez Realtor.");
+  const { t } = useI18n();
+  usePageTitle(t("auth.login.pageTitle"), t("auth.login.pageDescription"));
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,7 +41,7 @@ export default function LoginPage() {
       const target = location.state?.from || roleHome(profile);
       navigate(target, { replace: true });
     } catch (error) {
-      setFormError(getErrorMessage(error, "No pudimos iniciar sesión."));
+      setFormError(getErrorMessage(error, "auth.login.errorFallback"));
     } finally {
       setSubmitting(false);
     }
@@ -47,33 +49,35 @@ export default function LoginPage() {
 
   return (
     <AuthLayout
-      eyebrow="Bienvenida de nuevo"
-      title="Tu próximo lugar empieza con una conversación."
-      description="Ingresa para gestionar tus propiedades, revisar tus preferencias o continuar el proceso que empezamos juntos."
+      eyebrow={t("auth.login.eyebrow")}
+      title={t("auth.login.title")}
+      description={t("auth.login.description")}
       points={[
-        "Tu panel personal según tu rol.",
-        "Preferencias y publicaciones en un solo lugar.",
-        "Acompañamiento directo, también en línea.",
+        t("auth.login.point1"),
+        t("auth.login.point2"),
+        t("auth.login.point3"),
       ]}
     >
       <div className="auth-card__head">
-        <p className="eyebrow">Mi cuenta</p>
-        <h1>Iniciar sesión</h1>
-        <p>
-          Ingresa con el correo y la contraseña que registraste. Si es tu primera
-          vez, puedes crear una cuenta en un minuto.
-        </p>
+        <p className="eyebrow">{t("auth.login.headEyebrow")}</p>
+        <h1>{t("auth.login.headTitle")}</h1>
+        <p>{t("auth.login.headText")}</p>
       </div>
 
       {formError && (
         <div className="alert alert-danger auth-alert" role="alert">
-          <strong>No pudimos ingresar.</strong>
+          <strong>{t("auth.login.errorTitle")}</strong>
           <p>{formError}</p>
         </div>
       )}
 
       <form className="auth-form" onSubmit={handleSubmit} noValidate>
-        <Field label="Correo electrónico" htmlFor="login-email" required error={errors.email}>
+        <Field
+          label={t("auth.login.email")}
+          htmlFor="login-email"
+          required
+          error={errors.email}
+        >
           <div className="input-with-icon">
             <Mail size={17} aria-hidden="true" />
             <input
@@ -83,13 +87,18 @@ export default function LoginPage() {
               className="form-control"
               value={values.email}
               onChange={update("email")}
-              placeholder="tu@correo.com"
+              placeholder={t("auth.login.emailPlaceholder")}
               aria-invalid={Boolean(errors.email)}
             />
           </div>
         </Field>
 
-        <Field label="Contraseña" htmlFor="login-password" required error={errors.password}>
+        <Field
+          label={t("auth.login.password")}
+          htmlFor="login-password"
+          required
+          error={errors.password}
+        >
           <div className="password-control">
             <input
               id="login-password"
@@ -98,14 +107,18 @@ export default function LoginPage() {
               className="form-control"
               value={values.password}
               onChange={update("password")}
-              placeholder="Tu contraseña"
+              placeholder={t("auth.login.passwordPlaceholder")}
               aria-invalid={Boolean(errors.password)}
             />
             <button
               type="button"
               className="password-control__toggle"
               onClick={() => setShowPassword((visible) => !visible)}
-              aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+              aria-label={
+                showPassword
+                  ? t("auth.login.hidePassword")
+                  : t("auth.login.showPassword")
+              }
             >
               {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
             </button>
@@ -113,8 +126,8 @@ export default function LoginPage() {
         </Field>
 
         <div className="auth-form__meta">
-          <span className="auth-form__secure">Conexión segura con Firebase</span>
-          <Link to="/recuperar-contrasena">¿Olvidaste tu contraseña?</Link>
+          <span className="auth-form__secure">{t("auth.login.secure")}</span>
+          <Link to="/recuperar-contrasena">{t("auth.login.forgot")}</Link>
         </div>
 
         <button type="submit" className="btn btn-primary btn-lg w-100" disabled={submitting}>
@@ -123,22 +136,19 @@ export default function LoginPage() {
           ) : (
             <LogIn size={18} aria-hidden="true" />
           )}
-          {submitting ? "Ingresando…" : "Ingresar a mi cuenta"}
+          {submitting ? t("auth.login.submitting") : t("auth.login.submit")}
         </button>
       </form>
 
       <div className="auth-divider">
-        <span>¿Aún no tienes cuenta?</span>
+        <span>{t("auth.login.divider")}</span>
       </div>
 
       <Link to="/registro" className="btn btn-outline-secondary w-100">
-        Crear una cuenta
+        {t("auth.login.create")}
       </Link>
 
-      <p className="auth-note">
-        Las cuentas de administración se asignan manualmente. Si tu cuenta no
-        funciona, escríbenos y la revisamos contigo.
-      </p>
+      <p className="auth-note">{t("auth.login.note")}</p>
     </AuthLayout>
   );
 }

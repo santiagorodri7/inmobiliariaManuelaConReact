@@ -9,6 +9,8 @@ import {
 import { auth, db, requireFirebase } from "./firebase.js";
 import { normalizeUser } from "../utils/users.js";
 import { dateInputValue, toDate } from "../utils/dates.js";
+import { assertSupportedLanguage } from "../i18n/languages.js";
+import { appError } from "../utils/errors.js";
 
 export const getUserProfile = async (uid) => {
   if (!uid || !db) return null;
@@ -40,6 +42,9 @@ const cleanProfilePayload = (values = {}) => {
     payload.direccion = String(values.direccion).trim();
   }
   if (values.avatar !== undefined) payload.avatar = String(values.avatar || "");
+  if (values.idioma !== undefined) {
+    payload.idioma = assertSupportedLanguage(values.idioma);
+  }
   if (values.fechaNacimiento !== undefined) {
     payload.fechaNacimiento = dateInputValue(values.fechaNacimiento);
   }
@@ -57,7 +62,7 @@ const cleanProfilePayload = (values = {}) => {
 
 export const updateOwnProfile = async (uid, values) => {
   requireFirebase();
-  if (!uid) throw new Error("No hay un usuario autenticado.");
+  if (!uid) throw appError("auth/requires-login");
   const payload = cleanProfilePayload(values);
   await updateDoc(doc(db, "usuarios", uid), payload);
   const updated = await getUserProfile(uid);

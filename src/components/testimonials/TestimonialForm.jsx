@@ -7,8 +7,10 @@ import { useToast } from "../ui/Toast.jsx";
 import { createTestimonial } from "../../services/testimonialsService.js";
 import { getErrorMessage } from "../../utils/errors.js";
 import { hasErrors, validateTestimonial } from "../../utils/validation.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 export default function TestimonialForm({ profile, onCreated }) {
+  const { t } = useI18n();
   const toast = useToast();
   const [values, setValues] = useState({
     nombre: profile?.nombre || "",
@@ -22,13 +24,10 @@ export default function TestimonialForm({ profile, onCreated }) {
   if (!profile) {
     return (
       <div className="testimonial-form testimonial-form--guest">
-        <h3>¿Ya trabajaste con nosotros?</h3>
-        <p>
-          Inicia sesión para compartir tu experiencia. Los testimonios se
-          publican con tu nombre y quedan asociados a tu cuenta.
-        </p>
+        <h3>{t("testimonials.form.guestTitle")}</h3>
+        <p>{t("testimonials.form.guestText")}</p>
         <Link to="/login" className="btn btn-primary">
-          Iniciar sesión
+          {t("testimonials.form.guestLogin")}
         </Link>
       </div>
     );
@@ -42,14 +41,14 @@ export default function TestimonialForm({ profile, onCreated }) {
     const nextErrors = validateTestimonial(values);
     setErrors(nextErrors);
     if (hasErrors(nextErrors)) {
-      toast.error("Revisa los campos del testimonio.");
+      toast.error(t("testimonials.form.validationToast"));
       return;
     }
 
     setSaving(true);
     try {
       const created = await createTestimonial(values);
-      toast.success("Gracias por compartir tu experiencia.");
+      toast.success(t("testimonials.form.successToast"));
       setValues({
         nombre: profile.nombre || "",
         profesion: "",
@@ -58,7 +57,7 @@ export default function TestimonialForm({ profile, onCreated }) {
       });
       onCreated?.(created);
     } catch (error) {
-      toast.error(getErrorMessage(error, "No se pudo publicar el testimonio."));
+      toast.error(getErrorMessage(error, "testimonials.form.errorFallback"));
     } finally {
       setSaving(false);
     }
@@ -66,22 +65,22 @@ export default function TestimonialForm({ profile, onCreated }) {
 
   return (
     <form className="testimonial-form" onSubmit={handleSubmit}>
-      <p className="eyebrow">Tu experiencia</p>
-      <h3>Comparte lo que viviste</h3>
+      <p className="eyebrow">{t("testimonials.form.eyebrow")}</p>
+      <h3>{t("testimonials.form.title")}</h3>
       <p className="testimonial-form__intro">
-        Tu opinión ayuda a otras personas a dar el siguiente paso con confianza.
+        {t("testimonials.form.intro")}
       </p>
 
       <StarRating
         value={values.rating}
         onChange={(rating) => setValues((current) => ({ ...current, rating }))}
         size={24}
-        label="Tu calificación"
+        label={t("testimonials.form.rating")}
       />
       {errors.rating && <p className="form-error">{errors.rating}</p>}
 
       <div className="form-grid form-grid--two">
-        <Field label="Nombre" htmlFor="testimonial-name" error={errors.nombre} required>
+        <Field label={t("testimonials.form.name")} htmlFor="testimonial-name" error={errors.nombre} required>
           <input
             id="testimonial-name"
             className="form-control"
@@ -90,22 +89,22 @@ export default function TestimonialForm({ profile, onCreated }) {
             aria-invalid={Boolean(errors.nombre)}
           />
         </Field>
-        <Field label="Profesión u ocupación" htmlFor="testimonial-profession" hint="Opcional">
+        <Field label={t("testimonials.form.profession")} htmlFor="testimonial-profession" hint={t("common.optional")}>
           <input
             id="testimonial-profession"
             className="form-control"
             value={values.profesion}
             onChange={update("profesion")}
-            placeholder="Ej. Diseñadora"
+            placeholder={t("testimonials.form.professionPlaceholder")}
           />
         </Field>
       </div>
 
       <Field
-        label="Tu experiencia"
+        label={t("testimonials.form.text")}
         htmlFor="testimonial-text"
         error={errors.texto}
-        hint={`${values.texto.length} caracteres · mínimo 20`}
+        hint={t("testimonials.form.textHint", { count: values.texto.length })}
         required
       >
         <textarea
@@ -114,14 +113,14 @@ export default function TestimonialForm({ profile, onCreated }) {
           rows={4}
           value={values.texto}
           onChange={update("texto")}
-          placeholder="Cuéntanos cómo fue el proceso de compra, venta o arriendo."
+          placeholder={t("testimonials.form.textPlaceholder")}
           aria-invalid={Boolean(errors.texto)}
         />
       </Field>
 
       <button type="submit" className="btn btn-primary" disabled={saving}>
         <Send size={16} aria-hidden="true" />
-        {saving ? "Publicando…" : "Publicar testimonio"}
+        {saving ? t("testimonials.form.publishing") : t("testimonials.form.submit")}
       </button>
     </form>
   );

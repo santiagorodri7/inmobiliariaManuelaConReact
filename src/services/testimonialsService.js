@@ -65,24 +65,18 @@ export const createTestimonial = async ({ nombre, profesion, texto, rating }) =>
   requireFirebase();
   const user = auth?.currentUser;
   if (!user) {
-    throw appError(
-      "auth/requires-login",
-      "Inicia sesión para compartir tu experiencia.",
-    );
+    throw appError("testimonial/requires-login");
   }
 
   const cleanText = String(texto || "").trim();
   const cleanName = String(nombre || "").trim();
-  if (cleanName.length < 2) throw appError("testimonial/name", "Escribe tu nombre.");
+  if (cleanName.length < 2) throw appError("testimonial/name");
   if (cleanText.length < 20) {
-    throw appError(
-      "testimonial/text",
-      "Escribe al menos 20 caracteres sobre tu experiencia.",
-    );
+    throw appError("testimonial/text");
   }
   const stars = Number(rating);
   if (!stars || stars < 1 || stars > 5) {
-    throw appError("testimonial/rating", "Selecciona una calificación.");
+    throw appError("testimonial/rating");
   }
 
   const reference = await addDoc(collection(db, "testimonios"), {

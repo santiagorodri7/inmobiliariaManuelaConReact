@@ -19,11 +19,11 @@ import EmptyState from "../../components/ui/EmptyState.jsx";
 import ErrorState from "../../components/ui/ErrorState.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { adminNav } from "../../config/dashboardNav.js";
 import { filterSales, listSales, salesStats } from "../../services/salesService.js";
 import { exportSales } from "../../services/excelService.js";
 import { getErrorMessage } from "../../utils/errors.js";
-import { formatCOP } from "../../utils/format.js";
 import { toDate } from "../../utils/dates.js";
 
 const PAGE_SIZE = 10;
@@ -36,11 +36,6 @@ const initialFilters = {
   status: "",
 };
 
-const monthLabel = new Intl.DateTimeFormat("es-CO", {
-  month: "short",
-  year: "numeric",
-});
-
 const reportNav = adminNav.map((item) =>
   item.key === "reportes" || item.key === "cuenta"
     ? item
@@ -48,16 +43,23 @@ const reportNav = adminNav.map((item) =>
 );
 
 export default function SalesReportPage() {
-  usePageTitle(
-    "Reporte de ventas",
-    "Consulta y exporta los cierres registrados por rango de fechas.",
-  );
+  const { t, locale, formatCOP } = useI18n();
+  usePageTitle(t("dashboard.salesReport.pageTitle"), t("dashboard.salesReport.pageDescription"));
   const { profile } = useAuth();
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [filters, setFilters] = useState(initialFilters);
   const [page, setPage] = useState(1);
+
+  const monthLabel = useMemo(
+    () =>
+      new Intl.DateTimeFormat(locale, {
+        month: "short",
+        year: "numeric",
+      }),
+    [locale],
+  );
 
   const load = async () => {
     setLoading(true);
@@ -66,7 +68,7 @@ export default function SalesReportPage() {
       setSales(await listSales());
     } catch (loadError) {
       setError(
-        getErrorMessage(loadError, "No se pudo cargar el reporte de ventas."),
+        getErrorMessage(loadError, "dashboard.salesReport.loadError"),
       );
     } finally {
       setLoading(false);
@@ -102,7 +104,7 @@ export default function SalesReportPage() {
     return [...groups.values()]
       .sort((a, b) => a.key.localeCompare(b.key))
       .slice(-6);
-  }, [filtered]);
+  }, [filtered, monthLabel]);
 
   const maxMonthly = Math.max(1, ...monthly.map((month) => month.total));
 
@@ -118,17 +120,17 @@ export default function SalesReportPage() {
       role={profile?.rol}
       navItems={reportNav}
       activeKey="reportes"
-      title="Reporte de ventas"
-      subtitle="Cierres vigentes y anulados, filtrados por fecha, operación y estado."
+      title={t("dashboard.salesReport.title")}
+      subtitle={t("dashboard.salesReport.subtitle")}
       actions={
         <>
           <Link to="/admin" className="btn btn-outline-secondary btn-sm dashboard-action">
             <ArrowLeft size={15} aria-hidden="true" />
-            Volver al panel
+            {t("dashboard.salesReport.back")}
           </Link>
           <ExportButton
             onExport={() => exportSales(filtered)}
-            label="Exportar reporte"
+            label={t("dashboard.salesReport.export")}
             variant="primary"
             size="sm"
             disabled={!filtered.length}
@@ -139,30 +141,32 @@ export default function SalesReportPage() {
       <div className="stat-grid">
         <StatCard
           icon={Handshake}
-          label="Cierres vigentes"
+          label={t("dashboard.salesReport.stats.closed")}
           value={stats.closed}
-          hint={`${stats.annulled} anulados en el filtro`}
+          hint={t("dashboard.salesReport.stats.closedHint", {
+            count: stats.annulled,
+          })}
           tone="blue"
         />
         <StatCard
           icon={Wallet}
-          label="Valor total"
+          label={t("dashboard.salesReport.stats.total")}
           value={formatCOP(stats.totalValue)}
-          hint="Solo cierres vigentes"
+          hint={t("dashboard.salesReport.stats.totalHint")}
           tone="green"
         />
         <StatCard
           icon={TrendingUp}
-          label="Ticket promedio"
+          label={t("dashboard.salesReport.stats.average")}
           value={formatCOP(stats.averageValue)}
-          hint="Promedio por cierre vigente"
+          hint={t("dashboard.salesReport.stats.averageHint")}
           tone="sand"
         />
         <StatCard
           icon={CalendarDays}
-          label="Ventas / arriendos"
+          label={t("dashboard.salesReport.stats.split")}
           value={`${stats.salesCount} / ${stats.rentalCount}`}
-          hint="Distribución por operación"
+          hint={t("dashboard.salesReport.stats.splitHint")}
           tone="slate"
         />
       </div>
@@ -170,15 +174,16 @@ export default function SalesReportPage() {
       <section className="surface panel">
         <div className="panel-heading">
           <div>
-            <p className="eyebrow">Filtros del reporte</p>
-            <h2>Consulta los cierres registrados</h2>
-            <p>
-              Usa el rango de fechas para revisar un período específico. La
-              exportación incluye exactamente los cierres filtrados.
-            </p>
+            <p className="eyebrow">{t("dashboard.salesReport.filters.eyebrow")}</p>
+            <h2>{t("dashboard.salesReport.filters.title")}</h2>
+            <p>{t("dashboard.salesReport.filters.text")}</p>
           </div>
           {hasFilters && (
-            <span className="filter-count">{filtered.length} resultados</span>
+            <span className="filter-count">
+              {t("dashboard.salesReport.filters.results", {
+                count: filtered.length,
+              })}
+            </span>
           )}
         </div>
 
@@ -194,7 +199,7 @@ export default function SalesReportPage() {
 
       {error ? (
         <ErrorState
-          title="No pudimos cargar el reporte"
+          title={t("dashboard.salesReport.errorTitle")}
           description={error}
           onRetry={load}
         />
@@ -202,17 +207,19 @@ export default function SalesReportPage() {
         <section className="surface panel">
           <div className="panel-heading">
             <div>
-              <p className="eyebrow">Detalle</p>
-              <h2>Cierres del período</h2>
+              <p className="eyebrow">{t("dashboard.salesReport.detail.eyebrow")}</p>
+              <h2>{t("dashboard.salesReport.detail.title")}</h2>
               <p>
                 {loading
-                  ? "Cargando cierres…"
-                  : `${filtered.length} cierres coinciden con los filtros actuales.`}
+                  ? t("dashboard.salesReport.detail.loading")
+                  : t("dashboard.salesReport.detail.count", {
+                      count: filtered.length,
+                    })}
               </p>
             </div>
             {filtered.length > 0 && (
               <Link to="/admin" className="text-link">
-                Ir al panel de administración
+                {t("dashboard.salesReport.detail.adminPanel")}
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
             )}
@@ -230,17 +237,17 @@ export default function SalesReportPage() {
                 icon={Ban}
                 title={
                   sales.length
-                    ? "No hay cierres con estos filtros"
-                    : "Aún no hay cierres registrados"
+                    ? t("dashboard.salesReport.emptyFilteredTitle")
+                    : t("dashboard.salesReport.emptyTitle")
                 }
                 description={
                   sales.length
-                    ? "Prueba con otro rango de fechas o limpia los filtros para ver todos los cierres."
-                    : "Cuando registres la primera venta o arriendo, el reporte se actualizará automáticamente."
+                    ? t("dashboard.salesReport.emptyFilteredDescription")
+                    : t("dashboard.salesReport.emptyDescription")
                 }
                 action={
                   <Link to="/admin" className="btn btn-primary">
-                    Ir a registrar un cierre
+                    {t("dashboard.salesReport.emptyAction")}
                     <ArrowRight size={16} aria-hidden="true" />
                   </Link>
                 }
@@ -262,12 +269,9 @@ export default function SalesReportPage() {
         <section className="surface panel">
           <div className="panel-heading">
             <div>
-              <p className="eyebrow">Tendencia</p>
-              <h2>Valor cerrado por mes</h2>
-              <p>
-                Últimos meses con cierres dentro del filtro actual. Solo se
-                incluyen cierres vigentes.
-              </p>
+              <p className="eyebrow">{t("dashboard.salesReport.trend.eyebrow")}</p>
+              <h2>{t("dashboard.salesReport.trend.title")}</h2>
+              <p>{t("dashboard.salesReport.trend.text")}</p>
             </div>
           </div>
           <div className="month-bars">
@@ -285,7 +289,13 @@ export default function SalesReportPage() {
                   />
                 </div>
                 <small>
-                  {month.count} {month.count === 1 ? "cierre" : "cierres"}
+                  {month.count === 1
+                    ? t("dashboard.salesReport.trend.one", {
+                        count: month.count,
+                      })
+                    : t("dashboard.salesReport.trend.other", {
+                        count: month.count,
+                      })}
                 </small>
               </div>
             ))}
@@ -293,11 +303,7 @@ export default function SalesReportPage() {
         </section>
       )}
 
-      <p className="dashboard-note">
-        Los valores del reporte corresponden a los cierres vigentes (no
-        anulados) y a los filtros aplicados. La exportación en Excel respeta la
-        misma selección.
-      </p>
+      <p className="dashboard-note">{t("dashboard.salesReport.note")}</p>
     </DashboardLayout>
   );
 }

@@ -2,11 +2,13 @@ import { useEffect, useId, useRef, useState } from "react";
 import { ImagePlus, Info, Trash2, UploadCloud } from "lucide-react";
 import { validateImageFile } from "../../services/storageService.js";
 import { useToast } from "../ui/Toast.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 const MAX_IMAGES = 8;
 const MAX_BYTES = 8 * 1024 * 1024;
 
 function NewFilePreview({ file, onRemove, disabled }) {
+  const { t } = useI18n();
   const [url, setUrl] = useState("");
 
   useEffect(() => {
@@ -23,7 +25,7 @@ function NewFilePreview({ file, onRemove, disabled }) {
         className="upload-preview__remove"
         onClick={onRemove}
         disabled={disabled}
-        aria-label={`Quitar ${file.name}`}
+        aria-label={t("property.uploader.remove", { name: file.name })}
       >
         <Trash2 size={15} aria-hidden="true" />
       </button>
@@ -41,6 +43,7 @@ export default function ImageUploader({
   progress = 0,
   fallbackEnabled = false,
 }) {
+  const { t } = useI18n();
   const inputId = useId();
   const inputRef = useRef(null);
   const [dragging, setDragging] = useState(false);
@@ -60,7 +63,7 @@ export default function ImageUploader({
         continue;
       }
       if (file.size > MAX_BYTES) {
-        toast.error(`${file.name}: supera el límite de 8 MB.`);
+        toast.error(t("property.uploader.sizeError", { name: file.name }));
         continue;
       }
       valid.push(file);
@@ -69,7 +72,7 @@ export default function ImageUploader({
     if (!valid.length) return;
     const accepted = valid.slice(0, remaining);
     if (valid.length > remaining) {
-      toast.info(`Puedes subir hasta ${MAX_IMAGES} imágenes por propiedad.`);
+      toast.info(t("property.uploader.maxImages", { max: MAX_IMAGES }));
     }
     if (accepted.length) onFilesChange([...newFiles, ...accepted]);
   };
@@ -96,8 +99,8 @@ export default function ImageUploader({
           <UploadCloud size={25} />
         </span>
         <div>
-          <strong>Arrastra las fotos aquí o selecciónalas</strong>
-          <p>JPG, PNG o WebP · máximo 8 MB por imagen · hasta 8 imágenes.</p>
+          <strong>{t("property.uploader.drag")}</strong>
+          <p>{t("property.uploader.hint")}</p>
         </div>
         <button
           type="button"
@@ -105,7 +108,7 @@ export default function ImageUploader({
           onClick={() => inputRef.current?.click()}
           disabled={disabled || remaining === 0}
         >
-          Elegir imágenes
+          {t("property.uploader.choose")}
         </button>
         <input
           ref={inputRef}
@@ -124,24 +127,22 @@ export default function ImageUploader({
 
       <div className="upload-meta">
         <span>
-          {total} de {MAX_IMAGES} imágenes
+          {t("property.uploader.count", { total, max: MAX_IMAGES })}
         </span>
-        <span>La primera imagen será la portada.</span>
+        <span>{t("property.uploader.coverNote")}</span>
       </div>
 
       {fallbackEnabled && (
         <p className="inline-note">
           <Info size={16} aria-hidden="true" />
-          Modo de contingencia activo: si Storage no está disponible, se
-          guardará solo una imagen comprimida dentro de Firestore (máximo 700
-          KB). Para varias imágenes se requiere Firebase Storage.
+          {t("property.uploader.fallback")}
         </p>
       )}
 
       {progress > 0 && progress < 100 && (
         <div className="upload-progress" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
           <span style={{ width: `${progress}%` }} />
-          <small>Subiendo imágenes… {progress}%</small>
+          <small>{t("property.uploader.uploading", { progress })}</small>
         </div>
       )}
 
@@ -155,11 +156,11 @@ export default function ImageUploader({
                 className="upload-preview__remove"
                 onClick={() => onRemoveExisting?.(image, index)}
                 disabled={disabled}
-                aria-label="Quitar imagen existente"
+                aria-label={t("property.uploader.removeExisting")}
               >
                 <Trash2 size={15} aria-hidden="true" />
               </button>
-              {index === 0 && <span className="upload-preview__cover">Portada</span>}
+              {index === 0 && <span className="upload-preview__cover">{t("property.uploader.cover")}</span>}
             </div>
           ))}
           {newFiles.map((file, index) => (

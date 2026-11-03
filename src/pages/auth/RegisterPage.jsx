@@ -10,8 +10,10 @@ import {
 } from "lucide-react";
 import AuthLayout from "../../components/auth/AuthLayout.jsx";
 import Field from "../../components/ui/Field.jsx";
+import LanguageSelect from "../../components/ui/LanguageSelect.jsx";
 import { useToast } from "../../components/ui/Toast.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { getErrorMessage } from "../../utils/errors.js";
 import { roleHome } from "../../utils/roles.js";
@@ -19,40 +21,32 @@ import { todayInputValue } from "../../utils/dates.js";
 import { hasErrors, validateRegister } from "../../utils/validation.js";
 
 const roleOptions = [
-  {
-    value: "Comprador",
-    icon: Search,
-    title: "Quiero comprar o arrendar",
-    description: "Explora propiedades y guarda tus preferencias.",
-  },
-  {
-    value: "Vendedor",
-    icon: Building2,
-    title: "Quiero publicar un inmueble",
-    description: "Publica y administra tus propiedades.",
-  },
+  { value: "Comprador", key: "buyer", icon: Search },
+  { value: "Vendedor", key: "seller", icon: Building2 },
 ];
 
-const initialValues = (role) => ({
+const initialValues = (role, idioma) => ({
   nombre: "",
   cedula: "",
   fechaNacimiento: "",
   email: "",
   telefono: "",
   rol: role === "Vendedor" ? "Vendedor" : "Comprador",
+  idioma,
   password: "",
   confirmPassword: "",
   terms: false,
 });
 
 export default function RegisterPage() {
-  usePageTitle("Crear cuenta", "Crea tu cuenta en Manuela Bermúdez Realtor.");
+  const { language, setLanguage, t } = useI18n();
+  usePageTitle(t("auth.register.pageTitle"), t("auth.register.pageDescription"));
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const toast = useToast();
   const { register } = useAuth();
   const [values, setValues] = useState(() =>
-    initialValues(searchParams.get("rol")),
+    initialValues(searchParams.get("rol"), language),
   );
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState("");
@@ -67,12 +61,17 @@ export default function RegisterPage() {
     if (formError) setFormError("");
   };
 
+  const handleLanguageChange = (event) => {
+    update("idioma")(event);
+    setLanguage(event.target.value, { persistVisitor: true });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const nextErrors = validateRegister(values);
     setErrors(nextErrors);
     if (hasErrors(nextErrors)) {
-      toast.error("Revisa los campos marcados antes de continuar.");
+      toast.error(t("auth.register.validationToast"));
       return;
     }
 
@@ -87,11 +86,12 @@ export default function RegisterPage() {
         telefono: values.telefono,
         password: values.password,
         rol: values.rol,
+        idioma: values.idioma,
       });
-      toast.success("Tu cuenta está lista. Bienvenido a Manuela Bermúdez Realtor.");
+      toast.success(t("auth.register.successToast"));
       navigate(roleHome(created), { replace: true });
     } catch (error) {
-      setFormError(getErrorMessage(error, "No pudimos crear tu cuenta."));
+      setFormError(getErrorMessage(error, "auth.register.errorFallback"));
     } finally {
       setSubmitting(false);
     }
@@ -99,36 +99,33 @@ export default function RegisterPage() {
 
   return (
     <AuthLayout
-      eyebrow="Crea tu cuenta"
-      title="Empieza a buscar, publicar y decidir con claridad."
-      description="Una cuenta te permite guardar tus preferencias, publicar tu inmueble y mantener toda la conversación en un solo lugar."
+      eyebrow={t("auth.register.eyebrow")}
+      title={t("auth.register.title")}
+      description={t("auth.register.description")}
       points={[
-        "Compradores: recomendaciones según sus intereses.",
-        "Vendedores: publicaciones y seguimiento del inventario.",
-        "Datos protegidos y acceso con tu propio correo.",
+        t("auth.register.point1"),
+        t("auth.register.point2"),
+        t("auth.register.point3"),
       ]}
     >
       <div className="auth-card__head">
-        <p className="eyebrow">Registro</p>
-        <h1>Crea tu cuenta</h1>
-        <p>
-          Completa tus datos. El registro público permite cuentas de Comprador y
-          Vendedor; las cuentas de administración se asignan por separado.
-        </p>
+        <p className="eyebrow">{t("auth.register.headEyebrow")}</p>
+        <h1>{t("auth.register.headTitle")}</h1>
+        <p>{t("auth.register.headText")}</p>
       </div>
 
       {formError && (
         <div className="alert alert-danger auth-alert" role="alert">
-          <strong>No pudimos crear tu cuenta.</strong>
+          <strong>{t("auth.register.errorTitle")}</strong>
           <p>{formError}</p>
         </div>
       )}
 
       <form className="auth-form" onSubmit={handleSubmit} noValidate>
         <fieldset className="role-picker">
-          <legend>¿Cómo quieres usar la plataforma?</legend>
+          <legend>{t("auth.register.roleLegend")}</legend>
           <div className="role-picker__grid">
-            {roleOptions.map(({ value, icon: Icon, title, description }) => (
+            {roleOptions.map(({ value, key, icon: Icon }) => (
               <label
                 key={value}
                 className={`role-option${values.rol === value ? " is-selected" : ""}`}
@@ -144,8 +141,8 @@ export default function RegisterPage() {
                   <Icon size={20} />
                 </span>
                 <span className="role-option__copy">
-                  <strong>{title}</strong>
-                  <span>{description}</span>
+                  <strong>{t(`auth.register.role${key === "buyer" ? "Buyer" : "Seller"}Title`)}</strong>
+                  <span>{t(`auth.register.role${key === "buyer" ? "Buyer" : "Seller"}Text`)}</span>
                 </span>
               </label>
             ))}
@@ -157,32 +154,55 @@ export default function RegisterPage() {
           )}
         </fieldset>
 
+        <LanguageSelect
+          id="register-language"
+          value={values.idioma}
+          onChange={handleLanguageChange}
+          hint={t("language.registerHint")}
+          error={errors.idioma}
+        />
+
         <div className="form-grid form-grid--two">
-          <Field label="Nombre completo" htmlFor="register-name" required error={errors.nombre}>
+          <Field
+            label={t("auth.register.name")}
+            htmlFor="register-name"
+            required
+            error={errors.nombre}
+          >
             <input
               id="register-name"
               className="form-control"
               autoComplete="name"
               value={values.nombre}
               onChange={update("nombre")}
-              placeholder="Ej. Laura Restrepo"
+              placeholder={t("auth.register.namePlaceholder")}
               aria-invalid={Boolean(errors.nombre)}
             />
           </Field>
 
-          <Field label="Cédula" htmlFor="register-id" required error={errors.cedula}>
+          <Field
+            label={t("auth.register.id")}
+            htmlFor="register-id"
+            required
+            error={errors.cedula}
+          >
             <input
               id="register-id"
               className="form-control"
               inputMode="numeric"
               value={values.cedula}
               onChange={update("cedula")}
-              placeholder="Número de documento"
+              placeholder={t("auth.register.idPlaceholder")}
               aria-invalid={Boolean(errors.cedula)}
             />
           </Field>
 
-          <Field label="Fecha de nacimiento" htmlFor="register-birth" required error={errors.fechaNacimiento}>
+          <Field
+            label={t("auth.register.birth")}
+            htmlFor="register-birth"
+            required
+            error={errors.fechaNacimiento}
+          >
             <input
               id="register-birth"
               type="date"
@@ -194,7 +214,11 @@ export default function RegisterPage() {
             />
           </Field>
 
-          <Field label="Teléfono" htmlFor="register-phone" hint="Opcional">
+          <Field
+            label={t("auth.register.phone")}
+            htmlFor="register-phone"
+            hint={t("common.optional")}
+          >
             <input
               id="register-phone"
               type="tel"
@@ -202,11 +226,17 @@ export default function RegisterPage() {
               className="form-control"
               value={values.telefono}
               onChange={update("telefono")}
-              placeholder="+57 300 000 0000"
+              placeholder={t("auth.register.phonePlaceholder")}
             />
           </Field>
 
-          <Field label="Correo electrónico" htmlFor="register-email" required error={errors.email} className="form-field--full">
+          <Field
+            label={t("auth.register.email")}
+            htmlFor="register-email"
+            required
+            error={errors.email}
+            className="form-field--full"
+          >
             <input
               id="register-email"
               type="email"
@@ -214,12 +244,18 @@ export default function RegisterPage() {
               className="form-control"
               value={values.email}
               onChange={update("email")}
-              placeholder="tu@correo.com"
+              placeholder={t("auth.register.emailPlaceholder")}
               aria-invalid={Boolean(errors.email)}
             />
           </Field>
 
-          <Field label="Contraseña" htmlFor="register-password" required error={errors.password} hint="Mínimo 8 caracteres.">
+          <Field
+            label={t("auth.register.password")}
+            htmlFor="register-password"
+            required
+            error={errors.password}
+            hint={t("auth.register.passwordHint")}
+          >
             <div className="password-control">
               <input
                 id="register-password"
@@ -234,14 +270,23 @@ export default function RegisterPage() {
                 type="button"
                 className="password-control__toggle"
                 onClick={() => setShowPassword((visible) => !visible)}
-                aria-label={showPassword ? "Ocultar contraseñas" : "Mostrar contraseñas"}
+                aria-label={
+                  showPassword
+                    ? t("auth.register.hidePasswords")
+                    : t("auth.register.showPasswords")
+                }
               >
                 {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
               </button>
             </div>
           </Field>
 
-          <Field label="Confirmar contraseña" htmlFor="register-confirm" required error={errors.confirmPassword}>
+          <Field
+            label={t("auth.register.confirmPassword")}
+            htmlFor="register-confirm"
+            required
+            error={errors.confirmPassword}
+          >
             <input
               id="register-confirm"
               type={showPassword ? "text" : "password"}
@@ -261,11 +306,7 @@ export default function RegisterPage() {
             onChange={update("terms")}
             aria-invalid={Boolean(errors.terms)}
           />
-          <span>
-            Acepto el tratamiento de mis datos personales para gestionar mi
-            cuenta, recibir respuestas a mis consultas y usar los servicios de la
-            plataforma.
-          </span>
+          <span>{t("auth.register.terms")}</span>
         </label>
         {errors.terms && (
           <p className="form-error" role="alert">
@@ -279,16 +320,16 @@ export default function RegisterPage() {
           ) : (
             <UserPlus size={18} aria-hidden="true" />
           )}
-          {submitting ? "Creando tu cuenta…" : "Crear mi cuenta"}
+          {submitting ? t("auth.register.submitting") : t("auth.register.submit")}
         </button>
       </form>
 
       <div className="auth-divider">
-        <span>¿Ya tienes una cuenta?</span>
+        <span>{t("auth.register.divider")}</span>
       </div>
 
       <Link to="/login" className="btn btn-outline-secondary w-100">
-        Iniciar sesión
+        {t("auth.register.login")}
       </Link>
     </AuthLayout>
   );

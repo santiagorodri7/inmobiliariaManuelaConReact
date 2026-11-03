@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -15,19 +16,25 @@ import {
   signOutUser,
 } from "../services/authService.js";
 import { getErrorMessage } from "../utils/errors.js";
+import { useI18n } from "../i18n/I18nContext.jsx";
+import { DEFAULT_LANGUAGE } from "../i18n/languages.js";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
+  const { t, setLanguage, resetToVisitorLanguage } = useI18n();
+  const tRef = useRef(t);
   const [profile, setProfile] = useState(null);
   const [firebaseUser, setFirebaseUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState("");
   const [configurationError, setConfigurationError] = useState(
-    isFirebaseConfigured
-      ? ""
-      : "Firebase no está configurado. Completa las variables en .env.local.",
+    isFirebaseConfigured ? "" : t("errors.app.firebaseMessage"),
   );
+
+  useEffect(() => {
+    tRef.current = t;
+  }, [t]);
 
   useEffect(() => {
     if (!isFirebaseConfigured || !auth) {
@@ -58,9 +65,7 @@ export function AuthProvider({ children }) {
           setFirebaseUser(null);
           setProfile(null);
           setLoading(false);
-          setAuthError(
-            "Tu cuenta existe, pero no tiene un perfil asociado. Contacta a la administradora.",
-          );
+          setAuthError(tRef.current("errors.profile.notFound"));
           return;
         }
 
@@ -70,7 +75,7 @@ export function AuthProvider({ children }) {
           setFirebaseUser(null);
           setProfile(null);
           setLoading(false);
-          setAuthError("Tu cuenta está desactivada. Contacta a la administradora.");
+          setAuthError(tRef.current("errors.profile.disabled"));
           return;
         }
 
@@ -84,7 +89,7 @@ export function AuthProvider({ children }) {
         setFirebaseUser(user);
         setProfile(null);
         setLoading(false);
-        setAuthError(getErrorMessage(error, "No se pudo cargar tu perfil."));
+        setAuthError(getErrorMessage(error, "errors.profile.loadError"));
       } finally {
         if (active) setLoading(false);
       }
@@ -95,6 +100,18 @@ export function AuthProvider({ children }) {
       unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    if (profile) {
+      setLanguage(profile.idioma || DEFAULT_LANGUAGE);
+    }
+  }, [profile?.idioma, setLanguage]);
+
+  useEffect(() => {
+    if (!loading && !profile) {
+      resetToVisitorLanguage();
+    }
+  }, [loading, profile, resetToVisitorLanguage]);
 
   const login = useCallback(async (email, password) => {
     setAuthError("");

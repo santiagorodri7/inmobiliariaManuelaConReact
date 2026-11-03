@@ -169,6 +169,12 @@ const check = async (name, promise, shouldPass) => {
   const newUser2 = testEnv.authenticatedContext("new2", {
     email: "nuevo2@test.co",
   });
+  const newUser3 = testEnv.authenticatedContext("new3", {
+    email: "nuevo3@test.co",
+  });
+  const newUser4 = testEnv.authenticatedContext("new4", {
+    email: "nuevo4@test.co",
+  });
 
   const anonDb = anon.firestore();
   const adminDb = admin.firestore();
@@ -179,6 +185,8 @@ const check = async (name, promise, shouldPass) => {
   const inactiveDb = inactive.firestore();
   const newDb = newUser.firestore();
   const new2Db = newUser2.firestore();
+  const new3Db = newUser3.firestore();
+  const new4Db = newUser4.firestore();
 
   // Propiedades: lectura pública
   await check("anon lee propiedad publicada", getDoc(doc(anonDb, "propiedades", "pub1")), true);
@@ -342,8 +350,78 @@ const check = async (name, promise, shouldPass) => {
     true,
   );
   await check(
+    "usuario guarda idioma en",
+    updateDoc(doc(buyerDb, "usuarios", "buyer1"), {
+      idioma: "en",
+      updatedAt: serverTimestamp(),
+    }),
+    true,
+  );
+  await check(
+    "usuario NO guarda idioma inválido",
+    updateDoc(doc(buyerDb, "usuarios", "buyer1"), {
+      idioma: "fr",
+      updatedAt: serverTimestamp(),
+    }),
+    false,
+  );
+  await check(
+    "usuario NO cambia idioma y rol a la vez",
+    updateDoc(doc(buyerDb, "usuarios", "buyer1"), {
+      idioma: "es",
+      rol: "Admin",
+      updatedAt: serverTimestamp(),
+    }),
+    false,
+  );
+  await check(
     "usuario NO cambia su rol",
     updateDoc(doc(buyerDb, "usuarios", "buyer1"), { rol: "Admin" }),
+    false,
+  );
+  await check(
+    "usuario NO se autoasigna Admin con una edición válida",
+    updateDoc(doc(buyerDb, "usuarios", "buyer1"), {
+      nombre: "Comprador actualizado",
+      rol: "Admin",
+      updatedAt: serverTimestamp(),
+    }),
+    false,
+  );
+  await check(
+    "usuario NO se autoasigna el rol heredado Administrador",
+    updateDoc(doc(buyerDb, "usuarios", "buyer1"), {
+      rol: "Administrador",
+      updatedAt: serverTimestamp(),
+    }),
+    false,
+  );
+  await check(
+    "rol y idioma del usuario siguen intactos",
+    getDoc(doc(adminDb, "usuarios", "buyer1")).then((snapshot) => {
+      if (snapshot.data().rol !== "Comprador") {
+        throw new Error(`rol inesperado: ${snapshot.data().rol}`);
+      }
+      if (snapshot.data().idioma !== "en") {
+        throw new Error(`idioma inesperado: ${snapshot.data().idioma}`);
+      }
+    }),
+    true,
+  );
+  await check(
+    "admin actualiza el idioma de un usuario",
+    updateDoc(doc(adminDb, "usuarios", "seller1"), {
+      idioma: "es",
+      updatedAt: serverTimestamp(),
+    }),
+    true,
+  );
+  await check(
+    "admin NO guarda un idioma inválido",
+    updateDoc(doc(adminDb, "usuarios", "seller1"), {
+      idioma: "fr",
+      updatedAt: serverTimestamp(),
+    }),
     false,
   );
   await check(
@@ -391,6 +469,28 @@ const check = async (name, promise, shouldPass) => {
       email: "nuevo2@test.co",
       rol: "Admin",
       activo: true,
+    }),
+    false,
+  );
+  await check(
+    "registro crea perfil con idioma en",
+    setDoc(doc(new3Db, "usuarios", "new3"), {
+      nombre: "Nuevo usuario",
+      email: "nuevo3@test.co",
+      rol: "Comprador",
+      activo: true,
+      idioma: "en",
+    }),
+    true,
+  );
+  await check(
+    "registro NO crea perfil con idioma inválido",
+    setDoc(doc(new4Db, "usuarios", "new4"), {
+      nombre: "Nuevo usuario",
+      email: "nuevo4@test.co",
+      rol: "Comprador",
+      activo: true,
+      idioma: "fr",
     }),
     false,
   );

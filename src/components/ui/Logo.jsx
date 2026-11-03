@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 
 export default function Logo({ variant = "dark", compact = false }) {
+  const { t } = useI18n();
   return (
     <Link
       to="/"
       className={`brand brand--${variant}${compact ? " brand--compact" : ""}`}
-      aria-label="Manuela Bermúdez Realtor, ir al inicio"
+      aria-label={t("accessibility.logoHome")}
     >
       <span className="brand-mark" aria-hidden="true">
         <svg viewBox="0 0 40 40" role="presentation" focusable="false">

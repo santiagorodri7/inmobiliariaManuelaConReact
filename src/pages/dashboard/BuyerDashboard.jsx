@@ -20,6 +20,7 @@ import { useToast } from "../../components/ui/Toast.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useProperties } from "../../hooks/useProperties.js";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { updateOwnProfile } from "../../services/usersService.js";
 import { buyerNav } from "../../config/dashboardNav.js";
 import {
@@ -28,31 +29,20 @@ import {
   propertyTypes,
 } from "../../config/site.js";
 import { getErrorMessage } from "../../utils/errors.js";
-import { formatCOP } from "../../utils/format.js";
 import { filterProperties, normalizeTypeKey } from "../../utils/property.js";
 import { roleHome } from "../../utils/roles.js";
 
-const sectionTitles = {
-  resumen: "Mi resumen",
-  recomendaciones: "Recomendaciones para ti",
-  preferencias: "Mis preferencias",
-};
-
-const preferenceSummary = (preferences) => {
-  const parts = [];
-  if (preferences.operation) {
-    parts.push(preferences.operation === "renta" ? "Arriendo" : "Compra");
-  }
-  if (preferences.propertyType) parts.push(preferences.propertyType);
-  if (preferences.zone) parts.push(`en ${preferences.zone}`);
-  if (preferences.maxBudget) {
-    parts.push(`hasta ${formatCOP(preferences.maxBudget)}`);
-  }
-  return parts.join(" · ");
-};
-
 export default function BuyerDashboard() {
-  usePageTitle("Panel de comprador", "Tus recomendaciones y preferencias de búsqueda.");
+  const {
+    t,
+    formatCOP,
+    operationLabel,
+    propertyTypeLabel,
+  } = useI18n();
+  usePageTitle(
+    t("dashboard.buyer.pageTitle"),
+    t("dashboard.buyer.pageDescription"),
+  );
   const { profile, updateProfileState } = useAuth();
   const toast = useToast();
   const [section, setSection] = useState("resumen");
@@ -69,13 +59,45 @@ export default function BuyerDashboard() {
   const available = properties.length;
   const forSale = properties.filter((item) => item.operation === "venta").length;
   const forRent = properties.filter((item) => item.operation === "renta").length;
-  const summary = preferenceSummary(preferences);
   const hasPreferences = Boolean(
     preferences.operation ||
       preferences.zone ||
       preferences.propertyType ||
       preferences.maxBudget,
   );
+
+  const sectionTitles = {
+    resumen: t("dashboard.buyer.sectionTitles.summary"),
+    recomendaciones: t("dashboard.buyer.sectionTitles.recommendations"),
+    preferencias: t("dashboard.buyer.sectionTitles.preferences"),
+  };
+
+  const preferenceSummary = (current) => {
+    const parts = [];
+    if (current.operation) {
+      parts.push(
+        current.operation === "renta"
+          ? t("dashboard.buyer.preference.summaryRent")
+          : t("dashboard.buyer.preference.summaryBuy"),
+      );
+    }
+    if (current.propertyType) parts.push(propertyTypeLabel(current.propertyType));
+    if (current.zone) {
+      parts.push(
+        t("dashboard.buyer.preference.summaryIn", { zone: current.zone }),
+      );
+    }
+    if (current.maxBudget) {
+      parts.push(
+        t("dashboard.buyer.preference.summaryUpTo", {
+          amount: formatCOP(current.maxBudget),
+        }),
+      );
+    }
+    return parts.join(" · ");
+  };
+
+  const summary = preferenceSummary(preferences);
 
   const recommendations = useMemo(() => {
     if (!hasPreferences) return properties.slice(0, 6);
@@ -104,11 +126,11 @@ export default function BuyerDashboard() {
         },
       });
       updateProfileState(updated);
-      toast.success("Tus preferencias se guardaron.");
+      toast.success(t("dashboard.buyer.preferencesForm.saveSuccess"));
       setSection("recomendaciones");
     } catch (saveError) {
       toast.error(
-        getErrorMessage(saveError, "No se pudieron guardar tus preferencias."),
+        getErrorMessage(saveError, "dashboard.buyer.preferencesForm.saveError"),
       );
     } finally {
       setSaving(false);
@@ -119,12 +141,12 @@ export default function BuyerDashboard() {
     <section className="surface panel">
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">Tu búsqueda</p>
-          <h2>Lo que estás buscando</h2>
+          <p className="eyebrow">{t("dashboard.buyer.preference.eyebrow")}</p>
+          <h2>{t("dashboard.buyer.preference.title")}</h2>
           <p>
             {hasPreferences
               ? summary
-              : "Aún no has guardado preferencias. Cuéntanos qué buscas para filtrar mejor el inventario."}
+              : t("dashboard.buyer.preference.empty")}
           </p>
         </div>
         <button
@@ -133,31 +155,37 @@ export default function BuyerDashboard() {
           onClick={() => setSection("preferencias")}
         >
           <SlidersHorizontal size={15} aria-hidden="true" />
-          {hasPreferences ? "Editar" : "Configurar"}
+          {hasPreferences
+            ? t("dashboard.buyer.preference.edit")
+            : t("dashboard.buyer.preference.configure")}
         </button>
       </div>
       <div className="preference-pills">
         <span>
           <Home size={15} aria-hidden="true" />
           {preferences.operation === "renta"
-            ? "Arriendo"
+            ? t("dashboard.buyer.preference.rent")
             : preferences.operation === "venta"
-              ? "Compra"
-              : "Compra o arriendo"}
+              ? t("dashboard.buyer.preference.buy")
+              : t("dashboard.buyer.preference.buyOrRent")}
         </span>
         <span>
           <Building2 size={15} aria-hidden="true" />
-          {preferences.propertyType || "Cualquier tipo"}
+          {preferences.propertyType
+            ? propertyTypeLabel(preferences.propertyType)
+            : t("dashboard.buyer.preference.anyType")}
         </span>
         <span>
           <Compass size={15} aria-hidden="true" />
-          {preferences.zone || "Cualquier zona"}
+          {preferences.zone || t("dashboard.buyer.preference.anyZone")}
         </span>
         <span>
           <Wallet size={15} aria-hidden="true" />
           {preferences.maxBudget
-            ? `Hasta ${formatCOP(preferences.maxBudget)}`
-            : "Sin límite de presupuesto"}
+            ? t("dashboard.buyer.preference.upTo", {
+                amount: formatCOP(preferences.maxBudget),
+              })
+            : t("dashboard.buyer.preference.noLimit")}
         </span>
       </div>
     </section>
@@ -170,31 +198,31 @@ export default function BuyerDashboard() {
       activeKey={section}
       onNavigate={setSection}
       title={sectionTitles[section]}
-      subtitle="Explora opciones que se ajustan a lo que necesitas y mantén tus preferencias al día."
+      subtitle={t("dashboard.buyer.subtitle")}
       actions={
         <Link to="/#propiedades" className="btn btn-primary btn-sm dashboard-action">
-          Explorar catálogo
+          {t("dashboard.buyer.exploreCatalog")}
           <ArrowRight size={15} aria-hidden="true" />
         </Link>
       }
     >
       <section className="dash-welcome">
         <div>
-          <p className="eyebrow">Hola, {profile?.nombre?.split(" ")[0] || "bienvenido"}</p>
-          <h2>Encontrar un lugar también es una conversación.</h2>
-          <p>
-            Revisa las propiedades que coinciden con tus intereses y ajusta tus
-            preferencias cuando quieras. Si algo te llama la atención, podemos
-            coordinar una visita.
+          <p className="eyebrow">
+            {t("dashboard.buyer.welcomeHello", {
+              name: profile?.nombre?.split(" ")[0] || t("dashboard.buyer.welcomeDefault"),
+            })}
           </p>
+          <h2>{t("dashboard.buyer.welcomeTitle")}</h2>
+          <p>{t("dashboard.buyer.welcomeText")}</p>
         </div>
         <div className="dash-welcome__actions">
           <Link to="/contacto" className="btn btn-primary">
-            Hablar con Manuela
+            {t("dashboard.buyer.talk")}
             <ArrowRight size={16} aria-hidden="true" />
           </Link>
           <Link to={roleHome(profile)} className="btn btn-outline-secondary">
-            Mi panel
+            {t("dashboard.buyer.myPanel")}
           </Link>
         </div>
       </section>
@@ -203,30 +231,34 @@ export default function BuyerDashboard() {
         <div className="stat-grid">
           <StatCard
             icon={Building2}
-            label="Propiedades publicadas"
+            label={t("dashboard.buyer.stats.published")}
             value={available}
-            hint="Inventario disponible hoy"
+            hint={t("dashboard.buyer.stats.publishedHint")}
             tone="blue"
           />
           <StatCard
             icon={KeyRound}
-            label="En venta"
+            label={t("dashboard.buyer.stats.sale")}
             value={forSale}
-            hint="Opciones para comprar"
+            hint={t("dashboard.buyer.stats.saleHint")}
             tone="sand"
           />
           <StatCard
             icon={Home}
-            label="En arriendo"
+            label={t("dashboard.buyer.stats.rent")}
             value={forRent}
-            hint="Opciones para arrendar"
+            hint={t("dashboard.buyer.stats.rentHint")}
             tone="green"
           />
           <StatCard
             icon={Sparkles}
-            label="Recomendaciones"
+            label={t("dashboard.buyer.stats.recommendations")}
             value={recommendations.length}
-            hint={hasPreferences ? "Según tus preferencias" : "Selección reciente"}
+            hint={
+              hasPreferences
+                ? t("dashboard.buyer.stats.recommendationsHintPreferences")
+                : t("dashboard.buyer.stats.recommendationsHintRecent")
+            }
             tone="slate"
           />
         </div>
@@ -240,15 +272,11 @@ export default function BuyerDashboard() {
               <span className="panel__accent-icon" aria-hidden="true">
                 <Sparkles size={22} />
               </span>
-              <p className="eyebrow">Acompañamiento</p>
-              <h2>¿Quieres que busquemos contigo?</h2>
-              <p>
-                Cuéntanos qué espacios necesitas, en qué zona y con qué
-                presupuesto. Filtramos opciones y coordinamos visitas sin
-                hacerte perder tiempo.
-              </p>
+              <p className="eyebrow">{t("dashboard.buyer.support.eyebrow")}</p>
+              <h2>{t("dashboard.buyer.support.title")}</h2>
+              <p>{t("dashboard.buyer.support.text")}</p>
               <Link to="/contacto" className="text-link">
-                Contar qué busco
+                {t("dashboard.buyer.support.link")}
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
             </section>
@@ -257,15 +285,15 @@ export default function BuyerDashboard() {
           <section className="dashboard-section">
             <div className="section-heading section-heading--split">
               <div>
-                <p className="eyebrow">Para empezar</p>
-                <h2>Opciones que podrían interesarte</h2>
+                <p className="eyebrow">{t("dashboard.buyer.start.eyebrow")}</p>
+                <h2>{t("dashboard.buyer.start.title")}</h2>
               </div>
               <button
                 type="button"
                 className="text-link text-link--button"
                 onClick={() => setSection("recomendaciones")}
               >
-                Ver todas
+                {t("dashboard.buyer.start.viewAll")}
                 <ArrowRight size={16} aria-hidden="true" />
               </button>
             </div>
@@ -275,11 +303,11 @@ export default function BuyerDashboard() {
               error={error}
               onRetry={reload}
               skeletonCount={3}
-              emptyTitle="Aún no hay propiedades publicadas"
-              emptyDescription="Estamos preparando el inventario. Cuéntanos qué buscas y te avisamos cuando llegue algo que encaje."
+              emptyTitle={t("dashboard.buyer.emptyInventoryTitle")}
+              emptyDescription={t("dashboard.buyer.emptyInventoryDescription")}
               emptyAction={
                 <Link to="/contacto" className="btn btn-primary">
-                  Contar qué busco
+                  {t("home.inventory.tellWhatISeek")}
                 </Link>
               }
             />
@@ -292,16 +320,18 @@ export default function BuyerDashboard() {
           {preferenceCard}
           <div className="section-heading section-heading--split dashboard-section__heading">
             <div>
-              <p className="eyebrow">Selección personalizada</p>
+              <p className="eyebrow">{t("dashboard.buyer.recommendations.eyebrow")}</p>
               <h2>
                 {hasPreferences
-                  ? `${recommendations.length} propiedades según tus preferencias`
-                  : "Propiedades publicadas"}
+                  ? t("dashboard.buyer.recommendations.withPreferences", {
+                      count: recommendations.length,
+                    })
+                  : t("dashboard.buyer.recommendations.withoutPreferences")}
               </h2>
               <p>
                 {hasPreferences
-                  ? "Si no hay coincidencias exactas, mostramos una selección reciente para que sigas explorando."
-                  : "Configura tus preferencias para recibir una selección más precisa."}
+                  ? t("dashboard.buyer.recommendations.withPreferencesText")
+                  : t("dashboard.buyer.recommendations.withoutPreferencesText")}
               </p>
             </div>
           </div>
@@ -310,11 +340,11 @@ export default function BuyerDashboard() {
             loading={loading}
             error={error}
             onRetry={reload}
-            emptyTitle="No encontramos coincidencias todavía"
-            emptyDescription="Prueba ampliando el presupuesto o la zona, o cuéntanos qué buscas para ayudarte."
+            emptyTitle={t("dashboard.buyer.recommendations.emptyTitle")}
+            emptyDescription={t("dashboard.buyer.recommendations.emptyDescription")}
             emptyAction={
               <Link to="/contacto" className="btn btn-primary">
-                Hablar con Manuela
+                {t("dashboard.buyer.talk")}
               </Link>
             }
           />
@@ -325,63 +355,73 @@ export default function BuyerDashboard() {
         <section className="surface panel preference-form">
           <div className="panel-heading">
             <div>
-              <p className="eyebrow">Búsqueda personalizada</p>
-              <h2>Cuéntanos qué necesitas</h2>
-              <p>
-                Usamos estos datos para ordenar las recomendaciones dentro de tu
-                cuenta. Puedes cambiarlos cuando quieras.
-              </p>
+              <p className="eyebrow">{t("dashboard.buyer.preferencesForm.eyebrow")}</p>
+              <h2>{t("dashboard.buyer.preferencesForm.title")}</h2>
+              <p>{t("dashboard.buyer.preferencesForm.text")}</p>
             </div>
           </div>
 
           <form onSubmit={handleSave} className="form-grid form-grid--two">
-            <Field label="Quiero" htmlFor="buyer-operation">
+            <Field
+              label={t("dashboard.buyer.preferencesForm.operation")}
+              htmlFor="buyer-operation"
+            >
               <select
                 id="buyer-operation"
                 className="form-select"
                 value={preferences.operation}
                 onChange={update("operation")}
               >
-                <option value="">Comprar o arrendar</option>
+                <option value="">
+                  {t("dashboard.buyer.preferencesForm.operationAny")}
+                </option>
                 {operations.map((operation) => (
                   <option key={operation.value} value={operation.value}>
-                    {operation.label}
-                  </option>
-                ))}
-              </select>
-            </Field>
-
-            <Field label="Tipo de inmueble" htmlFor="buyer-type">
-              <select
-                id="buyer-type"
-                className="form-select"
-                value={preferences.propertyType}
-                onChange={update("propertyType")}
-              >
-                <option value="">Cualquier tipo</option>
-                {propertyTypes.map((type) => (
-                  <option key={type.value} value={type.value}>
-                    {type.label}
+                    {operationLabel(operation.value)}
                   </option>
                 ))}
               </select>
             </Field>
 
             <Field
-              label="Zona de interés"
+              label={t("dashboard.buyer.preferencesForm.type")}
+              htmlFor="buyer-type"
+            >
+              <select
+                id="buyer-type"
+                className="form-select"
+                value={preferences.propertyType}
+                onChange={update("propertyType")}
+              >
+                <option value="">
+                  {t("dashboard.buyer.preferencesForm.typeAny")}
+                </option>
+                {propertyTypes.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {propertyTypeLabel(type.value)}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <Field
+              label={t("dashboard.buyer.preferencesForm.zone")}
               htmlFor="buyer-zone"
-              hint="Ciudad, barrio o sector."
+              hint={t("dashboard.buyer.preferencesForm.zoneHint")}
             >
               <input
                 id="buyer-zone"
                 className="form-control"
                 value={preferences.zone}
                 onChange={update("zone")}
-                placeholder="Ej. Laureles, Medellín"
+                placeholder={t("dashboard.buyer.preferencesForm.zonePlaceholder")}
               />
             </Field>
 
-            <Field label="Presupuesto máximo" htmlFor="buyer-budget">
+            <Field
+              label={t("dashboard.buyer.preferencesForm.budget")}
+              htmlFor="buyer-budget"
+            >
               <select
                 id="buyer-budget"
                 className="form-select"
@@ -390,7 +430,11 @@ export default function BuyerDashboard() {
               >
                 {budgetOptions.map((budget) => (
                   <option key={budget.value || "any"} value={budget.value}>
-                    {budget.label}
+                    {budget.value
+                      ? t("dashboard.buyer.preference.upTo", {
+                          amount: formatCOP(budget.value),
+                        })
+                      : t("dashboard.buyer.preference.noLimit")}
                   </option>
                 ))}
               </select>
@@ -399,7 +443,9 @@ export default function BuyerDashboard() {
             <div className="form-actions form-field--full">
               <button type="submit" className="btn btn-primary" disabled={saving}>
                 <Save size={16} aria-hidden="true" />
-                {saving ? "Guardando…" : "Guardar preferencias"}
+                {saving
+                  ? t("common.saving")
+                  : t("dashboard.buyer.preferencesForm.save")}
               </button>
             </div>
           </form>
@@ -409,15 +455,15 @@ export default function BuyerDashboard() {
       {section === "resumen" && !hasPreferences && (
         <EmptyState
           icon={SlidersHorizontal}
-          title="Personaliza tus recomendaciones"
-          description="Cuéntanos qué tipo de propiedad buscas, en qué zona y con qué presupuesto para mostrar opciones más relevantes."
+          title={t("dashboard.buyer.personalizeTitle")}
+          description={t("dashboard.buyer.personalizeText")}
           action={
             <button
               type="button"
               className="btn btn-primary"
               onClick={() => setSection("preferencias")}
             >
-              Configurar preferencias
+              {t("dashboard.buyer.personalizeAction")}
             </button>
           }
           compact

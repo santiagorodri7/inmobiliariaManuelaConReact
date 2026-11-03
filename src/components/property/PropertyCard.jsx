@@ -2,24 +2,26 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight, Bath, BedDouble, Car, House, MapPin, Maximize } from "lucide-react";
 import { useState } from "react";
 import { OperationBadge } from "../ui/StatusBadge.jsx";
-import { formatArea, formatCOP, truncate } from "../../utils/format.js";
+import { useI18n } from "../../i18n/I18nContext.jsx";
+import { truncate } from "../../utils/format.js";
 import { coverImage } from "../../utils/property.js";
 
 export default function PropertyCard({ property }) {
+  const { t, formatArea, formatCOP, propertyTypeLabel } = useI18n();
   const [imageFailed, setImageFailed] = useState(false);
   const image = coverImage(property);
   const specs = [
     property.bedrooms > 0 && {
       icon: BedDouble,
-      label: `${property.bedrooms} hab.`,
+      label: t("property.card.bedrooms", { count: property.bedrooms }),
     },
     property.bathrooms > 0 && {
       icon: Bath,
-      label: `${property.bathrooms} baños`,
+      label: t("property.card.bathrooms", { count: property.bathrooms }),
     },
     property.parking > 0 && {
       icon: Car,
-      label: `${property.parking} parq.`,
+      label: t("property.card.parking", { count: property.parking }),
     },
     property.area > 0 && {
       icon: Maximize,
@@ -32,7 +34,7 @@ export default function PropertyCard({ property }) {
       <Link
         to={`/propiedad/${encodeURIComponent(property.id)}`}
         className="property-card__media"
-        aria-label={`Ver ${property.title}`}
+        aria-label={t("property.card.ariaView", { title: property.title })}
       >
         {image && !imageFailed ? (
           <img
@@ -44,7 +46,7 @@ export default function PropertyCard({ property }) {
         ) : (
           <span className="property-card__placeholder">
             <House size={32} aria-hidden="true" />
-            <span>Imagen no disponible</span>
+            <span>{t("property.card.imageUnavailable")}</span>
           </span>
         )}
         <OperationBadge operation={property.operation} />
@@ -53,7 +55,11 @@ export default function PropertyCard({ property }) {
       <div className="property-card__body">
         <div className="property-card__price">
           <strong>{formatCOP(property.price)}</strong>
-          <span>{property.operation === "renta" ? " / mes" : " COP"}</span>
+          <span>
+            {property.operation === "renta"
+              ? t("property.card.perMonth")
+              : t("property.card.currency")}
+          </span>
         </div>
         <h3>
           <Link to={`/propiedad/${encodeURIComponent(property.id)}`}>
@@ -62,7 +68,7 @@ export default function PropertyCard({ property }) {
         </h3>
         <p className="property-card__location">
           <MapPin size={15} aria-hidden="true" />
-          {property.location || "Ubicación por confirmar"}
+          {property.location || t("property.card.locationPending")}
         </p>
         {property.description && (
           <p className="property-card__description">
@@ -70,7 +76,7 @@ export default function PropertyCard({ property }) {
           </p>
         )}
         {specs.length > 0 && (
-          <ul className="property-card__specs" aria-label="Características">
+          <ul className="property-card__specs" aria-label={t("property.card.features")}>
             {specs.map(({ icon: Icon, label }) => (
               <li key={label}>
                 <Icon size={15} aria-hidden="true" />
@@ -82,12 +88,12 @@ export default function PropertyCard({ property }) {
       </div>
 
       <div className="property-card__footer">
-        <span>{property.type}</span>
+        <span>{propertyTypeLabel(property.type)}</span>
         <Link
           to={`/propiedad/${encodeURIComponent(property.id)}`}
           className="property-card__link"
         >
-          Ver propiedad
+          {t("property.card.view")}
           <ArrowUpRight size={16} aria-hidden="true" />
         </Link>
       </div>

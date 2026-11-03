@@ -16,27 +16,32 @@ import PersonalInfoForm from "../../components/account/PersonalInfoForm.jsx";
 import PasswordForm from "../../components/account/PasswordForm.jsx";
 import DangerZone from "../../components/account/DangerZone.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { accountNav } from "../../config/dashboardNav.js";
-import { roleHome, roleLabel } from "../../utils/roles.js";
+import { roleHome } from "../../utils/roles.js";
 import { profileCompletion } from "../../utils/users.js";
-import { formatDate } from "../../utils/dates.js";
-
-const titles = {
-  perfil: "Mi perfil",
-  seguridad: "Seguridad de la cuenta",
-};
 
 export default function AccountPage() {
-  usePageTitle("Mi cuenta", "Gestiona tu perfil y la seguridad de tu cuenta.");
+  const { t, roleLabel, formatDate } = useI18n();
+  usePageTitle(t("account.pageTitle"), t("account.pageDescription"));
   const { profile } = useAuth();
   const [section, setSection] = useState("perfil");
   const completion = profileCompletion(profile);
   const panelPath = roleHome(profile);
+  const sectionTitles = {
+    perfil: t("account.titles.profile"),
+    seguridad: t("account.titles.security"),
+  };
 
   const navItems = [
     ...accountNav,
-    { key: "panel", label: "Mi panel", icon: LayoutDashboard, to: panelPath },
+    {
+      key: "panel",
+      label: "nav.myPanel",
+      icon: LayoutDashboard,
+      to: panelPath,
+    },
   ];
 
   return (
@@ -45,11 +50,11 @@ export default function AccountPage() {
       navItems={navItems}
       activeKey={section}
       onNavigate={setSection}
-      title={titles[section]}
-      subtitle="Tus datos personales y la seguridad de tu cuenta, en un solo lugar."
+      title={sectionTitles[section]}
+      subtitle={t("account.subtitle")}
       actions={
         <Link to={panelPath} className="btn btn-outline-secondary btn-sm dashboard-action">
-          Ir a mi panel
+          {t("account.goPanel")}
           <ArrowUpRight size={15} aria-hidden="true" />
         </Link>
       }
@@ -59,7 +64,7 @@ export default function AccountPage() {
           <Avatar profile={profile} size="lg" />
           <div>
             <div className="profile-overview__name">
-              <h2>{profile?.nombre || "Usuario"}</h2>
+              <h2>{profile?.nombre || t("account.userFallback")}</h2>
               <RolePill role={profile?.rol} />
             </div>
             <ul className="profile-overview__meta">
@@ -69,11 +74,13 @@ export default function AccountPage() {
               </li>
               <li>
                 <MapPin size={15} aria-hidden="true" />
-                {profile?.direccion || "Dirección por completar"}
+                {profile?.direccion || t("account.addressFallback")}
               </li>
               <li>
                 <CalendarDays size={15} aria-hidden="true" />
-                Miembro desde {formatDate(profile?.fechaRegistro, "—")}
+                {t("account.memberSince", {
+                  date: formatDate(profile?.fechaRegistro, "—"),
+                })}
               </li>
             </ul>
           </div>
@@ -83,7 +90,7 @@ export default function AccountPage() {
           <div className="profile-overview__completion-head">
             <span>
               <BadgeCheck size={16} aria-hidden="true" />
-              Perfil completado
+              {t("account.completion")}
             </span>
             <strong>{completion}%</strong>
           </div>
@@ -93,14 +100,11 @@ export default function AccountPage() {
             aria-valuenow={completion}
             aria-valuemin={0}
             aria-valuemax={100}
-            aria-label="Perfil completado"
+            aria-label={t("account.completion")}
           >
             <span style={{ width: `${completion}%` }} />
           </div>
-          <p>
-            Completar tu teléfono y dirección nos ayuda a acompañarte mejor
-            durante el proceso.
-          </p>
+          <p>{t("account.completionHint")}</p>
         </div>
 
         <div className="profile-overview__role">
@@ -108,7 +112,7 @@ export default function AccountPage() {
             <ShieldCheck size={21} />
           </span>
           <div>
-            <span>Rol asignado</span>
+            <span>{t("account.role")}</span>
             <strong>{roleLabel(profile?.rol)}</strong>
           </div>
         </div>

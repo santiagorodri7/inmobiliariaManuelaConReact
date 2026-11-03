@@ -4,11 +4,11 @@ import Modal from "../ui/Modal.jsx";
 import Field from "../ui/Field.jsx";
 import { useToast } from "../ui/Toast.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { useI18n } from "../../i18n/I18nContext.jsx";
 import { registerSale } from "../../services/salesService.js";
 import { getErrorMessage } from "../../utils/errors.js";
 import { hasErrors, validateSale } from "../../utils/validation.js";
-import { formatCOP } from "../../utils/format.js";
-import { isAvailable, operationLabel } from "../../utils/property.js";
+import { isAvailable } from "../../utils/property.js";
 import { todayInputValue } from "../../utils/dates.js";
 
 const emptyValues = {
@@ -30,6 +30,7 @@ export default function SaleForm({
   onSaved,
 }) {
   const { profile } = useAuth();
+  const { t, formatCOP, operationLabel } = useI18n();
   const toast = useToast();
   const [values, setValues] = useState({ ...emptyValues });
   const [errors, setErrors] = useState({});
@@ -81,13 +82,11 @@ export default function SaleForm({
     setSaving(true);
     try {
       const sale = await registerSale({ ...values, admin: profile });
-      toast.success(
-        "Cierre registrado. La propiedad cambió de estado automáticamente.",
-      );
+      toast.success(t("admin.saleForm.success"));
       onSaved?.(sale);
       onClose?.();
     } catch (error) {
-      toast.error(getErrorMessage(error, "No se pudo registrar el cierre."));
+      toast.error(getErrorMessage(error, "admin.saleForm.errorFallback"));
     } finally {
       setSaving(false);
     }
@@ -97,14 +96,14 @@ export default function SaleForm({
     <Modal
       open={open}
       onClose={saving ? undefined : onClose}
-      title="Registrar cierre"
-      eyebrow="Operación cerrada"
+      title={t("admin.saleForm.title")}
+      eyebrow={t("admin.saleForm.eyebrow")}
       size="lg"
       closeOnBackdrop={!saving}
       footer={
         <>
           <button type="button" className="btn btn-outline-secondary" onClick={onClose} disabled={saving}>
-            Cancelar
+            {t("admin.saleForm.cancel")}
           </button>
           <button type="submit" form="sale-form" className="btn btn-primary" disabled={saving || !available.length}>
             {saving ? (
@@ -112,7 +111,9 @@ export default function SaleForm({
             ) : (
               <Handshake size={17} aria-hidden="true" />
             )}
-            {saving ? "Registrando…" : "Registrar cierre"}
+            {saving
+              ? t("admin.saleForm.submitting")
+              : t("admin.saleForm.submit")}
           </button>
         </>
       }
@@ -120,19 +121,18 @@ export default function SaleForm({
       {!available.length ? (
         <div className="inline-empty">
           <Info size={20} aria-hidden="true" />
-          <p>
-            No hay propiedades publicadas disponibles. Publica una propiedad
-            antes de registrar un cierre.
-          </p>
+          <p>{t("admin.saleForm.noProperties")}</p>
         </div>
       ) : (
         <form id="sale-form" className="sale-form" onSubmit={handleSubmit} noValidate>
-          <p className="sale-form__intro">
-            El cierre se guarda en <strong>ventas</strong> y actualiza la
-            propiedad en una sola transacción. No se generan datos de prueba.
-          </p>
+          <p className="sale-form__intro">{t("admin.saleForm.intro")}</p>
 
-          <Field label="Propiedad" htmlFor="sale-property" required error={errors.propertyId}>
+          <Field
+            label={t("admin.saleForm.property")}
+            htmlFor="sale-property"
+            required
+            error={errors.propertyId}
+          >
             <select
               id="sale-property"
               className="form-select"
@@ -140,7 +140,7 @@ export default function SaleForm({
               onChange={selectProperty}
               aria-invalid={Boolean(errors.propertyId)}
             >
-              <option value="">Selecciona una propiedad publicada</option>
+              <option value="">{t("admin.saleForm.selectProperty")}</option>
               {available.map((property) => (
                 <option key={property.id} value={property.id}>
                   {property.title} · {property.location} · {formatCOP(property.price)}
@@ -152,22 +152,29 @@ export default function SaleForm({
           {selected && (
             <div className="sale-property-summary">
               <div>
-                <span>Operación</span>
+                <span>{t("admin.saleForm.operation")}</span>
                 <strong>{operationLabel(selected.operation)}</strong>
               </div>
               <div>
-                <span>Propietario</span>
-                <strong>{selected.ownerName || "Sin nombre"}</strong>
+                <span>{t("admin.saleForm.owner")}</span>
+                <strong>
+                  {selected.ownerName || t("admin.saleForm.ownerMissing")}
+                </strong>
               </div>
               <div>
-                <span>Precio publicado</span>
+                <span>{t("admin.saleForm.publishedPrice")}</span>
                 <strong>{formatCOP(selected.price)}</strong>
               </div>
             </div>
           )}
 
           <div className="form-grid form-grid--two">
-            <Field label="Nombre del comprador o arrendatario" htmlFor="sale-buyer" required error={errors.buyerName}>
+            <Field
+              label={t("admin.saleForm.buyerName")}
+              htmlFor="sale-buyer"
+              required
+              error={errors.buyerName}
+            >
               <input
                 id="sale-buyer"
                 className="form-control"
@@ -176,7 +183,12 @@ export default function SaleForm({
                 aria-invalid={Boolean(errors.buyerName)}
               />
             </Field>
-            <Field label="Correo del comprador" htmlFor="sale-email" error={errors.buyerEmail} hint="Opcional">
+            <Field
+              label={t("admin.saleForm.buyerEmail")}
+              htmlFor="sale-email"
+              error={errors.buyerEmail}
+              hint={t("common.optional")}
+            >
               <input
                 id="sale-email"
                 type="email"
@@ -186,7 +198,11 @@ export default function SaleForm({
                 aria-invalid={Boolean(errors.buyerEmail)}
               />
             </Field>
-            <Field label="Teléfono del comprador" htmlFor="sale-phone" hint="Opcional">
+            <Field
+              label={t("admin.saleForm.buyerPhone")}
+              htmlFor="sale-phone"
+              hint={t("common.optional")}
+            >
               <input
                 id="sale-phone"
                 type="tel"
@@ -195,7 +211,12 @@ export default function SaleForm({
                 onChange={update("buyerPhone")}
               />
             </Field>
-            <Field label="Valor del cierre (COP)" htmlFor="sale-value" required error={errors.closingValue}>
+            <Field
+              label={t("admin.saleForm.closingValue")}
+              htmlFor="sale-value"
+              required
+              error={errors.closingValue}
+            >
               <div className="input-prefix">
                 <span>$</span>
                 <input
@@ -210,7 +231,12 @@ export default function SaleForm({
                 />
               </div>
             </Field>
-            <Field label="Fecha del cierre" htmlFor="sale-date" required error={errors.closingDate}>
+            <Field
+              label={t("admin.saleForm.closingDate")}
+              htmlFor="sale-date"
+              required
+              error={errors.closingDate}
+            >
               <input
                 id="sale-date"
                 type="date"
@@ -221,27 +247,35 @@ export default function SaleForm({
                 aria-invalid={Boolean(errors.closingDate)}
               />
             </Field>
-            <Field label="Operación" htmlFor="sale-operation" hint="Se toma de la propiedad; puedes ajustarla si el cierre lo requiere.">
+            <Field
+              label={t("admin.saleForm.operation")}
+              htmlFor="sale-operation"
+              hint={t("admin.saleForm.operationHint")}
+            >
               <select
                 id="sale-operation"
                 className="form-select"
                 value={values.operation}
                 onChange={update("operation")}
               >
-                <option value="venta">Venta</option>
-                <option value="renta">Renta</option>
+                <option value="venta">{t("admin.saleForm.sale")}</option>
+                <option value="renta">{t("admin.saleForm.rent")}</option>
               </select>
             </Field>
           </div>
 
-          <Field label="Notas internas" htmlFor="sale-notes" hint="Opcional. No se muestran en el sitio público.">
+          <Field
+            label={t("admin.saleForm.notes")}
+            htmlFor="sale-notes"
+            hint={t("admin.saleForm.notesHint")}
+          >
             <textarea
               id="sale-notes"
               className="form-control"
               rows={3}
               value={values.notes}
               onChange={update("notes")}
-              placeholder="Ej. Cierre coordinado con el abogado, pagado por transferencia."
+              placeholder={t("admin.saleForm.notesPlaceholder")}
             />
           </Field>
         </form>
