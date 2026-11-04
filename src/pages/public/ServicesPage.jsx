@@ -33,7 +33,7 @@ const processIcons = ["step1", "step2", "step3", "step4"];
 export default function ServicesPage() {
   const { t } = useI18n();
   usePageTitle(t("services.pageTitle"), t("services.pageDescription"));
-  const { testimonials, loading, error, setTestimonials } = useTestimonials();
+  const { testimonials, loading, error } = useTestimonials();
   const { profile } = useAuth();
 
   return (
@@ -101,10 +101,7 @@ export default function ServicesPage() {
           </div>
           <TestimonialGrid testimonials={testimonials} loading={loading} error={error} />
           <div className="testimonial-form-wrap">
-            <TestimonialForm
-              profile={profile}
-              onCreated={(created) => setTestimonials((current) => [created, ...current])}
-            />
+            <TestimonialForm profile={profile} />
           </div>
         </div>
       </section>

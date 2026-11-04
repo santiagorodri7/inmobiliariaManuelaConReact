@@ -44,9 +44,7 @@
   "site": {
     "role": "Asesora inmobiliaria",
     "tagline": "Un lugar que se sienta tuyo.",
-    "coverage": "Medellín y el Valle de Aburrá",
-    "hours": "Lunes a sábado · 8:00 a. m. – 6:00 p. m.",
-    "location": "Medellín, Colombia"
+    "whatsappAnytime": "Escríbeme por WhatsApp a cualquier hora."
   },
   "nav": {
     "home": "Inicio",
@@ -84,6 +82,7 @@
       "properties": "Mis propiedades",
       "adminProperties": "Propiedades",
       "users": "Usuarios",
+      "testimonials": "Testimonios",
       "sales": "Cierres",
       "reports": "Reporte de ventas",
       "account": "Mi perfil",
@@ -91,20 +90,21 @@
     }
   },
   "home": {
-    "pageTitle": "Propiedades en venta y arriendo en Medellín",
-    "pageDescription": "Encuentra propiedades en Medellín y el Valle de Aburrá con asesoría inmobiliaria cercana y transparente.",
+    "pageTitle": "Asesora inmobiliaria",
+    "pageDescription": "Manuela Bermúdez, asesora inmobiliaria. Atención por WhatsApp.",
     "hero": {
-      "eyebrow": "Manuela Bermúdez · Realtor",
+      "eyebrow": "Manuela Bermúdez · Asesora inmobiliaria",
       "titleLine1": "Un lugar que",
       "titleLine2": "se sienta",
       "titleEm": "tuyo.",
-      "lead": "Propiedades en venta y arriendo en Medellín y el Valle de Aburrá, con una asesoría cercana para decidir con calma y con claridad.",
+      "lead": "Propiedades en venta y arriendo, con una asesoría cercana para decidir con calma y con claridad.",
       "explore": "Explorar propiedades",
       "talk": "Hablar con Manuela",
       "saleRent": "Venta y arriendo",
+      "whatsappSupport": "Atención por WhatsApp",
       "personalSupport": "Acompañamiento personal",
-      "noteTitle": "Selección cuidada",
-      "noteText": "Cada propiedad se revisa antes de publicarse."
+      "noteTitle": "Propiedades disponibles",
+      "noteText": "Consulta las propiedades publicadas."
     },
     "search": {
       "eyebrow": "Encuentra tu próximo lugar",
@@ -115,7 +115,7 @@
     "inventory": {
       "eyebrow": "Inventario disponible",
       "title": "Propiedades para empezar a imaginar",
-      "description": "Una selección de inmuebles publicados. Si algo te gusta, podemos coordinar una visita y revisar cada detalle contigo.",
+      "description": "Inmuebles publicados. Si algo te interesa, solicita información y revisamos cada detalle contigo.",
       "results": "{{count}} resultados",
       "activeFilters": "Filtros activos",
       "emptyFilteredTitle": "No encontramos propiedades con esos filtros",
@@ -138,7 +138,7 @@
       },
       "sell": {
         "title": "Vender con claridad",
-        "text": "Organizamos la publicación, las visitas y la negociación para que el proceso sea predecible."
+        "text": "Organizamos la publicación y la negociación para que el proceso sea predecible."
       },
       "rent": {
         "title": "Arrendar sin ruido",
@@ -150,12 +150,9 @@
       "title": "Moverte por el mercado inmobiliario no tiene por qué ser confuso.",
       "description": "Mi trabajo es traducir el proceso a decisiones simples: qué mirar, qué preguntar y cuándo avanzar. Con información clara y sin presión, para que elijas un lugar que realmente se sienta tuyo.",
       "check1": "Comunicación directa durante todo el proceso.",
-      "check2": "Acompañamiento en visitas, negociación y cierre.",
+      "check2": "Acompañamiento en la negociación y el cierre.",
       "check3": "Enfoque en tus prioridades, no en la prisa.",
-      "link": "Conocer más sobre Manuela",
-      "imageAlt": "Terraza con piscina y vista a la ciudad de Medellín",
-      "badgeCity": "Medellín",
-      "badgeRegion": "Valle de Aburrá"
+      "link": "Conocer más sobre Manuela"
     },
     "process": {
       "eyebrow": "El proceso",
@@ -168,7 +165,7 @@
         },
         "select": {
           "title": "Seleccionamos",
-          "text": "Filtramos propiedades que encajan y coordinamos visitas sin hacerte perder tiempo."
+          "text": "Filtramos propiedades que encajan y compartimos contigo la información que necesitas."
         },
         "support": {
           "title": "Acompañamos",
@@ -177,7 +174,7 @@
       }
     },
     "testimonials": {
-      "eyebrow": "Experiencias reales",
+      "eyebrow": "Testimonios",
       "title": "Lo que dicen quienes ya pasaron por aquí",
       "link": "Ver todos los testimonios"
     },
@@ -185,29 +182,26 @@
       "eyebrow": "Hablemos",
       "title": "Cuéntame qué estás buscando.",
       "text": "Ya sea que estés empezando a mirar o listo para dar el siguiente paso, podemos ordenar las opciones juntos.",
-      "schedule": "Agendar una conversación",
+      "schedule": "Solicitar información",
       "whatsapp": "Escribir por WhatsApp"
     },
     "whatsappMessage": "Hola {{name}}, quiero recibir asesoría inmobiliaria."
   },
   "about": {
     "pageTitle": "Nosotros",
-    "pageDescription": "Conoce el enfoque de Manuela Bermúdez Realtor: asesoría inmobiliaria cercana, transparente y con criterio en Medellín.",
+    "pageDescription": "Conoce el enfoque de Manuela Bermúdez, asesora inmobiliaria.",
     "header": {
-      "eyebrow": "Sobre Manuela Bermúdez Realtor",
+      "eyebrow": "Sobre Manuela Bermúdez",
       "title": "Una forma más humana de moverte por el mercado inmobiliario.",
-      "description": "Acompañamiento cercano para comprar, vender o arrendar en Medellín y el Valle de Aburrá. Sin presión, con información clara y decisiones que se sienten propias.",
+      "description": "Acompañamiento cercano para comprar, vender o arrendar. Sin presión, con información clara y decisiones que se sienten propias.",
       "breadcrumb": "Nosotros"
     },
     "intro": {
       "eyebrow": "El enfoque",
       "title": "El lugar correcto no es solo una dirección.",
       "p1": "Es la luz de la mañana, el trayecto al trabajo, el espacio para recibir a quien quieres y la tranquilidad de saber que la decisión está bien sustentada. Por eso, antes de mostrarte propiedades, conversamos sobre lo que realmente necesitas.",
-      "p2": "Manuela Bermúdez Realtor nace para acompañar ese proceso con cercanía y criterio: escuchar, filtrar, visitar, revisar y acompañar el cierre. La tecnología ayuda a ordenar la información; las decisiones siguen siendo humanas.",
-      "cta": "Conversemos",
-      "imageAlt": "Espacio de trabajo con vista a la ciudad de Medellín",
-      "quote": "“Un buen acompañamiento no te dice qué comprar; te ayuda a entender qué necesitas.”",
-      "author": "Manuela Bermúdez"
+      "p2": "Manuela Bermúdez acompaña ese proceso con cercanía y criterio: escuchar, filtrar, revisar y acompañar el cierre. La tecnología ayuda a ordenar la información; las decisiones siguen siendo humanas.",
+      "cta": "Conversemos"
     },
     "values": {
       "eyebrow": "Lo que guía el trabajo",
@@ -229,11 +223,6 @@
         "text": "Revisamos los detalles que suelen pasar desapercibidos para que puedas decidir con tranquilidad."
       }
     },
-    "coverage": {
-      "eyebrow": "Dónde trabajamos",
-      "title": "Medellín y el Valle de Aburrá",
-      "text": "Acompañamos operaciones en Medellín, Envigado, Itagüí, Sabaneta, La Estrella, Bello, Copacabana y municipios cercanos. Si tu propiedad o tu búsqueda está por fuera de esta zona, escríbenos: evaluamos cada caso."
-    },
     "cta": {
       "eyebrow": "Siguiente paso",
       "title": "Conversemos sobre lo que necesitas.",
@@ -245,7 +234,7 @@
   },
   "services": {
     "pageTitle": "Servicios inmobiliarios",
-    "pageDescription": "Compra, venta, arriendo e inversión inmobiliaria en Medellín con acompañamiento cercano y transparente.",
+    "pageDescription": "Compra, venta, arriendo e inversión inmobiliaria con acompañamiento cercano y transparente.",
     "header": {
       "eyebrow": "Servicios",
       "title": "Acompañamiento para cada momento de la operación.",
@@ -260,11 +249,11 @@
     "items": {
       "buy": {
         "title": "Compra",
-        "text": "Definimos criterios, filtramos opciones y visitamos juntos. Revisamos precio, estado, documentos y condiciones antes de que tomes una decisión."
+        "text": "Definimos criterios, filtramos opciones y revisamos precio, estado, documentos y condiciones antes de que tomes una decisión."
       },
       "sell": {
         "title": "Venta",
-        "text": "Preparamos la publicación, ordenamos la información y acompañamos las visitas y la negociación para cuidar el valor de tu inmueble."
+        "text": "Preparamos la publicación, ordenamos la información y acompañamos la negociación para cuidar el valor de tu inmueble."
       },
       "rent": {
         "title": "Arriendo",
@@ -296,8 +285,8 @@
         "text": "Filtramos propiedades o preparamos tu inmueble para salir al mercado."
       },
       "step3": {
-        "title": "Visitas y revisión",
-        "text": "Coordinamos visitas y revisamos los detalles relevantes."
+        "title": "Revisión de detalles",
+        "text": "Revisamos contigo los detalles relevantes."
       },
       "step4": {
         "title": "Cierre y entrega",
@@ -313,14 +302,14 @@
       "eyebrow": "Hablemos",
       "title": "¿Empezamos por tu caso?",
       "text": "Cuéntanos si quieres comprar, vender o arrendar. Te respondemos con los siguientes pasos concretos.",
-      "schedule": "Agendar conversación",
+      "schedule": "Solicitar información",
       "email": "Escribir por correo"
     },
     "note": "La asesoría inmobiliaria no reemplaza la revisión jurídica o técnica de un profesional independiente cuando el caso lo requiere. Si necesitas ese apoyo, te lo indicamos con claridad."
   },
   "contact": {
     "pageTitle": "Contacto",
-    "pageDescription": "Habla con Manuela Bermúdez Realtor. Asesoría inmobiliaria en Medellín por correo, teléfono o WhatsApp.",
+    "pageDescription": "Habla con Manuela Bermúdez. Asesoría inmobiliaria por correo, teléfono o WhatsApp.",
     "header": {
       "eyebrow": "Contacto",
       "title": "Conversemos sobre el lugar que tienes en mente.",
@@ -335,12 +324,8 @@
       "phone": "Teléfono",
       "whatsapp": "WhatsApp",
       "writeNow": "Escribir ahora",
-      "area": "Zona de atención",
-      "hours": "Horario",
-      "imageAlt": "Vista de Medellín al atardecer",
-      "imageCaption": "Medellín y el Valle de Aburrá"
+      "instagram": "Instagram"
     },
-    "devNote": "Vista previa local: el correo, teléfono y dirección definitivos deben confirmarse antes de publicar.",
     "form": {
       "eyebrow": "Escríbenos",
       "title": "Cuéntanos tu caso",
@@ -363,7 +348,7 @@
   "property": {
     "detail": {
       "pageTitle": "Detalle de propiedad",
-      "pageDescription": "Conoce esta propiedad en Medellín y agenda una visita.",
+      "pageDescription": "Conoce esta propiedad y solicita información.",
       "loadError": "No pudimos cargar esta propiedad. Inténtalo de nuevo.",
       "loading": "Cargando propiedad…",
       "errorTitle": "No pudimos abrir esta propiedad",
@@ -381,24 +366,21 @@
       "monthlyRent": "Canon mensual",
       "salePrice": "Precio de venta",
       "perMonth": "COP / mes",
-      "requestVisit": "Solicitar una visita",
+      "requestVisit": "Solicitar información",
       "askWhatsapp": "Preguntar por WhatsApp",
       "whatsappMessage": "Hola {{name}}, me interesa la propiedad \"{{title}}\" ({{location}}). ¿Podemos hablar?",
       "directSupport": "Acompañamiento directo",
       "aboutEyebrow": "Sobre este lugar",
       "aboutTitle": "Lo que hace especial esta propiedad",
       "amenitiesTitle": "Amenidades y espacios",
-      "addressNote": "La dirección exacta se comparte durante la visita para cuidar la privacidad de quienes viven en el inmueble.",
-      "viewArea": "Ver zona",
-      "reviewNote": "¿Quieres revisar esta propiedad con más detalle? Podemos coordinar una visita y revisar juntos las condiciones, documentos y tiempos del proceso.",
       "consultEyebrow": "Hablemos de esta propiedad",
-      "consultTitle": "Agenda una visita",
-      "consultText": "Déjanos tus datos y te contactamos para coordinar una visita o resolver tus dudas.",
+      "consultTitle": "Solicitar información",
+      "consultText": "Déjanos tus datos y te contactamos para resolver tus dudas.",
       "talkToManu": {
         "eyebrow": "Contacto directo",
         "title": "Habla con Manu",
         "text": "Escríbele por WhatsApp y cuéntale qué propiedad te interesa.",
-        "availability": "Disponible 24/7 por WhatsApp",
+        "availability": "Escríbeme por WhatsApp a cualquier hora.",
         "cta": "Escribir por WhatsApp",
         "aria": "Escribir a Manu por WhatsApp sobre {{title}}",
         "message": "Hola Manu, me interesa la propiedad \"{{title}}\". Te comparto el enlace: {{url}}"
@@ -509,7 +491,7 @@
       "pricePlaceholder": "Ej. 650000000",
       "location": "Ubicación",
       "locationHint": "Ciudad, barrio o sector. Evita direcciones exactas si prefieres privacidad.",
-      "locationPlaceholder": "Ej. Medellín, El Poblado",
+      "locationPlaceholder": "Ej. El Poblado",
       "featuresEyebrow": "Características",
       "featuresTitle": "Los detalles que hacen la diferencia",
       "bedrooms": "Habitaciones",
@@ -558,11 +540,11 @@
     },
     "form": {
       "guestTitle": "¿Ya trabajaste con nosotros?",
-      "guestText": "Inicia sesión para compartir tu experiencia. Los testimonios se publican con tu nombre y quedan asociados a tu cuenta.",
+      "guestText": "Inicia sesión para compartir tu experiencia. Tu correo y tu cuenta se mantienen privados; el testimonio se publica con tu nombre después de la revisión.",
       "guestLogin": "Iniciar sesión",
       "eyebrow": "Tu experiencia",
       "title": "Comparte lo que viviste",
-      "intro": "Tu opinión ayuda a otras personas a dar el siguiente paso con confianza.",
+      "intro": "Tu opinión ayuda a otras personas a dar el siguiente paso con confianza. La publicación se habilita después de una revisión.",
       "rating": "Tu calificación",
       "name": "Nombre",
       "profession": "Profesión u ocupación",
@@ -570,28 +552,30 @@
       "text": "Tu experiencia",
       "textHint": "{{count}} caracteres · mínimo 20",
       "textPlaceholder": "Cuéntanos cómo fue el proceso de compra, venta o arriendo.",
-      "submit": "Publicar testimonio",
-      "publishing": "Publicando…",
+      "submit": "Enviar testimonio",
+      "publishing": "Enviando…",
+      "consent": "Acepto la política de privacidad y el tratamiento de mis datos para publicar este testimonio.",
+      "privacyLink": "Consultar la política de privacidad",
       "validationToast": "Revisa los campos del testimonio.",
-      "successToast": "Gracias por compartir tu experiencia.",
+      "successToast": "Gracias. Tu testimonio se publicará después de la revisión.",
       "errorFallback": "No se pudo publicar el testimonio."
     }
   },
   "auth": {
     "layout": {
-      "eyebrow": "Manuela Bermúdez · Realtor",
+      "eyebrow": "Manuela Bermúdez · Asesora inmobiliaria",
       "title": "Un lugar que se sienta tuyo.",
-      "description": "Acompañamiento inmobiliario cercano para comprar, vender o arrendar en Medellín y el Valle de Aburrá.",
+      "description": "Acompañamiento inmobiliario cercano para comprar, vender o arrendar.",
       "point1": "Acompañamiento directo en cada etapa.",
       "point2": "Información clara, sin letra pequeña.",
-      "point3": "Propiedades seleccionadas con criterio.",
+      "point3": "Propiedades disponibles.",
       "secure": "Espacio privado y seguro",
       "back": "Volver al sitio",
       "rights": "© {{year}} {{name}}. Todos los derechos reservados."
     },
     "login": {
       "pageTitle": "Iniciar sesión",
-      "pageDescription": "Accede a tu cuenta de Manuela Bermúdez Realtor.",
+      "pageDescription": "Accede a tu cuenta de Manuela Bermúdez.",
       "eyebrow": "Bienvenida de nuevo",
       "title": "Tu próximo lugar empieza con una conversación.",
       "description": "Ingresa para gestionar tus propiedades, revisar tus preferencias o continuar el proceso que empezamos juntos.",
@@ -619,7 +603,7 @@
     },
     "register": {
       "pageTitle": "Crear cuenta",
-      "pageDescription": "Crea tu cuenta en Manuela Bermúdez Realtor.",
+      "pageDescription": "Crea tu cuenta en Manuela Bermúdez.",
       "eyebrow": "Crea tu cuenta",
       "title": "Empieza a buscar, publicar y decidir con claridad.",
       "description": "Una cuenta te permite guardar tus preferencias, publicar tu inmueble y mantener toda la conversación en un solo lugar.",
@@ -654,7 +638,7 @@
       "submit": "Crear mi cuenta",
       "submitting": "Creando tu cuenta…",
       "validationToast": "Revisa los campos marcados antes de continuar.",
-      "successToast": "Tu cuenta está lista. Bienvenido a Manuela Bermúdez Realtor.",
+      "successToast": "Tu cuenta está lista. Bienvenido a Manuela Bermúdez.",
       "divider": "¿Ya tienes una cuenta?",
       "login": "Iniciar sesión"
     },
@@ -755,11 +739,11 @@
   },
   "contactForm": {
     "validationToast": "Revisa los campos del formulario.",
-    "successToast": "Mensaje enviado. Te responderemos pronto.",
+    "successToast": "Mensaje enviado. Gracias por escribir.",
     "errorFallback": "No se pudo enviar el mensaje. Escríbenos directamente.",
     "sentEyebrow": "Mensaje enviado",
     "sentTitle": "Gracias por escribirnos",
-    "sentText": "Recibimos tu mensaje y te responderemos al correo que indicaste. Si prefieres, también puedes escribirnos por WhatsApp.",
+    "sentText": "Recibimos tu mensaje y te responderemos al correo que indicaste.",
     "openWhatsapp": "Abrir WhatsApp",
     "sendAnother": "Enviar otro mensaje",
     "name": "Nombre completo",
@@ -770,9 +754,11 @@
     "messageHint": "Cuéntanos qué buscas, en qué zona y con qué presupuesto. Así podemos ayudarte mejor.",
     "messagePlaceholder": "Hola, estoy buscando…",
     "honeypot": "No completar",
-    "failureTitle": "No pudimos enviar el correo.",
+    "failureTitle": "No pudimos enviar el mensaje.",
     "openMail": "Abrir mi correo",
-    "privacy": "Tus datos se usan únicamente para responder tu consulta. No compartimos tu información con terceros.",
+    "consent": "Acepto la política de privacidad y el tratamiento de mis datos para responder esta consulta.",
+    "privacy": "Tus datos se usan únicamente para responder tu consulta.",
+    "privacyLink": "Consultar la política de privacidad",
     "submit": "Enviar mensaje",
     "sending": "Enviando…",
     "whatsappSent": "Hola {{name}}, acabo de enviar un mensaje desde el sitio web.",
@@ -799,7 +785,7 @@
       "welcomeHello": "Hola, {{name}}",
       "welcomeDefault": "bienvenido",
       "welcomeTitle": "Encontrar un lugar también es una conversación.",
-      "welcomeText": "Revisa las propiedades que coinciden con tus intereses y ajusta tus preferencias cuando quieras. Si algo te llama la atención, podemos coordinar una visita.",
+      "welcomeText": "Revisa las propiedades que coinciden con tus intereses y ajusta tus preferencias cuando quieras. Si algo te llama la atención, solicita información.",
       "talk": "Hablar con Manuela",
       "myPanel": "Mi panel",
       "stats": {
@@ -834,7 +820,7 @@
       "support": {
         "eyebrow": "Acompañamiento",
         "title": "¿Quieres que busquemos contigo?",
-        "text": "Cuéntanos qué espacios necesitas, en qué zona y con qué presupuesto. Filtramos opciones y coordinamos visitas sin hacerte perder tiempo.",
+        "text": "Cuéntanos qué espacios necesitas, en qué zona y con qué presupuesto. Filtramos opciones y compartimos contigo la información que necesitas.",
         "link": "Contar qué busco"
       },
       "start": {
@@ -863,7 +849,7 @@
         "typeAny": "Cualquier tipo",
         "zone": "Zona de interés",
         "zoneHint": "Ciudad, barrio o sector.",
-        "zonePlaceholder": "Ej. Laureles, Medellín",
+        "zonePlaceholder": "Ej. Laureles",
         "budget": "Presupuesto máximo",
         "save": "Guardar preferencias",
         "saveSuccess": "Tus preferencias se guardaron.",
@@ -919,7 +905,7 @@
         "title": "Una publicación clara vende mejor",
         "tip1": "Usa fotos con luz natural y al menos una del espacio principal.",
         "tip2": "Describe el estado real, el área y lo que hace especial al inmueble.",
-        "tip3": "Indica una zona aproximada; la dirección exacta se comparte en la visita.",
+        "tip3": "Indica el barrio o sector, no la dirección exacta.",
         "link": "Ver servicios de acompañamiento"
       },
       "editEyebrow": "Editar publicación",
@@ -946,6 +932,7 @@
         "summary": "Panel de administración",
         "properties": "Propiedades",
         "users": "Usuarios",
+        "testimonials": "Testimonios",
         "sales": "Cierres registrados"
       },
       "subtitle": "Datos reales de la plataforma: usuarios, inventario y cierres registrados.",
@@ -957,7 +944,8 @@
       "load": {
         "usersError": "No se pudieron cargar los usuarios.",
         "propertiesError": "No se pudieron cargar las propiedades.",
-        "salesError": "No se pudieron cargar los cierres."
+        "salesError": "No se pudieron cargar los cierres.",
+        "testimonialsError": "No se pudieron cargar los testimonios."
       },
       "userToggle": {
         "reactivated": "La cuenta se reactivó correctamente.",
@@ -974,8 +962,9 @@
         "error": "No se pudo anular el cierre."
       },
       "backfill": {
-        "success": "Datos actualizados: {{properties}} propiedades y {{testimonials}} testimonios{{removed}}.",
+        "success": "Datos actualizados: {{properties}} propiedades y {{testimonials}} testimonios{{removed}}{{privateRemoved}}.",
         "removed": "; {{count}} correos de propietario retirados de las fichas públicas",
+        "privateRemoved": "; {{count}} testimonios con datos privados movidos a la colección privada",
         "error": "No se pudieron completar los datos heredados."
       },
       "welcomeHello": "Hola, {{name}}",
@@ -1008,6 +997,7 @@
         "value": "Valor publicado",
         "reviewProperties": "Revisar propiedades",
         "reviewUsers": "Revisar usuarios",
+        "reviewTestimonials": "Revisar testimonios ({{count}})",
         "openReport": "Abrir reporte de ventas"
       },
       "maintenance": {
@@ -1062,6 +1052,21 @@
         "annulText": "El cierre de “{{title}}” quedará marcado como anulado y la propiedad volverá a estar publicada. Esta acción queda registrada en la auditoría.",
         "annulConfirm": "Anular cierre",
         "annulCancel": "Conservar cierre"
+      },
+      "testimonials": {
+        "eyebrow": "Moderación",
+        "title": "Testimonios",
+        "summary": "{{filtered}} de {{total}} testimonios según los filtros. {{pending}} pendientes de revisión.",
+        "searchAria": "Buscar testimonios",
+        "searchPlaceholder": "Buscar por nombre, profesión o texto",
+        "statusAria": "Filtrar por estado",
+        "allStatuses": "Todos los estados",
+        "pending": "Pendientes",
+        "approved": "Aprobados",
+        "rejected": "Inactivos",
+        "approvedToast": "El testimonio se publicó.",
+        "rejectedToast": "El testimonio quedó inactivo.",
+        "error": "No se pudo actualizar el testimonio."
       }
     },
     "salesReport": {
@@ -1160,6 +1165,27 @@
       "actions": "Acciones",
       "sellerMissing": "Vendedor sin nombre",
       "annul": "Anular"
+    },
+    "testimonialsTable": {
+      "errorTitle": "No pudimos cargar los testimonios",
+      "emptyTitle": "No hay testimonios con estos filtros",
+      "emptyDescription": "Prueba con otro término de búsqueda o cambia el filtro de estado.",
+      "author": "Autor",
+      "testimonial": "Testimonio",
+      "rating": "Calificación",
+      "date": "Fecha",
+      "status": "Estado",
+      "actions": "Acciones",
+      "noProfession": "Sin profesión indicada",
+      "approve": "Aprobar y publicar",
+      "reject": "Retirar de la publicación",
+      "approveAria": "Aprobar el testimonio de {{name}}",
+      "rejectAria": "Retirar el testimonio de {{name}}",
+      "status": {
+        "approved": "Aprobado",
+        "pending": "Pendiente",
+        "rejected": "Inactivo"
+      }
     },
     "salesFilters": {
       "title": "Filtrar cierres",
@@ -1377,12 +1403,14 @@
       "email": "Escribe un correo válido.",
       "subject": "Selecciona o escribe un asunto.",
       "message": "Cuéntanos un poco más (mínimo 10 caracteres).",
-      "phone": "El teléfono no parece válido."
+      "phone": "El teléfono no parece válido.",
+      "consent": "Debes aceptar la política de privacidad para enviar el mensaje."
     },
     "testimonial": {
       "name": "Escribe tu nombre.",
       "text": "Escribe al menos 20 caracteres.",
-      "rating": "Selecciona una calificación."
+      "rating": "Selecciona una calificación.",
+      "consent": "Debes aceptar la política de privacidad para publicar tu testimonio."
     },
     "password": {
       "current": "Escribe tu contraseña actual.",
@@ -1451,7 +1479,8 @@
       "dateFuture": "La fecha del cierre no puede ser futura."
     },
     "testimonial": {
-      "loginRequired": "Inicia sesión para compartir tu experiencia."
+      "loginRequired": "Inicia sesión para compartir tu experiencia.",
+      "status": "El estado del testimonio no es válido."
     },
     "contact": {
       "notConfigured": "El envío de correo aún no está configurado. Puedes escribirnos directamente por correo o WhatsApp."
@@ -1483,15 +1512,63 @@
     "text": "Recarga la página para intentarlo de nuevo. Si el problema continúa, escríbenos y lo revisamos.",
     "reload": "Recargar página"
   },
+  "privacy": {
+    "pageTitle": "Política de privacidad",
+    "pageDescription": "Borrador de la política de privacidad de Manuela Bermúdez, asesora inmobiliaria.",
+    "header": {
+      "eyebrow": "Información legal",
+      "title": "Política de privacidad",
+      "description": "Borrador en revisión. Describe cómo se tratan los datos personales en este sitio.",
+      "breadcrumb": "Política de privacidad"
+    },
+    "draft": {
+      "title": "Borrador pendiente de revisión legal",
+      "text": "Este texto es una base de trabajo y todavía no es una política de privacidad definitiva. Antes de publicarlo, debe revisarlo una persona con formación legal y completar los datos que faltan."
+    },
+    "sections": {
+      "responsible": {
+        "title": "Responsable del tratamiento",
+        "text": "Manuela Bermúdez, asesora inmobiliaria. Puedes escribir a {{email}} o llamar al {{phone}}."
+      },
+      "data": {
+        "title": "Datos que se recogen",
+        "text": "En los formularios de contacto se solicitan nombre, correo, teléfono y mensaje. Al crear una cuenta se solicitan nombre, cédula, fecha de nacimiento, correo, rol e idioma. Al publicar una propiedad se guardan los datos del inmueble y las imágenes que decidas cargar."
+      },
+      "purpose": {
+        "title": "Para qué se usan",
+        "text": "Los datos se usan para responder consultas, gestionar cuentas, publicar inmuebles, registrar cierres y enviar los correos operativos del sitio."
+      },
+      "testimonials": {
+        "title": "Testimonios",
+        "text": "Los testimonios se publican con el nombre y la profesión que indiques. El correo y la cuenta asociada no se muestran: se guardan en una colección privada accesible solo a administración. Todo testimonio requiere aprobación antes de publicarse."
+      },
+      "storage": {
+        "title": "Almacenamiento y servicios",
+        "text": "El sitio usa Firebase (Google) para autenticación, base de datos y almacenamiento de imágenes. El navegador guarda el idioma elegido y la sesión iniciada. La revisión legal debe confirmar los proveedores y las transferencias aplicables."
+      },
+      "rights": {
+        "title": "Derechos",
+        "text": "Puedes solicitar acceso, corrección o eliminación de tus datos escribiendo a {{email}}. Las solicitudes se atenderán por el mismo canal."
+      },
+      "retention": {
+        "title": "Conservación",
+        "text": "Los datos se conservan mientras la cuenta esté activa o mientras sean necesarios para las finalidades descritas. Los plazos definitivos están pendientes de revisión legal."
+      }
+    },
+    "contact": {
+      "title": "Contacto",
+      "text": "Para preguntas sobre este borrador o sobre tus datos, escribe a {{email}}."
+    },
+    "backHome": "Volver al inicio"
+  },
   "footer": {
     "about": "Acompañamiento inmobiliario cercano para encontrar, vender o arrendar un lugar que se sienta tuyo.",
     "rights": "© {{year}} {{name}}. Todos los derechos reservados.",
-    "madeIn": "Hecho en Medellín",
-    "devNote": "Vista previa local · Los datos de contacto y el logo definitivo deben confirmarse antes de publicar."
+    "privacy": "Política de privacidad"
   },
   "accessibility": {
     "skip": "Saltar al contenido",
-    "logoHome": "Manuela Bermúdez Realtor, ir al inicio",
+    "logoHome": "Manuela Bermúdez, ir al inicio",
     "backToTop": "Volver arriba"
   }
 }

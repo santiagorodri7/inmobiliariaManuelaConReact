@@ -566,6 +566,11 @@ textarea.form-control {
   color: #675187;
 }
 
+.status-pill--pending {
+  background: var(--sand-light);
+  color: #87682f;
+}
+
 .status-pill--muted {
   background: var(--ivory-deep);
   color: var(--muted);
@@ -1389,6 +1394,17 @@ textarea.form-control {
   margin-top: 2px;
 }
 
+.testimonial-form__privacy {
+  margin: -7px 0 0;
+  font-size: 0.76rem;
+}
+
+.testimonial-form__privacy a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* Tablas ----------------------------------------------------------------- */
 
 .table-wrap {
@@ -1493,6 +1509,25 @@ textarea.form-control {
 .table-price {
   color: var(--ink) !important;
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.table-message {
+  max-width: 340px;
+}
+
+.table-message p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: var(--muted-strong);
+  font-size: 0.79rem;
+  line-height: 1.55;
+}
+
+.table-rating {
   white-space: nowrap;
 }
 

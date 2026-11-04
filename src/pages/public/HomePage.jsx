@@ -8,7 +8,6 @@ import {
   Compass,
   Handshake,
   KeyRound,
-  MapPin,
   MessageCircle,
   Search,
   Sparkles,
@@ -21,7 +20,8 @@ import { useProperties } from "../../hooks/useProperties.js";
 import { useTestimonials } from "../../hooks/useTestimonials.js";
 import { useI18n } from "../../i18n/I18nContext.jsx";
 import { filterProperties, propertySearchSummary } from "../../utils/property.js";
-import { site, whatsappUrl } from "../../config/site.js";
+import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
+import { site } from "../../config/site.js";
 
 const initialFilters = {
   operation: "",
@@ -103,8 +103,8 @@ export default function HomePage() {
                 {t("home.hero.saleRent")}
               </li>
               <li>
-                <MapPin size={17} aria-hidden="true" />
-                {t("site.coverage")}
+                <MessageCircle size={17} aria-hidden="true" />
+                {t("home.hero.whatsappSupport")}
               </li>
               <li>
                 <Sparkles size={17} aria-hidden="true" />
@@ -114,12 +114,8 @@ export default function HomePage() {
           </div>
 
           <div className="hero__media" aria-hidden="true">
-            <div className="hero__image-main">
-              <img src="/img/about-1.png" alt="" />
-            </div>
-            <div className="hero__image-inset">
-              <img src="/img/balcon de laureles.png" alt="" />
-            </div>
+            <div className="hero__image-main media-placeholder" />
+            <div className="hero__image-inset media-placeholder" />
             <div className="hero__note">
               <span className="hero__note-icon">
                 <Building2 size={19} />
@@ -243,16 +239,8 @@ export default function HomePage() {
 
       <section className="section">
         <div className="shell about-teaser">
-          <div className="about-teaser__media">
-            <img
-              src="/img/about-2.png"
-              alt={t("home.about.imageAlt")}
-              loading="lazy"
-            />
-            <div className="about-teaser__badge">
-              <span>{t("home.about.badgeCity")}</span>
-              <strong>{t("home.about.badgeRegion")}</strong>
-            </div>
+          <div className="about-teaser__media" aria-hidden="true">
+            <div className="media-placeholder" />
           </div>
           <div className="about-teaser__copy">
             <p className="eyebrow">{t("home.about.eyebrow")}</p>
@@ -320,9 +308,6 @@ export default function HomePage() {
       )}
 
       <section className="cta-band">
-        <div className="cta-band__image" aria-hidden="true">
-          <img src="/img/img contacto.jpg" alt="" loading="lazy" />
-        </div>
         <div className="shell cta-band__inner">
           <div>
             <p className="eyebrow eyebrow--light">{t("home.cta.eyebrow")}</p>
@@ -334,15 +319,19 @@ export default function HomePage() {
               {t("home.cta.schedule")}
               <ArrowRight size={18} aria-hidden="true" />
             </Link>
-            <a
-              href={whatsappUrl(t("home.whatsappMessage", { name: site.name }))}
-              target="_blank"
-              rel="noreferrer"
-              className="btn btn-ghost btn-lg"
-            >
-              <MessageCircle size={18} aria-hidden="true" />
-              {t("home.cta.whatsapp")}
-            </a>
+            {isWhatsappConfigured && (
+              <a
+                href={buildWhatsappUrl(
+                  t("home.whatsappMessage", { name: site.name }),
+                )}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-ghost btn-lg"
+              >
+                <MessageCircle size={18} aria-hidden="true" />
+                {t("home.cta.whatsapp")}
+              </a>
+            )}
           </div>
         </div>
       </section>

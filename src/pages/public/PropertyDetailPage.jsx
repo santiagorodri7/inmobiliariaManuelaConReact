@@ -10,13 +10,11 @@ import {
   Check,
   ChevronRight,
   Clock3,
-  ExternalLink,
   MapPin,
   Maximize,
   MessageCircle,
   Share2,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 import PropertyGallery from "../../components/property/PropertyGallery.jsx";
 import PropertyGrid from "../../components/property/PropertyGrid.jsx";
@@ -33,7 +31,7 @@ import { getPropertyById } from "../../services/propertiesService.js";
 import { isAdmin } from "../../utils/roles.js";
 import { isAvailable } from "../../utils/property.js";
 import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
-import { site, whatsappUrl } from "../../config/site.js";
+import { site } from "../../config/site.js";
 
 export default function PropertyDetailPage() {
   const { id } = useParams();
@@ -269,21 +267,17 @@ export default function PropertyDetailPage() {
                   {t("property.detail.requestVisit")}
                   <ArrowRight size={17} aria-hidden="true" />
                 </a>
-                <a
-                  href={whatsappUrl(
-                    t("property.detail.whatsappMessage", {
-                      name: site.name,
-                      title: property.title,
-                      location,
-                    }),
-                  )}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="btn btn-outline-secondary w-100"
-                >
-                  <MessageCircle size={17} aria-hidden="true" />
-                  {t("property.detail.askWhatsapp")}
-                </a>
+                {manuWhatsappHref && (
+                  <a
+                    href={manuWhatsappHref}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn btn-outline-secondary w-100"
+                  >
+                    <MessageCircle size={17} aria-hidden="true" />
+                    {t("property.detail.askWhatsapp")}
+                  </a>
+                )}
               </div>
 
               <div className="agent-mini-card">
@@ -333,24 +327,7 @@ export default function PropertyDetailPage() {
               </span>
               <div>
                 <h3>{location}</h3>
-                <p>{t("property.detail.addressNote")}</p>
               </div>
-              <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                  `${property.location || t("property.detail.locationPending")}, Colombia`,
-                )}`}
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn-outline-secondary btn-sm"
-              >
-                {t("property.detail.viewArea")}
-                <ExternalLink size={15} aria-hidden="true" />
-              </a>
-            </div>
-
-            <div className="property-detail-note">
-              <Sparkles size={18} aria-hidden="true" />
-              <p>{t("property.detail.reviewNote")}</p>
             </div>
           </div>
 

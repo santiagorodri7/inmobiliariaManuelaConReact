@@ -17,6 +17,7 @@ export default function TestimonialForm({ profile, onCreated }) {
     profesion: "",
     texto: "",
     rating: 0,
+    acepta: false,
   });
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
@@ -33,8 +34,12 @@ export default function TestimonialForm({ profile, onCreated }) {
     );
   }
 
-  const update = (field) => (event) =>
-    setValues((current) => ({ ...current, [field]: event.target.value }));
+  const update = (field) => (event) => {
+    const value =
+      event.target.type === "checkbox" ? event.target.checked : event.target.value;
+    setValues((current) => ({ ...current, [field]: value }));
+    if (errors[field]) setErrors((current) => ({ ...current, [field]: "" }));
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -54,6 +59,7 @@ export default function TestimonialForm({ profile, onCreated }) {
         profesion: "",
         texto: "",
         rating: 0,
+        acepta: false,
       });
       onCreated?.(created);
     } catch (error) {
@@ -117,6 +123,24 @@ export default function TestimonialForm({ profile, onCreated }) {
           aria-invalid={Boolean(errors.texto)}
         />
       </Field>
+
+      <label className={`terms-check${errors.acepta ? " is-invalid" : ""}`}>
+        <input
+          type="checkbox"
+          checked={values.acepta}
+          onChange={update("acepta")}
+          aria-invalid={Boolean(errors.acepta)}
+        />
+        <span>{t("testimonials.form.consent")}</span>
+      </label>
+      {errors.acepta && (
+        <p className="form-error" role="alert">
+          {errors.acepta}
+        </p>
+      )}
+      <p className="testimonial-form__privacy">
+        <Link to="/privacidad">{t("testimonials.form.privacyLink")}</Link>
+      </p>
 
       <button type="submit" className="btn btn-primary" disabled={saving}>
         <Send size={16} aria-hidden="true" />

@@ -49,6 +49,33 @@ export function RolePill({ role }) {
   return <span className={`role-pill role-pill--${tone}`}>{roleLabel(role)}</span>;
 }
 
+export function TestimonialStatusPill({ status }) {
+  const { t } = useI18n();
+  const normalized =
+    status === "activo" || status === "aprobado"
+      ? "aprobado"
+      : status === "inactivo" || status === "rechazado"
+        ? "inactivo"
+        : "pendiente";
+  const tone =
+    normalized === "aprobado"
+      ? "success"
+      : normalized === "pendiente"
+        ? "pending"
+        : "danger";
+  const key =
+    normalized === "aprobado"
+      ? "approved"
+      : normalized === "pendiente"
+        ? "pending"
+        : "rejected";
+  return (
+    <span className={`status-pill status-pill--${tone}`}>
+      {t(`admin.testimonialsTable.status.${key}`)}
+    </span>
+  );
+}
+
 export function SaleStatusPill({ status }) {
   const { saleStatusLabel } = useI18n();
   return (

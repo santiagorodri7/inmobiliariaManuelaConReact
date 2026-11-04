@@ -111,6 +111,9 @@ export const validateContact = (values) => {
   if (values.phone && values.phone.replace(/\D/g, "").length < 7) {
     errors.phone = t("validation.contact.phone");
   }
+  if (!values.acepta) {
+    errors.acepta = t("validation.contact.consent");
+  }
   return errors;
 };
 
@@ -124,6 +127,9 @@ export const validateTestimonial = (values) => {
   }
   if (!values.rating || Number(values.rating) < 1 || Number(values.rating) > 5) {
     errors.rating = t("validation.testimonial.rating");
+  }
+  if (!values.acepta) {
+    errors.acepta = t("validation.testimonial.consent");
   }
   return errors;
 };

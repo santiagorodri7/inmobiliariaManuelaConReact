@@ -1,32 +1,27 @@
 /**
  * Datos centralizados de la marca.
  *
- * IMPORTANTE: el correo, teléfono, dirección y logo definitivos deben
- * confirmarse antes de publicar. Mientras tanto se conservan los canales
- * que ya usaba el sitio y se muestran sin inventar información.
+ * Solo se publican datos confirmados. No hay oficina, dirección, mapa ni
+ * horario fijo: el canal principal es WhatsApp.
+ *
+ * TODO (legal): revisar la política de privacidad antes de publicarla.
  */
 export const site = {
   name: "Manuela Bermúdez",
-  fullName: "Manuela Bermúdez Realtor",
+  fullName: "Manuela Bermúdez",
   role: "Asesora inmobiliaria",
   tagline: "Un lugar que se sienta tuyo.",
   email: "manuelabermudezrealestate@gmail.com",
   phone: "+57 304 254 8683",
   phoneRaw: "+573042548683",
-  whatsapp: "573042548683",
-  location: "Medellín, Colombia",
-  coverage: "Medellín y el Valle de Aburrá",
-  hours: "Lunes a sábado · 8:00 a. m. – 6:00 p. m.",
-  instagram: "",
+  instagram: "https://www.instagram.com/manubermu_realtor",
   facebook: "",
   linkedin: "",
-  pendingOfficialData: true,
 };
 
 export const siteMeta = {
-  title: "Manuela Bermúdez Realtor | Propiedades en Medellín",
-  description:
-    "Propiedades en venta y arriendo en Medellín y el Valle de Aburrá. Asesoría inmobiliaria cercana, transparente y personalizada.",
+  title: "Manuela Bermúdez | Asesora inmobiliaria",
+  description: "Manuela Bermúdez, asesora inmobiliaria. Atención por WhatsApp.",
 };
 
 export const navigation = [
@@ -102,13 +97,6 @@ export const contactSubjects = [
   "Necesito asesoría",
   "Otro asunto",
 ];
-
-export const whatsappUrl = (message = "") => {
-  const text = message
-    ? `?text=${encodeURIComponent(message)}`
-    : "";
-  return `https://wa.me/${site.whatsapp}${text}`;
-};
 
 export const mailtoUrl = (subject = "", body = "") => {
   const params = new URLSearchParams();

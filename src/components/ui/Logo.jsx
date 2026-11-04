@@ -18,7 +18,7 @@ export default function Logo({ variant = "dark", compact = false }) {
       </span>
       <span className="brand-copy">
         <span className="brand-name">Manuela Bermúdez</span>
-        <span className="brand-sub">Realtor · Medellín</span>
+        <span className="brand-sub">{t("site.role")}</span>
       </span>
     </Link>
   );

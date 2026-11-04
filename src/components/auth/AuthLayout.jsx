@@ -18,9 +18,6 @@ export default function AuthLayout({ children, eyebrow, title, description, poin
   return (
     <div className="auth-shell">
       <aside className="auth-aside">
-        <div className="auth-aside__media" aria-hidden="true">
-          <img src="/img/about-1.png" alt="" />
-        </div>
         <div className="auth-aside__overlay" aria-hidden="true" />
         <div className="auth-aside__content">
           <Logo variant="light" />
@@ -46,7 +43,7 @@ export default function AuthLayout({ children, eyebrow, title, description, poin
               <ShieldCheck size={16} aria-hidden="true" />
               {t("auth.layout.secure")}
             </span>
-            <small>{t("site.location")}</small>
+            <small>{t("site.role")}</small>
           </div>
         </div>
       </aside>
