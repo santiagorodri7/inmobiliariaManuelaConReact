@@ -57,6 +57,7 @@ const messageKeys = {
   "testimonial/name": "validation.testimonial.name",
   "testimonial/text": "validation.testimonial.text",
   "testimonial/rating": "validation.testimonial.rating",
+  "testimonial/status": "errors.testimonial.status",
 };
 
 const looksLikeKey = (value) =>

@@ -5,6 +5,7 @@ import {
   Building2,
   FileSpreadsheet,
   Handshake,
+  MessageSquareQuote,
   Plus,
   Search,
   TrendingUp,
@@ -18,6 +19,7 @@ import UsersTable from "../../components/admin/UsersTable.jsx";
 import PropertiesTable from "../../components/admin/PropertiesTable.jsx";
 import SalesTable from "../../components/admin/SalesTable.jsx";
 import SalesFilters from "../../components/admin/SalesFilters.jsx";
+import TestimonialsTable from "../../components/admin/TestimonialsTable.jsx";
 import SaleForm from "../../components/admin/SaleForm.jsx";
 import ExportButton from "../../components/admin/ExportButton.jsx";
 import Pagination, { paginate } from "../../components/ui/Pagination.jsx";
@@ -40,6 +42,10 @@ import {
   listSales,
   salesStats,
 } from "../../services/salesService.js";
+import {
+  listAllTestimonials,
+  setTestimonialStatus,
+} from "../../services/testimonialsService.js";
 import { writeAudit } from "../../services/auditService.js";
 import { backfillLegacyData } from "../../services/maintenanceService.js";
 import {
@@ -63,6 +69,7 @@ const initialSalesFilters = {
   operation: "",
   status: "",
 };
+const initialTestimonialFilters = { search: "", status: "" };
 
 export default function AdminDashboard() {
   const { t, formatCOP } = useI18n();
@@ -76,8 +83,14 @@ export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [properties, setProperties] = useState([]);
   const [sales, setSales] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [errors, setErrors] = useState({ users: "", properties: "", sales: "" });
+  const [errors, setErrors] = useState({
+    users: "",
+    properties: "",
+    sales: "",
+    testimonials: "",
+  });
   const [busyId, setBusyId] = useState("");
   const [saleFormOpen, setSaleFormOpen] = useState(false);
   const [saleInitialProperty, setSaleInitialProperty] = useState("");
@@ -88,30 +101,40 @@ export default function AdminDashboard() {
   const [userFilters, setUserFilters] = useState(initialUserFilters);
   const [propertyFilters, setPropertyFilters] = useState(initialPropertyFilters);
   const [salesFilters, setSalesFilters] = useState(initialSalesFilters);
+  const [testimonialFilters, setTestimonialFilters] = useState(
+    initialTestimonialFilters,
+  );
   const [userPage, setUserPage] = useState(1);
   const [propertyPage, setPropertyPage] = useState(1);
   const [salesPage, setSalesPage] = useState(1);
+  const [testimonialPage, setTestimonialPage] = useState(1);
 
   const sectionTitles = {
     resumen: t("dashboard.admin.sectionTitles.summary"),
     propiedades: t("dashboard.admin.sectionTitles.properties"),
     usuarios: t("dashboard.admin.sectionTitles.users"),
+    testimonios: t("dashboard.admin.sectionTitles.testimonials"),
     ventas: t("dashboard.admin.sectionTitles.sales"),
   };
 
   const loadAll = useCallback(async () => {
     setLoading(true);
-    const [usersResult, propertiesResult, salesResult] = await Promise.allSettled([
-      listUsers(),
-      listAllProperties(),
-      listSales(),
-    ]);
+    const [usersResult, propertiesResult, salesResult, testimonialsResult] =
+      await Promise.allSettled([
+        listUsers(),
+        listAllProperties(),
+        listSales(),
+        listAllTestimonials(),
+      ]);
 
     setUsers(usersResult.status === "fulfilled" ? usersResult.value : []);
     setProperties(
       propertiesResult.status === "fulfilled" ? propertiesResult.value : [],
     );
     setSales(salesResult.status === "fulfilled" ? salesResult.value : []);
+    setTestimonials(
+      testimonialsResult.status === "fulfilled" ? testimonialsResult.value : [],
+    );
     setErrors({
       users:
         usersResult.status === "rejected"
@@ -127,6 +150,13 @@ export default function AdminDashboard() {
       sales:
         salesResult.status === "rejected"
           ? getErrorMessage(salesResult.reason, "dashboard.admin.load.salesError")
+          : "",
+      testimonials:
+        testimonialsResult.status === "rejected"
+          ? getErrorMessage(
+              testimonialsResult.reason,
+              "dashboard.admin.load.testimonialsError",
+            )
           : "",
     });
     setLoading(false);
@@ -180,6 +210,35 @@ export default function AdminDashboard() {
     [sales, salesFilters],
   );
 
+  const filteredTestimonials = useMemo(() => {
+    const search = normalizeText(testimonialFilters.search);
+    return testimonials.filter((testimonial) => {
+      if (testimonialFilters.status === "pendiente") {
+        if (testimonial.estado !== "pendiente") return false;
+      }
+      if (testimonialFilters.status === "aprobado") {
+        if (
+          testimonial.estado !== "aprobado" &&
+          testimonial.estado !== "activo"
+        ) {
+          return false;
+        }
+      }
+      if (testimonialFilters.status === "inactivo") {
+        if (testimonial.estado !== "inactivo") return false;
+      }
+      if (!search) return true;
+      return normalizeText(
+        [testimonial.nombre, testimonial.profesion, testimonial.texto].join(" "),
+      ).includes(search);
+    });
+  }, [testimonialFilters, testimonials]);
+
+  const pendingTestimonials = useMemo(
+    () => testimonials.filter((item) => item.estado === "pendiente").length,
+    [testimonials],
+  );
+
   const usersPageData = paginate(filteredUsers, userPage, PAGE_SIZE);
   const propertiesPageData = paginate(
     filteredProperties,
@@ -187,6 +246,11 @@ export default function AdminDashboard() {
     PAGE_SIZE,
   );
   const salesPageData = paginate(filteredSales, salesPage, PAGE_SIZE);
+  const testimonialsPageData = paginate(
+    filteredTestimonials,
+    testimonialPage,
+    PAGE_SIZE,
+  );
 
   const changeUserFilter = (field, value) => {
     setUserFilters((current) => ({ ...current, [field]: value }));
@@ -201,6 +265,47 @@ export default function AdminDashboard() {
   const changeSalesFilter = (field, value) => {
     setSalesFilters((current) => ({ ...current, [field]: value }));
     setSalesPage(1);
+  };
+
+  const changeTestimonialFilter = (field, value) => {
+    setTestimonialFilters((current) => ({ ...current, [field]: value }));
+    setTestimonialPage(1);
+  };
+
+  const moderateTestimonial = async (testimonial, estado) => {
+    const nextEstado = estado === "aprobado" ? "aprobado" : "inactivo";
+    setBusyId(`testimonial-${testimonial.id}`);
+    try {
+      await setTestimonialStatus(testimonial.id, nextEstado, profile);
+      await writeAudit({
+        action:
+          nextEstado === "aprobado" ? "approveTestimonial" : "rejectTestimonial",
+        actorId: profile.id,
+        actorEmail: profile.email,
+        targetType: "testimonio",
+        targetId: testimonial.id,
+        details: { nombre: testimonial.nombre },
+      });
+      setTestimonials((current) =>
+        current.map((item) =>
+          item.id === testimonial.id ? { ...item, estado: nextEstado } : item,
+        ),
+      );
+      toast.success(
+        nextEstado === "aprobado"
+          ? t("dashboard.admin.testimonials.approvedToast")
+          : t("dashboard.admin.testimonials.rejectedToast"),
+      );
+    } catch (moderationError) {
+      toast.error(
+        getErrorMessage(
+          moderationError,
+          "dashboard.admin.testimonials.error",
+        ),
+      );
+    } finally {
+      setBusyId("");
+    }
   };
 
   const toggleUser = async (user) => {
@@ -285,12 +390,18 @@ export default function AdminDashboard() {
     try {
       const result = await backfillLegacyData(profile);
       const removed = result.ownerEmailsRemoved || 0;
+      const privateRemoved = result.testimonialPrivateFieldsRemoved || 0;
       toast.success(
         t("dashboard.admin.backfill.success", {
           properties: result.propertiesUpdated || 0,
           testimonials: result.testimonialsUpdated || 0,
           removed: removed
             ? t("dashboard.admin.backfill.removed", { count: removed })
+            : "",
+          privateRemoved: privateRemoved
+            ? t("dashboard.admin.backfill.privateRemoved", {
+                count: privateRemoved,
+              })
             : "",
         }),
       );
@@ -365,7 +476,7 @@ export default function AdminDashboard() {
             size="sm"
             disabled={!filteredUsers.length}
           />
-        ) : (
+        ) : section === "ventas" ? (
           <ExportButton
             onExport={() => exportSales(filteredSales)}
             label={t("dashboard.admin.exportSales")}
@@ -373,7 +484,7 @@ export default function AdminDashboard() {
             size="sm"
             disabled={!filteredSales.length}
           />
-        )
+        ) : null
       }
     >
       {section === "resumen" && (
@@ -502,6 +613,13 @@ export default function AdminDashboard() {
                 <button type="button" onClick={() => setSection("usuarios")}>
                   <Users size={17} aria-hidden="true" />
                   {t("dashboard.admin.catalog.reviewUsers")}
+                  <ArrowRight size={15} aria-hidden="true" />
+                </button>
+                <button type="button" onClick={() => setSection("testimonios")}>
+                  <MessageSquareQuote size={17} aria-hidden="true" />
+                  {t("dashboard.admin.catalog.reviewTestimonials", {
+                    count: pendingTestimonials,
+                  })}
                   <ArrowRight size={15} aria-hidden="true" />
                 </button>
                 <Link to="/admin/reportes-ventas">
@@ -701,6 +819,81 @@ export default function AdminDashboard() {
             totalItems={propertiesPageData.totalItems}
             pageSize={PAGE_SIZE}
             onChange={setPropertyPage}
+          />
+        </section>
+      )}
+
+      {section === "testimonios" && (
+        <section className="surface panel">
+          <div className="panel-heading">
+            <div>
+              <p className="eyebrow">
+                {t("dashboard.admin.testimonials.eyebrow")}
+              </p>
+              <h2>{t("dashboard.admin.testimonials.title")}</h2>
+              <p>
+                {t("dashboard.admin.testimonials.summary", {
+                  filtered: filteredTestimonials.length,
+                  total: testimonials.length,
+                  pending: pendingTestimonials,
+                })}
+              </p>
+            </div>
+          </div>
+
+          <div className="admin-toolbar">
+            <label className="admin-search">
+              <span className="visually-hidden">
+                {t("dashboard.admin.testimonials.searchAria")}
+              </span>
+              <Search size={17} aria-hidden="true" />
+              <input
+                type="search"
+                className="form-control"
+                value={testimonialFilters.search}
+                onChange={(event) =>
+                  changeTestimonialFilter("search", event.target.value)
+                }
+                placeholder={t("dashboard.admin.testimonials.searchPlaceholder")}
+              />
+            </label>
+            <select
+              className="form-select"
+              value={testimonialFilters.status}
+              onChange={(event) =>
+                changeTestimonialFilter("status", event.target.value)
+              }
+              aria-label={t("dashboard.admin.testimonials.statusAria")}
+            >
+              <option value="">
+                {t("dashboard.admin.testimonials.allStatuses")}
+              </option>
+              <option value="pendiente">
+                {t("dashboard.admin.testimonials.pending")}
+              </option>
+              <option value="aprobado">
+                {t("dashboard.admin.testimonials.approved")}
+              </option>
+              <option value="inactivo">
+                {t("dashboard.admin.testimonials.rejected")}
+              </option>
+            </select>
+          </div>
+
+          <TestimonialsTable
+            testimonials={testimonialsPageData.items}
+            loading={loading}
+            error={errors.testimonials}
+            onRetry={loadAll}
+            onModerate={moderateTestimonial}
+            busyId={busyId.replace("testimonial-", "")}
+          />
+          <Pagination
+            page={testimonialsPageData.page}
+            totalPages={testimonialsPageData.totalPages}
+            totalItems={testimonialsPageData.totalItems}
+            pageSize={PAGE_SIZE}
+            onChange={setTestimonialPage}
           />
         </section>
       )}

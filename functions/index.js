@@ -356,7 +356,10 @@ const legacyStatus = (data = {}) => {
 const flushUpdates = async (operations) => {
   if (!operations.length) return;
   const batch = db.batch();
-  operations.forEach(({ reference, data }) => batch.update(reference, data));
+  operations.forEach(({ reference, data, merge }) => {
+    if (merge) batch.set(reference, data, { merge: true });
+    else batch.update(reference, data);
+  });
   await batch.commit();
   operations.length = 0;
 };
@@ -369,6 +372,7 @@ exports.backfillLegacyData = onCall(
     let propertiesUpdated = 0;
     let testimonialsUpdated = 0;
     let ownerEmailsRemoved = 0;
+    let testimonialPrivateFieldsRemoved = 0;
     const operations = [];
 
     const properties = await db.collection("propiedades").get();
@@ -399,12 +403,32 @@ exports.backfillLegacyData = onCall(
       const data = document.data();
       const hasStatus =
         typeof data.estado === "string" && data.estado.trim().length > 0;
-      if (hasStatus) return;
-      operations.push({
-        reference: document.ref,
-        data: { estado: "activo" },
-      });
+      const hasEmail = Object.prototype.hasOwnProperty.call(data, "email");
+      const hasUserId = Object.prototype.hasOwnProperty.call(data, "userId");
+      if (hasStatus && !hasEmail && !hasUserId) return;
+
+      const update = { updatedAt: FieldValue.serverTimestamp() };
+      // Los testimonios heredados sin estado requieren revisión antes de
+      // publicarse; ya no se aprueban automáticamente.
+      if (!hasStatus) update.estado = "pendiente";
+      if (hasEmail) update.email = FieldValue.delete();
+      if (hasUserId) {
+        update.userId = FieldValue.delete();
+        if (data.userId) {
+          operations.push({
+            reference: document.ref.collection("privado").doc("autor"),
+            data: {
+              userId: data.userId,
+              createdAt: FieldValue.serverTimestamp(),
+            },
+            merge: true,
+          });
+        }
+      }
+
+      operations.push({ reference: document.ref, data: update });
       testimonialsUpdated += 1;
+      if (hasEmail || hasUserId) testimonialPrivateFieldsRemoved += 1;
     });
 
     // Firestore limita los batches a 500 operaciones.
@@ -419,7 +443,12 @@ exports.backfillLegacyData = onCall(
       actorEmail: adminProfile.email || request.auth.token.email || "",
       targetType: "sistema",
       targetId: "legacy",
-      details: { propertiesUpdated, testimonialsUpdated, ownerEmailsRemoved },
+      details: {
+        propertiesUpdated,
+        testimonialsUpdated,
+        ownerEmailsRemoved,
+        testimonialPrivateFieldsRemoved,
+      },
       createdAt: FieldValue.serverTimestamp(),
     });
 
@@ -428,6 +457,7 @@ exports.backfillLegacyData = onCall(
       propertiesUpdated,
       testimonialsUpdated,
       ownerEmailsRemoved,
+      testimonialPrivateFieldsRemoved,
     };
   },
 );

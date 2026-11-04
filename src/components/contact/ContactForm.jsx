@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { CheckCircle2, LoaderCircle, Mail, MessageCircle, Send } from "lucide-react";
 import Field from "../ui/Field.jsx";
 import { useToast } from "../ui/Toast.jsx";
@@ -7,7 +8,8 @@ import { useI18n } from "../../i18n/I18nContext.jsx";
 import { buildContactMailto, sendContactMessage } from "../../services/contactService.js";
 import { getErrorMessage } from "../../utils/errors.js";
 import { hasErrors, validateContact } from "../../utils/validation.js";
-import { contactSubjects, site, whatsappUrl } from "../../config/site.js";
+import { contactSubjects, site } from "../../config/site.js";
+import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
 
 export default function ContactForm({
   propertyId = "",
@@ -25,6 +27,7 @@ export default function ContactForm({
     subject: defaultSubject || contactSubjects[0],
     message: "",
     honeypot: "",
+    acepta: false,
   });
   const [errors, setErrors] = useState({});
   const [sending, setSending] = useState(false);
@@ -42,7 +45,9 @@ export default function ContactForm({
   }, [profile]);
 
   const update = (field) => (event) => {
-    setValues((current) => ({ ...current, [field]: event.target.value }));
+    const value =
+      event.target.type === "checkbox" ? event.target.checked : event.target.value;
+    setValues((current) => ({ ...current, [field]: value }));
     if (errors[field]) setErrors((current) => ({ ...current, [field]: "" }));
   };
 
@@ -81,21 +86,29 @@ export default function ContactForm({
         <h3>{t("contactForm.sentTitle")}</h3>
         <p>{t("contactForm.sentText")}</p>
         <div className="contact-success__actions">
-          <a
-            href={whatsappUrl(t("contactForm.whatsappSent", { name: site.name }))}
-            target="_blank"
-            rel="noreferrer"
-            className="btn btn-primary"
-          >
-            <MessageCircle size={17} aria-hidden="true" />
-            {t("contactForm.openWhatsapp")}
-          </a>
+          {isWhatsappConfigured && (
+            <a
+              href={buildWhatsappUrl(
+                t("contactForm.whatsappSent", { name: site.name }),
+              )}
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-primary"
+            >
+              <MessageCircle size={17} aria-hidden="true" />
+              {t("contactForm.openWhatsapp")}
+            </a>
+          )}
           <button
             type="button"
             className="btn btn-outline-secondary"
             onClick={() => {
               setSent(false);
-              setValues((current) => ({ ...current, message: "" }));
+              setValues((current) => ({
+                ...current,
+                message: "",
+                acepta: false,
+              }));
             }}
           >
             {t("contactForm.sendAnother")}
@@ -196,21 +209,43 @@ export default function ContactForm({
               <Mail size={15} aria-hidden="true" />
               {t("contactForm.openMail")}
             </a>
-            <a
-              href={whatsappUrl(t("contactForm.whatsappFallback", { name: site.name }))}
-              target="_blank"
-              rel="noreferrer"
-              className="btn btn-outline-secondary btn-sm"
-            >
-              <MessageCircle size={15} aria-hidden="true" />
-              WhatsApp
-            </a>
+            {isWhatsappConfigured && (
+              <a
+                href={buildWhatsappUrl(
+                  t("contactForm.whatsappFallback", { name: site.name }),
+                )}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-outline-secondary btn-sm"
+              >
+                <MessageCircle size={15} aria-hidden="true" />
+                WhatsApp
+              </a>
+            )}
           </div>
         </div>
       )}
 
+      <label className={`terms-check${errors.acepta ? " is-invalid" : ""}`}>
+        <input
+          type="checkbox"
+          checked={values.acepta}
+          onChange={update("acepta")}
+          aria-invalid={Boolean(errors.acepta)}
+        />
+        <span>{t("contactForm.consent")}</span>
+      </label>
+      {errors.acepta && (
+        <p className="form-error" role="alert">
+          {errors.acepta}
+        </p>
+      )}
+
       <div className="contact-form__footer">
-        <p>{t("contactForm.privacy")}</p>
+        <p>
+          {t("contactForm.privacy")}{" "}
+          <Link to="/privacidad">{t("contactForm.privacyLink")}</Link>
+        </p>
         <button type="submit" className="btn btn-primary" disabled={sending}>
           {sending ? (
             <LoaderCircle size={17} className="spin" aria-hidden="true" />

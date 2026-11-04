@@ -1,8 +1,7 @@
 import {
-  Clock3,
+  AtSign,
   ExternalLink,
   Mail,
-  MapPin,
   MessageCircle,
   Phone,
 } from "lucide-react";
@@ -10,7 +9,8 @@ import PageHeader from "../../components/layout/PageHeader.jsx";
 import ContactForm from "../../components/contact/ContactForm.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { useI18n } from "../../i18n/I18nContext.jsx";
-import { site, whatsappUrl } from "../../config/site.js";
+import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
+import { site } from "../../config/site.js";
 
 export default function ContactPage() {
   const { t } = useI18n();
@@ -55,54 +55,47 @@ export default function ContactPage() {
                 <ExternalLink size={15} aria-hidden="true" />
               </a>
 
-              <a
-                href={whatsappUrl(t("contact.whatsappMessage", { name: site.name }))}
-                target="_blank"
-                rel="noreferrer"
-                className="contact-channel"
-              >
-                <span className="contact-channel__icon" aria-hidden="true">
-                  <MessageCircle size={19} />
-                </span>
-                <div>
-                  <span>{t("contact.info.whatsapp")}</span>
-                  <strong>{t("contact.info.writeNow")}</strong>
-                </div>
-                <ExternalLink size={15} aria-hidden="true" />
-              </a>
+              {isWhatsappConfigured && (
+                <a
+                  href={buildWhatsappUrl(
+                    t("contact.whatsappMessage", { name: site.name }),
+                  )}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="contact-channel"
+                >
+                  <span className="contact-channel__icon" aria-hidden="true">
+                    <MessageCircle size={19} />
+                  </span>
+                  <div>
+                    <span>{t("contact.info.whatsapp")}</span>
+                    <strong>{t("contact.info.writeNow")}</strong>
+                  </div>
+                  <ExternalLink size={15} aria-hidden="true" />
+                </a>
+              )}
 
-              <div className="contact-channel contact-channel--static">
-                <span className="contact-channel__icon" aria-hidden="true">
-                  <MapPin size={19} />
-                </span>
-                <div>
-                  <span>{t("contact.info.area")}</span>
-                  <strong>{t("site.location")}</strong>
-                </div>
-              </div>
-
-              <div className="contact-channel contact-channel--static">
-                <span className="contact-channel__icon" aria-hidden="true">
-                  <Clock3 size={19} />
-                </span>
-                <div>
-                  <span>{t("contact.info.hours")}</span>
-                  <strong>{t("site.hours")}</strong>
-                </div>
-              </div>
+              {site.instagram && (
+                <a
+                  href={site.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="contact-channel"
+                >
+                  <span className="contact-channel__icon" aria-hidden="true">
+                    <AtSign size={19} aria-hidden="true" />
+                  </span>
+                  <div>
+                    <span>{t("contact.info.instagram")}</span>
+                    <strong>@manubermu_realtor</strong>
+                  </div>
+                  <ExternalLink size={15} aria-hidden="true" />
+                </a>
+              )}
             </div>
 
-            <div className="contact-page__image">
-              <img
-                src="/img/img contacto.jpg"
-                alt={t("contact.info.imageAlt")}
-                loading="lazy"
-              />
-              <p>{t("contact.info.imageCaption")}</p>
-            </div>
-
-            {site.pendingOfficialData && import.meta.env.DEV && (
-              <p className="inline-note">{t("contact.devNote")}</p>
+            {isWhatsappConfigured && (
+              <p className="contact-page__note">{t("site.whatsappAnytime")}</p>
             )}
           </div>
 

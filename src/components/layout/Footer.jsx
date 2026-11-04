@@ -1,7 +1,14 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import {
+  ArrowUpRight,
+  AtSign,
+  Mail,
+  MessageCircle,
+  Phone,
+} from "lucide-react";
 import Logo from "../ui/Logo.jsx";
-import { navigation, site, whatsappUrl } from "../../config/site.js";
+import { navigation, site } from "../../config/site.js";
+import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
 import { useI18n } from "../../i18n/I18nContext.jsx";
 
 const navKeys = {
@@ -23,10 +30,6 @@ export default function Footer() {
         <div className="site-footer__brand">
           <Logo variant="light" />
           <p>{t("footer.about")}</p>
-          <span className="site-footer__coverage">
-            <MapPin size={15} aria-hidden="true" />
-            {t("site.coverage")}
-          </span>
         </div>
 
         <div className="site-footer__column">
@@ -56,34 +59,37 @@ export default function Footer() {
             <Phone size={16} aria-hidden="true" />
             {site.phone}
           </a>
-          <a
-            href={whatsappUrl(whatsappMessage)}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <MessageCircle size={16} aria-hidden="true" />
-            WhatsApp
-            <ArrowUpRight size={14} aria-hidden="true" />
-          </a>
-          <span className="site-footer__hours">{t("site.hours")}</span>
+          {isWhatsappConfigured && (
+            <a
+              href={buildWhatsappUrl(whatsappMessage)}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <MessageCircle size={16} aria-hidden="true" />
+              WhatsApp
+              <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
+          )}
+          {site.instagram && (
+            <a href={site.instagram} target="_blank" rel="noreferrer">
+              <AtSign size={16} aria-hidden="true" />
+              @manubermu_realtor
+            </a>
+          )}
+          {isWhatsappConfigured && (
+            <span className="site-footer__hours">
+              {t("site.whatsappAnytime")}
+            </span>
+          )}
         </div>
       </div>
 
       <div className="site-footer__bottom shell">
-        <p>
-          {t("footer.rights", { year, name: site.fullName })}
-        </p>
+        <p>{t("footer.rights", { year, name: site.fullName })}</p>
         <div className="site-footer__legal">
           <Link to="/contacto">{t("nav.contact")}</Link>
-          <span>{t("footer.madeIn")}</span>
         </div>
       </div>
-
-      {site.pendingOfficialData && import.meta.env.DEV && (
-        <p className="site-footer__dev-note shell">
-          {t("footer.devNote")}
-        </p>
-      )}
     </footer>
   );
 }

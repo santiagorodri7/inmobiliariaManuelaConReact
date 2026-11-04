@@ -19,9 +19,10 @@ const missingText = (value) =>
 const commitUpdates = async (updates) => {
   for (let index = 0; index < updates.length; index += CHUNK_SIZE) {
     const batch = writeBatch(db);
-    updates
-      .slice(index, index + CHUNK_SIZE)
-      .forEach(({ reference, data }) => batch.update(reference, data));
+    updates.slice(index, index + CHUNK_SIZE).forEach(({ reference, data, merge }) => {
+      if (merge) batch.set(reference, data, { merge: true });
+      else batch.update(reference, data);
+    });
     await batch.commit();
   }
 };
@@ -61,17 +62,37 @@ const backfillFromClient = async (admin) => {
     data,
   }));
 
-  const testimonialUpdates = testimonials.docs
-    .filter((item) => missingText(item.data().estado))
-    .map((item) => ({
-      reference: doc(db, "testimonios", item.id),
-      data: {
-        estado: "activo",
-        updatedAt: serverTimestamp(),
-      },
-    }));
+  const testimonialOperations = [];
+  let testimonialPrivateFieldsRemoved = 0;
 
-  await commitUpdates([...cleanPropertyUpdates, ...testimonialUpdates]);
+  testimonials.docs.forEach((item) => {
+    const data = item.data();
+    const update = {};
+    const hasEmail = Object.prototype.hasOwnProperty.call(data, "email");
+    const hasUserId = Object.prototype.hasOwnProperty.call(data, "userId");
+
+    if (missingText(data.estado)) update.estado = "pendiente";
+    if (hasEmail) update.email = deleteField();
+    if (hasUserId) update.userId = deleteField();
+
+    if (hasUserId && data.userId) {
+      testimonialOperations.push({
+        reference: doc(db, "testimonios", item.id, "privado", "autor"),
+        data: { userId: data.userId, createdAt: serverTimestamp() },
+        merge: true,
+      });
+    }
+
+    if (!Object.keys(update).length) return;
+    update.updatedAt = serverTimestamp();
+    testimonialOperations.push({
+      reference: doc(db, "testimonios", item.id),
+      data: update,
+    });
+    if (hasEmail || hasUserId) testimonialPrivateFieldsRemoved += 1;
+  });
+
+  await commitUpdates([...cleanPropertyUpdates, ...testimonialOperations]);
 
   if (admin?.uid) {
     await writeAudit({
@@ -82,8 +103,11 @@ const backfillFromClient = async (admin) => {
       targetId: "legacy",
       details: {
         propertiesUpdated: cleanPropertyUpdates.length,
-        testimonialsUpdated: testimonialUpdates.length,
+        testimonialsUpdated: testimonialOperations.filter(
+          (item) => !item.merge,
+        ).length,
         ownerEmailsRemoved: emailsRemoved,
+        testimonialPrivateFieldsRemoved,
         source: "client",
       },
     });
@@ -92,8 +116,10 @@ const backfillFromClient = async (admin) => {
   return {
     ok: true,
     propertiesUpdated: cleanPropertyUpdates.length,
-    testimonialsUpdated: testimonialUpdates.length,
+    testimonialsUpdated: testimonialOperations.filter((item) => !item.merge)
+      .length,
     ownerEmailsRemoved: emailsRemoved,
+    testimonialPrivateFieldsRemoved,
     source: "client",
   };
 };

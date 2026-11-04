@@ -209,16 +209,17 @@ service cloud.firestore {
 
     // ---------------------------------------------------------------------
     // testimonios: lectura pública solo de los aprobados/activos.
+    // Los testimonios nuevos quedan pendientes hasta que administración los
+    // apruebe. El documento público nunca guarda correo ni userId; esos datos
+    // viven en `privado/autor`, legible solo por administración.
     // ---------------------------------------------------------------------
 
     match /testimonios/{testimonialId} {
       allow read: if resource.data.estado in ['activo', 'aprobado']
-        || isAdmin()
-        || (isSignedIn() && resource.data.userId == request.auth.uid);
+        || isAdmin();
 
       allow create: if isActiveUser()
-        && request.resource.data.userId == request.auth.uid
-        && request.resource.data.estado == 'activo'
+        && request.resource.data.estado == 'pendiente'
         && request.resource.data.rating is int
         && request.resource.data.rating >= 1
         && request.resource.data.rating <= 5
@@ -231,13 +232,29 @@ service cloud.firestore {
           'rating',
           'estado',
           'fecha',
-          'fechaCreacion',
-          'userId',
-          'email'
+          'fechaCreacion'
         ]);
 
       allow update: if isAdmin();
       allow delete: if isAdmin();
+
+      match /privado/{privateId} {
+        allow read: if isAdmin();
+
+        allow create: if privateId == 'autor'
+          && (
+            isAdmin()
+            || (isActiveUser()
+              && request.resource.data.userId == request.auth.uid)
+          )
+          && request.resource.data.keys().hasOnly([
+            'userId',
+            'createdAt'
+          ])
+          && validText(request.resource.data.userId, 1, 128);
+
+        allow update, delete: if isAdmin();
+      }
     }
 
     // ---------------------------------------------------------------------
@@ -259,7 +276,9 @@ service cloud.firestore {
           'deactivateUser',
           'deleteProperty',
           'hardDeleteProperty',
-          'backfillLegacyData'
+          'backfillLegacyData',
+          'approveTestimonial',
+          'rejectTestimonial'
         ]
         && request.resource.data.keys().hasOnly([
           'action',

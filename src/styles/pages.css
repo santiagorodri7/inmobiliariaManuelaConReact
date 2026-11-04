@@ -139,6 +139,39 @@
   object-fit: cover;
 }
 
+.media-placeholder {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 24% 18%, rgba(214, 189, 151, 0.32), transparent 52%),
+    linear-gradient(135deg, #243844 0%, #1c2a33 52%, #33505f 100%);
+}
+
+.media-placeholder::after {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  content: "";
+  opacity: 0.5;
+}
+
+.about-teaser__media > .media-placeholder {
+  width: 100%;
+  aspect-ratio: 1.02;
+  border-radius: 20px 90px 20px 20px;
+  box-shadow: var(--shadow-md);
+}
+
+.about-page__media > .media-placeholder {
+  width: 100%;
+  aspect-ratio: 0.88;
+  border-radius: 24px 110px 24px 24px;
+  box-shadow: var(--shadow-md);
+}
+
 .hero__note {
   position: absolute;
   right: 8%;
@@ -828,6 +861,16 @@
 
 .contact-channel--static {
   background: var(--ivory-soft);
+}
+
+.contact-page__note {
+  margin-top: 18px;
+  padding: 13px 16px;
+  border-left: 3px solid var(--blue);
+  border-radius: 0 8px 8px 0;
+  background: var(--ivory-soft);
+  color: var(--muted);
+  font-size: 0.85rem;
 }
 
 .contact-page__image {

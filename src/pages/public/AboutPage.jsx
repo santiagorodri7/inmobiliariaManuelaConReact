@@ -9,7 +9,8 @@ import {
 import PageHeader from "../../components/layout/PageHeader.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { useI18n } from "../../i18n/I18nContext.jsx";
-import { site, whatsappUrl } from "../../config/site.js";
+import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
+import { site } from "../../config/site.js";
 
 const valueIcons = {
   transparency: ShieldCheck,
@@ -21,16 +22,6 @@ const valueIcons = {
 export default function AboutPage() {
   const { t } = useI18n();
   usePageTitle(t("about.pageTitle"), t("about.pageDescription"));
-  const cities = [
-    "Medellín",
-    "Envigado",
-    "Itagüí",
-    "Sabaneta",
-    "La Estrella",
-    "Bello",
-    "Copacabana",
-    "Rionegro",
-  ];
 
   return (
     <>
@@ -53,16 +44,8 @@ export default function AboutPage() {
               <ArrowRight size={17} aria-hidden="true" />
             </Link>
           </div>
-          <div className="about-page__media">
-            <img
-              src="/img/about.png"
-              alt={t("about.intro.imageAlt")}
-              loading="lazy"
-            />
-            <div className="about-page__quote">
-              <p>{t("about.intro.quote")}</p>
-              <span>{t("about.intro.author")}</span>
-            </div>
+          <div className="about-page__media" aria-hidden="true">
+            <div className="media-placeholder" />
           </div>
         </div>
       </section>
@@ -87,21 +70,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section">
-        <div className="shell coverage-panel">
-          <div>
-            <p className="eyebrow">{t("about.coverage.eyebrow")}</p>
-            <h2>{t("about.coverage.title")}</h2>
-            <p>{t("about.coverage.text")}</p>
-          </div>
-          <ul className="coverage-list">
-            {cities.map((city) => (
-              <li key={city}>{city}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
       <section className="cta-band cta-band--compact">
         <div className="shell cta-band__inner">
           <div>
@@ -114,14 +82,18 @@ export default function AboutPage() {
               {t("about.cta.write", { name: site.name.split(" ")[0] })}
               <ArrowRight size={18} aria-hidden="true" />
             </Link>
-            <a
-              href={whatsappUrl(t("about.whatsappMessage", { name: site.name }))}
-              target="_blank"
-              rel="noreferrer"
-              className="btn btn-ghost btn-lg"
-            >
-              {t("about.cta.whatsapp")}
-            </a>
+            {isWhatsappConfigured && (
+              <a
+                href={buildWhatsappUrl(
+                  t("about.whatsappMessage", { name: site.name }),
+                )}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-ghost btn-lg"
+              >
+                {t("about.cta.whatsapp")}
+              </a>
+            )}
           </div>
         </div>
       </section>

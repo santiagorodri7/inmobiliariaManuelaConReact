@@ -5,6 +5,7 @@ import {
   Handshake,
   LayoutDashboard,
   LockKeyhole,
+  MessageSquareQuote,
   Plus,
   SlidersHorizontal,
   UserRound,
@@ -45,6 +46,11 @@ export const adminNav = [
     icon: Building2,
   },
   { key: "usuarios", label: "nav.dashboard.users", icon: Users },
+  {
+    key: "testimonios",
+    label: "nav.dashboard.testimonials",
+    icon: MessageSquareQuote,
+  },
   { key: "ventas", label: "nav.dashboard.sales", icon: Handshake },
   {
     key: "reportes",

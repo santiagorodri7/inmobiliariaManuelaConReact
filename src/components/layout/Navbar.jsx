@@ -12,7 +12,8 @@ import {
 } from "lucide-react";
 import Logo from "../ui/Logo.jsx";
 import Avatar from "../ui/Avatar.jsx";
-import { navigation, site, whatsappUrl } from "../../config/site.js";
+import { navigation, site } from "../../config/site.js";
+import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useI18n } from "../../i18n/I18nContext.jsx";
 import { roleHome } from "../../utils/roles.js";
@@ -191,15 +192,17 @@ export default function Navbar() {
               {t("nav.loginAccount")}
             </Link>
           )}
-          <a
-            href={whatsappUrl(whatsappMessage)}
-            target="_blank"
-            rel="noreferrer"
-            className="mobile-menu__link"
-          >
-            <MessageCircle size={18} aria-hidden="true" />
-            {t("nav.whatsapp")}
-          </a>
+          {isWhatsappConfigured && (
+            <a
+              href={buildWhatsappUrl(whatsappMessage)}
+              target="_blank"
+              rel="noreferrer"
+              className="mobile-menu__link"
+            >
+              <MessageCircle size={18} aria-hidden="true" />
+              {t("nav.whatsapp")}
+            </a>
+          )}
           <Link to="/registro?rol=Vendedor" className="btn btn-primary w-100 mt-2">
             {t("nav.publish")}
           </Link>
