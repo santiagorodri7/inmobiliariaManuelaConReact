@@ -110,10 +110,26 @@ const check = async (name, promise, shouldPass) => {
 
     await setDoc(doc(db, "testimonios", "active1"), {
       nombre: "Cliente",
+      profesion: "Diseñadora",
       texto: "Una experiencia excelente con el acompañamiento recibido.",
       rating: 5,
       estado: "activo",
-      userId: "buyer1",
+      fecha: new Date(),
+    });
+    await setDoc(doc(db, "testimonios", "approved1"), {
+      nombre: "Cliente aprobado",
+      profesion: "",
+      texto: "Un testimonio aprobado que debe ser visible públicamente.",
+      rating: 5,
+      estado: "aprobado",
+      fecha: new Date(),
+    });
+    await setDoc(doc(db, "testimonios", "pending1"), {
+      nombre: "Pendiente",
+      profesion: "",
+      texto: "Este testimonio aún requiere revisión antes de publicarse.",
+      rating: 5,
+      estado: "pendiente",
       fecha: new Date(),
     });
     await setDoc(doc(db, "testimonios", "inactive1"), {
@@ -121,7 +137,6 @@ const check = async (name, promise, shouldPass) => {
       texto: "Este testimonio no debe ser visible públicamente.",
       rating: 5,
       estado: "inactivo",
-      userId: "buyer1",
       fecha: new Date(),
     });
     await setDoc(doc(db, "testimonios", "legacy1"), {
@@ -129,7 +144,12 @@ const check = async (name, promise, shouldPass) => {
       texto: "Un testimonio heredado sin estado que debe completarse.",
       rating: 5,
       userId: "buyer1",
+      email: "buyer1@test.co",
       fecha: new Date(),
+    });
+    await setDoc(doc(db, "testimonios", "active1", "privado", "autor"), {
+      userId: "buyer1",
+      createdAt: new Date(),
     });
     await setDoc(doc(db, "ventas", "sale1"), {
       propertyId: "pub1",
@@ -497,43 +517,111 @@ const check = async (name, promise, shouldPass) => {
 
   // Testimonios
   await check("anon lee testimonio activo", getDoc(doc(anonDb, "testimonios", "active1")), true);
+  await check("anon lee testimonio aprobado", getDoc(doc(anonDb, "testimonios", "approved1")), true);
+  await check("anon NO lee testimonio pendiente", getDoc(doc(anonDb, "testimonios", "pending1")), false);
   await check("anon NO lee testimonio inactivo", getDoc(doc(anonDb, "testimonios", "inactive1")), false);
   await check(
-    "anon lista testimonios activos",
+    "anon lista testimonios activos y aprobados",
     getDocs(query(collection(anonDb, "testimonios"), where("estado", "in", ["activo", "aprobado"]))),
     true,
   );
+  await check(
+    "anon NO lista testimonios pendientes",
+    getDocs(query(collection(anonDb, "testimonios"), where("estado", "==", "pendiente"))),
+    false,
+  );
   await check("admin lista todos los testimonios", getDocs(collection(adminDb, "testimonios")), true);
   await check(
-    "comprador crea su testimonio",
+    "comprador crea su testimonio pendiente",
     setDoc(doc(buyerDb, "testimonios", "newtest1"), {
       nombre: "Comprador",
       profesion: "",
       texto: "Una experiencia excelente con el acompañamiento recibido.",
       rating: 5,
-      estado: "activo",
+      estado: "pendiente",
       fecha: "2026-10-30",
       fechaCreacion: serverTimestamp(),
-      userId: "buyer1",
-      email: "buyer1@test.co",
     }),
     true,
   );
   await check(
-    "comprador NO crea testimonio a nombre de otro",
+    "comprador NO crea testimonio ya aprobado",
     setDoc(doc(buyerDb, "testimonios", "newtest2"), {
       nombre: "Comprador",
       texto: "Una experiencia excelente con el acompañamiento recibido.",
       rating: 5,
-      estado: "activo",
-      userId: "seller1",
+      estado: "aprobado",
     }),
     false,
   );
   await check(
+    "comprador NO crea testimonio con correo público",
+    setDoc(doc(buyerDb, "testimonios", "newtest3"), {
+      nombre: "Comprador",
+      texto: "Una experiencia excelente con el acompañamiento recibido.",
+      rating: 5,
+      estado: "pendiente",
+      email: "buyer1@test.co",
+    }),
+    false,
+  );
+  await check(
+    "comprador NO crea testimonio con userId público",
+    setDoc(doc(buyerDb, "testimonios", "newtest4"), {
+      nombre: "Comprador",
+      texto: "Una experiencia excelente con el acompañamiento recibido.",
+      rating: 5,
+      estado: "pendiente",
+      userId: "buyer1",
+    }),
+    false,
+  );
+  await check(
+    "comprador crea su metadato privado de autor",
+    setDoc(doc(buyerDb, "testimonios", "newtest1", "privado", "autor"), {
+      userId: "buyer1",
+      createdAt: serverTimestamp(),
+    }),
+    true,
+  );
+  await check(
+    "comprador NO crea metadato privado a nombre de otro",
+    setDoc(doc(buyerDb, "testimonios", "newtest1", "privado", "otro"), {
+      userId: "seller1",
+      createdAt: serverTimestamp(),
+    }),
+    false,
+  );
+  await check(
+    "vendedor NO lee el metadato privado del autor",
+    getDoc(doc(sellerDb, "testimonios", "active1", "privado", "autor")),
+    false,
+  );
+  await check(
+    "admin lee el metadato privado del autor",
+    getDoc(doc(adminDb, "testimonios", "active1", "privado", "autor")),
+    true,
+  );
+  await check(
+    "comprador NO cambia el estado de su testimonio",
+    updateDoc(doc(buyerDb, "testimonios", "newtest1"), {
+      estado: "aprobado",
+    }),
+    false,
+  );
+  await check(
+    "admin aprueba un testimonio pendiente",
+    updateDoc(doc(adminDb, "testimonios", "newtest1"), {
+      estado: "aprobado",
+      moderatedAt: serverTimestamp(),
+      moderatedBy: "admin1",
+    }),
+    true,
+  );
+  await check(
     "admin completa el estado de un testimonio heredado",
     updateDoc(doc(adminDb, "testimonios", "legacy1"), {
-      estado: "activo",
+      estado: "pendiente",
       updatedAt: serverTimestamp(),
     }),
     true,
@@ -564,6 +652,32 @@ const check = async (name, promise, shouldPass) => {
       targetType: "sistema",
       targetId: "legacy",
       details: { propertiesUpdated: 1, testimonialsUpdated: 1 },
+      createdAt: serverTimestamp(),
+    }),
+    true,
+  );
+  await check(
+    "admin registra la aprobación de un testimonio",
+    setDoc(doc(adminDb, "auditLog", "audit-approve-testimonial"), {
+      action: "approveTestimonial",
+      actorId: "admin1",
+      actorEmail: "admin1@test.co",
+      targetType: "testimonio",
+      targetId: "newtest1",
+      details: { nombre: "Comprador" },
+      createdAt: serverTimestamp(),
+    }),
+    true,
+  );
+  await check(
+    "admin registra el retiro de un testimonio",
+    setDoc(doc(adminDb, "auditLog", "audit-reject-testimonial"), {
+      action: "rejectTestimonial",
+      actorId: "admin1",
+      actorEmail: "admin1@test.co",
+      targetType: "testimonio",
+      targetId: "inactive1",
+      details: { nombre: "Oculto" },
       createdAt: serverTimestamp(),
     }),
     true,

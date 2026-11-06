@@ -7,6 +7,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import PageHeader from "../../components/layout/PageHeader.jsx";
+import MediaImage from "../../components/ui/MediaImage.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { useI18n } from "../../i18n/I18nContext.jsx";
 import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
@@ -45,7 +46,7 @@ export default function AboutPage() {
             </Link>
           </div>
           <div className="about-page__media" aria-hidden="true">
-            <div className="media-placeholder" />
+            <MediaImage src="/img/about-2.png" alt="" />
           </div>
         </div>
       </section>

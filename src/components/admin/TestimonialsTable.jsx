@@ -49,7 +49,7 @@ export default function TestimonialsTable({
             <th>{t("admin.testimonialsTable.testimonial")}</th>
             <th>{t("admin.testimonialsTable.rating")}</th>
             <th>{t("admin.testimonialsTable.date")}</th>
-            <th>{t("admin.testimonialsTable.status")}</th>
+            <th>{t("admin.testimonialsTable.statusLabel")}</th>
             <th className="text-end">{t("admin.testimonialsTable.actions")}</th>
           </tr>
         </thead>

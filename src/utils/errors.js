@@ -38,6 +38,7 @@ const messageKeys = {
   "storage/base64-too-large": "errors.storage.base64TooLarge",
   "storage/base64-batch-too-large": "errors.storage.base64BatchTooLarge",
   "storage/not-available": "errors.storage.notAvailable",
+  "storage/bucket-missing": "errors.storage.bucketMissing",
   "storage/image-error": "errors.storage.imageError",
   "storage/invalid-file": "errors.storage.invalidFile",
   "contact/not-configured": "errors.contact.notConfigured",

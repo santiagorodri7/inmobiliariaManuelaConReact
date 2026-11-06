@@ -8,7 +8,8 @@ Administrador viven en `src/`.
 ## Requisitos
 
 - Node.js 20 o superior y npm.
-- Un proyecto de Firebase con Authentication, Firestore y Storage.
+- Un proyecto de Firebase con Authentication y Firestore. Storage es
+  opcional: si no está disponible, la app usa el respaldo Base64.
 - Firebase CLI para desplegar reglas, Functions y Hosting.
 - Java 11 o superior si se ejecutan los emuladores.
 
@@ -16,11 +17,16 @@ Administrador viven en `src/`.
 
 ```bash
 npm install
-cp .env.example .env.local   # en Windows: copy .env.example .env.local
 npm run dev
 ```
 
-Completa `.env.local` con la configuración pública de la app web de Firebase:
+El repositorio incluye la configuración pública del proyecto
+`registrologininmobiliaria` en `src/config/firebasePublic.js`, así que un clon
+nuevo conecta a Firestore sin crear `.env.local`. Esa configuración no contiene
+secretos: Firebase entrega esos identificadores al navegador.
+
+Para usar otro proyecto de Firebase o cambiar integraciones, crea `.env.local`
+a partir de `.env.example`. Las variables definidas allí tienen prioridad:
 
 | Variable | Uso |
 | --- | --- |
@@ -31,8 +37,9 @@ Completa `.env.local` con la configuración pública de la app web de Firebase:
 | `VITE_FIREBASE_MESSAGING_SENDER_ID` | Sender ID |
 | `VITE_FIREBASE_APP_ID` | App ID |
 | `VITE_FUNCTIONS_REGION` | Región de las Cloud Functions |
-| `VITE_ALLOW_BASE64_FALLBACK` | `true` solo en desarrollo; el build de producción lo desactiva |
+| `VITE_ALLOW_BASE64_FALLBACK` | `true` por defecto; `false` desactiva el respaldo Base64 |
 | `VITE_CONTACT_FALLBACK_URL` | Endpoint PHP opcional de contingencia |
+| `VITE_WHATSAPP_NUMBER` | Número de WhatsApp; si está vacío se oculta el CTA |
 
 El proyecto usa `registrologininmobiliaria` por defecto (`.firebaserc`).
 
@@ -152,9 +159,10 @@ inmuebles con la consulta segura `where("status", "==", "disponible")`.
 ## Seguridad antes de publicar
 
 - Revisa en Firebase Console que las reglas desplegadas sean las de este repo.
-- El respaldo Base64 está desactivado en cualquier build de producción. En
-  desarrollo guarda todas las fotos o falla con un error explícito; nunca
-  omite imágenes en silencio.
+- El respaldo Base64 está activo por defecto y solo se usa cuando Storage no
+  está disponible. Para desactivarlo, define `VITE_ALLOW_BASE64_FALLBACK=false`.
+  Guarda todas las fotos o falla con un error explícito; nunca omite imágenes en
+  silencio. Los límites son 180 KB por imagen y 600 KB en total.
 - Confirma que `usuarios` no sea legible públicamente.
 - No publiques `ownerEmail` en `propiedades`; la migración lo retira de los
   documentos antiguos.

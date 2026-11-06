@@ -18,6 +18,7 @@ const HomePage = lazy(() => import("./pages/public/HomePage.jsx"));
 const AboutPage = lazy(() => import("./pages/public/AboutPage.jsx"));
 const ServicesPage = lazy(() => import("./pages/public/ServicesPage.jsx"));
 const ContactPage = lazy(() => import("./pages/public/ContactPage.jsx"));
+const PrivacyPage = lazy(() => import("./pages/public/PrivacyPage.jsx"));
 const PropertyDetailPage = lazy(
   () => import("./pages/public/PropertyDetailPage.jsx"),
 );
@@ -68,6 +69,7 @@ export default function App() {
                   <Route path="/nosotros" element={<AboutPage />} />
                   <Route path="/servicios" element={<ServicesPage />} />
                   <Route path="/contacto" element={<ContactPage />} />
+                  <Route path="/privacidad" element={<PrivacyPage />} />
                   <Route path="/propiedad/:id" element={<PropertyDetailPage />} />
                   <Route
                     path="/propiedades"
@@ -151,6 +153,10 @@ export default function App() {
                 <Route path="/servicios.html" element={<Navigate to="/servicios" replace />} />
                 <Route path="/contact.html" element={<Navigate to="/contacto" replace />} />
                 <Route path="/contacto.html" element={<Navigate to="/contacto" replace />} />
+                <Route
+                  path="/privacidad.html"
+                  element={<Navigate to="/privacidad" replace />}
+                />
                 <Route
                   path="/property-details.html"
                   element={<LegacyPropertyRedirect />}
