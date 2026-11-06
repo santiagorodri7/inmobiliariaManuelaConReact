@@ -7,6 +7,7 @@ import {
   Phone,
 } from "lucide-react";
 import Logo from "../ui/Logo.jsx";
+import MediaImage from "../ui/MediaImage.jsx";
 import { navigation, site } from "../../config/site.js";
 import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
 import { useI18n } from "../../i18n/I18nContext.jsx";
@@ -26,6 +27,20 @@ export default function Footer() {
 
   return (
     <footer className="site-footer">
+      <div className="site-footer__skyline">
+        <MediaImage
+          src="/img/medellin-footer.jpg"
+          alt={t("footer.skylineAlt")}
+          loading="lazy"
+          decoding="async"
+        />
+        <div className="site-footer__skyline-overlay">
+          <div className="shell">
+            <p>{t("footer.skylineCaption")}</p>
+          </div>
+        </div>
+      </div>
+
       <div className="site-footer__top shell">
         <div className="site-footer__brand">
           <Logo variant="light" />
@@ -87,6 +102,7 @@ export default function Footer() {
       <div className="site-footer__bottom shell">
         <p>{t("footer.rights", { year, name: site.fullName })}</p>
         <div className="site-footer__legal">
+          <Link to="/privacidad">{t("footer.privacy")}</Link>
           <Link to="/contacto">{t("nav.contact")}</Link>
         </div>
       </div>

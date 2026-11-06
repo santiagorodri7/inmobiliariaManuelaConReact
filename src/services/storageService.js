@@ -13,6 +13,9 @@ const MAX_BASE64_BYTES = 180 * 1024;
 const MAX_BASE64_TOTAL_BYTES = 600 * 1024;
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const UPLOAD_TIMEOUT_MS = 45 * 1000;
+const BUCKET_CHECK_TIMEOUT_MS = 4 * 1000;
+const BUCKET_CHECK_TTL_MS = 30 * 1000;
+let bucketCheck = null;
 
 const loadImage = (file) =>
   new Promise((resolve, reject) => {
@@ -231,6 +234,85 @@ const fallbackBatchError = (omitted, total) => {
   return error;
 };
 
+const storageBucketExists = async () => {
+  if (
+    bucketCheck &&
+    Date.now() - bucketCheck.checkedAt < BUCKET_CHECK_TTL_MS
+  ) {
+    return bucketCheck.exists;
+  }
+
+  const bucket = storage?.app?.options?.storageBucket || "";
+  if (!bucket) {
+    bucketCheck = { exists: false, checkedAt: Date.now() };
+    return false;
+  }
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(
+    () => controller.abort(),
+    BUCKET_CHECK_TIMEOUT_MS,
+  );
+
+  let exists = true;
+  try {
+    const response = await fetch(
+      `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(bucket)}/o?maxResults=1`,
+      { method: "GET", signal: controller.signal },
+    );
+    // 404 = el bucket no existe. 400/401/403 = existe, pero las reglas
+    // no permiten listar; en ese caso se intenta la subida normal.
+    exists = response.status !== 404;
+  } catch {
+    // Si la comprobación no es concluyente, no se bloquea la subida.
+    exists = true;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+
+  bucketCheck = { exists, checkedAt: Date.now() };
+  return exists;
+};
+
+const createFallbackBatch = async (files, onProgress) => {
+  const fallbackImages = [];
+  let totalBytes = 0;
+
+  for (let index = 0; index < files.length; index += 1) {
+    let fallback;
+    try {
+      fallback = await createBase64Fallback(files[index], {
+        maxBytes: MAX_BASE64_BYTES,
+        initialWidth: 960,
+      });
+    } catch {
+      throw fallbackBatchError(files.length - index, files.length);
+    }
+
+    if (totalBytes + fallback.bytes > MAX_BASE64_TOTAL_BYTES) {
+      throw fallbackBatchError(files.length - index, files.length);
+    }
+
+    totalBytes += fallback.bytes;
+    fallbackImages.push({
+      url: fallback.dataUrl,
+      path: "",
+      fallback: true,
+      bytes: fallback.bytes,
+    });
+    if (onProgress) {
+      onProgress(Math.round(((index + 1) / files.length) * 100));
+    }
+  }
+
+  return {
+    images: fallbackImages,
+    usedFallback: true,
+    skipped: 0,
+    fallbackBytes: totalBytes,
+  };
+};
+
 export const uploadPropertyImages = async (
   ownerId,
   propertyId,
@@ -244,6 +326,14 @@ export const uploadPropertyImages = async (
 
   requireFirebase();
   if (!storage) throw appError("storage/not-available");
+
+  const bucketExists = await storageBucketExists();
+  if (!bucketExists) {
+    if (allowBase64Fallback) {
+      return createFallbackBatch(files, onProgress);
+    }
+    throw appError("storage/bucket-missing");
+  }
 
   const uploaded = [];
   try {
@@ -274,48 +364,12 @@ export const uploadPropertyImages = async (
     if (
       !allowBase64Fallback ||
       signal?.aborted ||
-      error?.code === "storage/canceled" ||
-      error?.code === "storage/timeout"
+      error?.code === "storage/canceled"
     ) {
       throw error;
     }
 
-    const fallbackImages = [];
-    let totalBytes = 0;
-
-    for (let index = 0; index < files.length; index += 1) {
-      let fallback;
-      try {
-        fallback = await createBase64Fallback(files[index], {
-          maxBytes: MAX_BASE64_BYTES,
-          initialWidth: 960,
-        });
-      } catch {
-        throw fallbackBatchError(files.length - index, files.length);
-      }
-
-      if (totalBytes + fallback.bytes > MAX_BASE64_TOTAL_BYTES) {
-        throw fallbackBatchError(files.length - index, files.length);
-      }
-
-      totalBytes += fallback.bytes;
-      fallbackImages.push({
-        url: fallback.dataUrl,
-        path: "",
-        fallback: true,
-        bytes: fallback.bytes,
-      });
-      if (onProgress) {
-        onProgress(Math.round(((index + 1) / files.length) * 100));
-      }
-    }
-
-    return {
-      images: fallbackImages,
-      usedFallback: true,
-      skipped: 0,
-      fallbackBytes: totalBytes,
-    };
+    return createFallbackBatch(files, onProgress);
   }
 };
 
@@ -324,6 +378,17 @@ export const uploadAvatar = async (uid, file, { signal } = {}) => {
   if (errorMessage) throw appError("storage/invalid-file", errorMessage);
   requireFirebase();
   if (!storage) throw appError("storage/not-available");
+
+  if (!(await storageBucketExists())) {
+    if (allowBase64Fallback) {
+      const fallback = await createBase64Fallback(file, {
+        maxBytes: 220 * 1024,
+        initialWidth: 480,
+      });
+      return { url: fallback.dataUrl, path: "" };
+    }
+    throw appError("storage/bucket-missing");
+  }
 
   const compressed = await compressImage(file, { maxWidth: 512, quality: 0.82 });
   const path = `avatares/${uid}/avatar.webp`;
@@ -344,8 +409,7 @@ export const uploadAvatar = async (uid, file, { signal } = {}) => {
     if (
       !allowBase64Fallback ||
       signal?.aborted ||
-      error?.code === "storage/canceled" ||
-      error?.code === "storage/timeout"
+      error?.code === "storage/canceled"
     ) {
       throw error;
     }

@@ -3,16 +3,31 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getFunctions } from "firebase/functions";
+import { firebasePublicConfig } from "../config/firebasePublic.js";
 
 const env = import.meta.env;
 
+const pick = (value, fallback) => {
+  const candidate = typeof value === "string" ? value.trim() : "";
+  return candidate || fallback;
+};
+
 export const firebaseConfig = {
-  apiKey: env.VITE_FIREBASE_API_KEY,
-  authDomain: env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: env.VITE_FIREBASE_APP_ID,
+  apiKey: pick(env.VITE_FIREBASE_API_KEY, firebasePublicConfig.apiKey),
+  authDomain: pick(
+    env.VITE_FIREBASE_AUTH_DOMAIN,
+    firebasePublicConfig.authDomain,
+  ),
+  projectId: pick(env.VITE_FIREBASE_PROJECT_ID, firebasePublicConfig.projectId),
+  storageBucket: pick(
+    env.VITE_FIREBASE_STORAGE_BUCKET,
+    firebasePublicConfig.storageBucket,
+  ),
+  messagingSenderId: pick(
+    env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    firebasePublicConfig.messagingSenderId,
+  ),
+  appId: pick(env.VITE_FIREBASE_APP_ID, firebasePublicConfig.appId),
 };
 
 const requiredKeys = [
@@ -40,11 +55,12 @@ export const functions = app
   ? getFunctions(app, env.VITE_FUNCTIONS_REGION || "us-central1")
   : null;
 
-// El respaldo Base64 es solo para desarrollo. En un build de producción
-// siempre queda desactivado, aunque la variable de entorno esté en true.
-export const allowBase64Fallback =
-  env.DEV === true &&
-  String(env.VITE_ALLOW_BASE64_FALLBACK || "false").toLowerCase() === "true";
+// El respaldo Base64 permite publicar cuando Storage no está disponible.
+// Queda activo por defecto para que un clon nuevo funcione sin configuración;
+// se desactiva explícitamente con VITE_ALLOW_BASE64_FALLBACK=false.
+export const allowBase64Fallback = !["false", "0", "no"].includes(
+  String(env.VITE_ALLOW_BASE64_FALLBACK ?? "true").trim().toLowerCase(),
+);
 
 export const requireFirebase = () => {
   if (!isFirebaseConfigured) {

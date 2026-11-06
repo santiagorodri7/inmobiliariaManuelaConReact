@@ -1174,7 +1174,7 @@
       "testimonial": "Testimonial",
       "rating": "Rating",
       "date": "Date",
-      "status": "Status",
+      "statusLabel": "Status",
       "actions": "Actions",
       "noProfession": "No profession provided",
       "approve": "Approve and publish",
@@ -1443,6 +1443,7 @@
       "base64TooLarge": "The image still exceeds the contingency mode limit. Use a smaller image or enable Firebase Storage.",
       "base64BatchTooLarge": "{{omitted}} of {{total}} images could not be saved in contingency mode. Enable Firebase Storage or select fewer photos; nothing was published.",
       "notAvailable": "Firebase Storage is not available. Enable it or use contingency mode.",
+      "bucketMissing": "Firebase Storage is not enabled or the configured bucket does not exist. Enable it in the Firebase console to publish with photos.",
       "imageError": "The image could not be processed. Try another one.",
       "invalidFile": "The image is not valid. Use JPG, PNG, or WebP under 8 MB.",
       "select": "Select an image.",
@@ -1564,7 +1565,9 @@
   "footer": {
     "about": "Close real estate guidance to find, sell, or rent a place that feels like yours.",
     "rights": "© {{year}} {{name}}. All rights reserved.",
-    "privacy": "Privacy policy"
+    "privacy": "Privacy policy",
+    "skylineAlt": "Panoramic view of Medellín at sunset.",
+    "skylineCaption": "Medellín, Antioquia"
   },
   "accessibility": {
     "skip": "Skip to content",

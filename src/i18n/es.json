@@ -1174,7 +1174,7 @@
       "testimonial": "Testimonio",
       "rating": "Calificación",
       "date": "Fecha",
-      "status": "Estado",
+      "statusLabel": "Estado",
       "actions": "Acciones",
       "noProfession": "Sin profesión indicada",
       "approve": "Aprobar y publicar",
@@ -1443,6 +1443,7 @@
       "base64TooLarge": "La imagen sigue superando el límite del modo de contingencia. Usa una imagen más liviana o activa Firebase Storage.",
       "base64BatchTooLarge": "No se pudieron guardar {{omitted}} de {{total}} imágenes en el modo de contingencia. Activa Firebase Storage o selecciona menos fotos; no se publicó nada.",
       "notAvailable": "Firebase Storage no está disponible. Actívalo o usa el modo de contingencia.",
+      "bucketMissing": "Firebase Storage no está activado o el bucket configurado no existe. Actívalo en la consola de Firebase para publicar con fotos.",
       "imageError": "No se pudo procesar la imagen. Inténtalo con otra.",
       "invalidFile": "La imagen no es válida. Usa JPG, PNG o WebP de menos de 8 MB.",
       "select": "Selecciona una imagen.",
@@ -1564,7 +1565,9 @@
   "footer": {
     "about": "Acompañamiento inmobiliario cercano para encontrar, vender o arrendar un lugar que se sienta tuyo.",
     "rights": "© {{year}} {{name}}. Todos los derechos reservados.",
-    "privacy": "Política de privacidad"
+    "privacy": "Política de privacidad",
+    "skylineAlt": "Vista panorámica de Medellín al atardecer.",
+    "skylineCaption": "Medellín, Antioquia"
   },
   "accessibility": {
     "skip": "Saltar al contenido",

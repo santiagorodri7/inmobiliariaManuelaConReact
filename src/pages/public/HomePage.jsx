@@ -15,6 +15,7 @@ import {
 import PropertyFilters from "../../components/property/PropertyFilters.jsx";
 import PropertyGrid from "../../components/property/PropertyGrid.jsx";
 import TestimonialGrid from "../../components/testimonials/TestimonialGrid.jsx";
+import MediaImage from "../../components/ui/MediaImage.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { useProperties } from "../../hooks/useProperties.js";
 import { useTestimonials } from "../../hooks/useTestimonials.js";
@@ -114,8 +115,12 @@ export default function HomePage() {
           </div>
 
           <div className="hero__media" aria-hidden="true">
-            <div className="hero__image-main media-placeholder" />
-            <div className="hero__image-inset media-placeholder" />
+            <div className="hero__image-main">
+              <MediaImage src="/img/about-1.png" alt="" />
+            </div>
+            <div className="hero__image-inset">
+              <MediaImage src="/img/balcon%20de%20laureles.png" alt="" />
+            </div>
             <div className="hero__note">
               <span className="hero__note-icon">
                 <Building2 size={19} />
@@ -240,7 +245,7 @@ export default function HomePage() {
       <section className="section">
         <div className="shell about-teaser">
           <div className="about-teaser__media" aria-hidden="true">
-            <div className="media-placeholder" />
+            <MediaImage src="/img/about-2.png" alt="" />
           </div>
           <div className="about-teaser__copy">
             <p className="eyebrow">{t("home.about.eyebrow")}</p>
