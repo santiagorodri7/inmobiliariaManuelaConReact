@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
@@ -10,6 +10,7 @@ import {
   Check,
   ChevronRight,
   Clock3,
+  Mail,
   MapPin,
   Maximize,
   MessageCircle,
@@ -28,10 +29,15 @@ import { useProperties } from "../../hooks/useProperties.js";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useI18n } from "../../i18n/I18nContext.jsx";
 import { getPropertyById } from "../../services/propertiesService.js";
+import {
+  currentMonthKey,
+  registerPropertyView,
+} from "../../services/propertyViewsService.js";
 import { isAdmin } from "../../utils/roles.js";
-import { isAvailable } from "../../utils/property.js";
+import { coverImage, isAvailable } from "../../utils/property.js";
+import { buildPropertyShareUrl, shareContent } from "../../utils/share.js";
 import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
-import { site } from "../../config/site.js";
+import { mailtoUrl, site } from "../../config/site.js";
 
 export default function PropertyDetailPage() {
   const { id } = useParams();
@@ -47,11 +53,13 @@ export default function PropertyDetailPage() {
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const countedView = useRef("");
   const { properties: publicProperties } = useProperties({ publicOnly: true });
 
   usePageTitle(
     property?.title || t("property.detail.pageTitle"),
     property?.description || t("property.detail.pageDescription"),
+    property ? coverImage(property) : "",
   );
 
   useEffect(() => {
@@ -100,6 +108,28 @@ export default function PropertyDetailPage() {
 
   const isActive = isAvailable(property);
 
+  useEffect(() => {
+    if (!property?.id || property.status !== "disponible") return;
+    const month = currentMonthKey();
+    const storageKey = `manuela:vista:${month}:${property.id}`;
+    if (countedView.current === storageKey) return;
+
+    try {
+      if (window.sessionStorage.getItem(storageKey)) {
+        countedView.current = storageKey;
+        return;
+      }
+      window.sessionStorage.setItem(storageKey, "1");
+    } catch {
+      // Si sessionStorage está bloqueado, el guard de React evita duplicados.
+    }
+
+    countedView.current = storageKey;
+    registerPropertyView(property.id).catch((viewError) => {
+      console.warn("No se pudo registrar la visita:", viewError);
+    });
+  }, [property?.id, property?.status]);
+
   const manuWhatsappHref = useMemo(() => {
     if (!property || !isActive || !isWhatsappConfigured) return "";
     const propertyUrl = `${window.location.origin}/propiedad/${encodeURIComponent(property.id)}`;
@@ -112,12 +142,15 @@ export default function PropertyDetailPage() {
   }, [property, isActive, t]);
 
   const handleShare = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      toast.success(t("property.detail.shareCopied"));
-    } catch {
-      toast.info(t("property.detail.shareManual"));
-    }
+    if (!property) return;
+    const result = await shareContent({
+      title: property.title,
+      text: t("property.share.text", { title: property.title }),
+      url: buildPropertyShareUrl(property.id),
+    });
+
+    if (result === "copied") toast.success(t("property.share.copied"));
+    if (result === "manual") toast.info(t("property.share.manual"));
   };
 
   if (loading) return <PageLoader message={t("property.detail.loading")} />;
@@ -221,11 +254,12 @@ export default function PropertyDetailPage() {
                 )}
                 <button
                   type="button"
-                  className="icon-button"
+                  className="btn btn-outline-secondary btn-sm property-summary__share"
                   onClick={handleShare}
                   aria-label={t("property.detail.shareAria")}
                 >
-                  <Share2 size={18} aria-hidden="true" />
+                  <Share2 size={16} aria-hidden="true" />
+                  {t("property.detail.share")}
                 </button>
               </div>
 
@@ -271,7 +305,7 @@ export default function PropertyDetailPage() {
                   <a
                     href={manuWhatsappHref}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="btn btn-outline-secondary w-100"
                   >
                     <MessageCircle size={17} aria-hidden="true" />
@@ -366,6 +400,17 @@ export default function PropertyDetailPage() {
                 >
                   <MessageCircle size={17} aria-hidden="true" />
                   {t("property.detail.talkToManu.cta")}
+                </a>
+                <a
+                  href={mailtoUrl(
+                    t("property.detail.talkToManu.emailSubject", {
+                      title: property.title,
+                    }),
+                  )}
+                  className="manu-contact-card__email"
+                >
+                  <Mail size={15} aria-hidden="true" />
+                  {site.email}
                 </a>
               </section>
             )}

@@ -15,6 +15,7 @@ const messageKeys = {
   "auth/operation-not-allowed": "errors.auth.operationNotAllowed",
   "auth/requires-login": "errors.auth.requiresLogin",
   "auth/invalid-role": "errors.invalidRole",
+  "auth/invalid-register-data": "errors.auth.invalidRegisterData",
   "permission-denied": "errors.permissionDenied",
   unavailable: "errors.unavailable",
   "storage/unauthorized": "errors.storage.unauthorized",

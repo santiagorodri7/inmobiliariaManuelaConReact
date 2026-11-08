@@ -1,0 +1,350 @@
+- generic [ref=e2]:
+  - link "Skip to content" [ref=e538] [cursor=pointer]:
+    - /url: "#contenido"
+  - banner [ref=e12]:
+    - generic [ref=e13]:
+      - link "Manuela Bermúdez, go to home" [ref=e539] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e18]:
+          - generic [ref=e19]: Manuela Bermúdez
+          - generic [ref=e20]: Real estate advisor
+      - generic [ref=e21]:
+        - link "Manuela's Instagram" [ref=e540] [cursor=pointer]:
+          - /url: https://www.instagram.com/manubermu_realtor
+          - generic [aria-hidden] [ref=e23]: 
+        - group "Language" [ref=e541]:
+          - button "Español" [ref=e30] [cursor=pointer]: ES
+          - button "English" [active] [pressed] [ref=e31] [cursor=pointer]: EN
+        - button "Open menu" [ref=e542] [cursor=pointer]
+  - main [ref=e34]:
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - paragraph [ref=e38]: Manuela Bermúdez · Real estate advisor
+        - heading [level=1] [ref=e543]:
+          - text: A place thatfeels like
+          - emphasis [ref=e40]: yours.
+        - paragraph [ref=e41]: Properties for sale and rent, with close guidance so you can decide calmly and clearly.
+        - generic [ref=e42]:
+          - button "Explore properties" [ref=e544] [cursor=pointer]
+          - link "Talk to Manuela" [ref=e545] [cursor=pointer]:
+            - /url: /contacto
+        - list [ref=e50]:
+          - listitem [ref=e51]: Sale and rent
+          - listitem [ref=e55]: Contact via WhatsApp
+          - listitem [ref=e58]: Personal guidance
+      - generic [ref=e71]:
+        - strong [ref=e72]: Available properties
+        - generic [ref=e73]: Browse the published properties.
+    - generic [ref=e76]:
+      - generic [ref=e77]:
+        - generic [ref=e78]:
+          - paragraph [ref=e79]: Find your next place
+          - heading "What are you looking for?" [level=2] [ref=e546]
+        - generic [ref=e81]: 3 published properties
+      - search [ref=e82]:
+        - group "Transaction" [ref=e547]:
+          - button "All" [ref=e548] [cursor=pointer]
+          - button "Sale" [ref=e549] [cursor=pointer]
+          - button "Rent" [ref=e550] [cursor=pointer]
+        - generic [ref=e87]:
+          - generic [ref=e88]:
+            - generic [ref=e89]: Location
+            - searchbox "Search by location or keyword" [ref=e551]
+          - generic [ref=e95]:
+            - generic [ref=e96]: Type
+            - combobox "Property type" [ref=e552]:
+              - option "All" [selected]
+              - option "House"
+              - option "Apartment"
+              - option "Studio apartment"
+              - option "Office"
+              - option "Commercial space"
+              - option "Land"
+              - option "Country property"
+          - generic [ref=e98]:
+            - generic [ref=e99]: Bedrooms
+            - combobox "Minimum bedrooms" [ref=e553]:
+              - option "Any" [selected]
+              - option "1 or more"
+              - option "2 or more"
+              - option "3 or more"
+              - option "4 or more"
+          - generic [ref=e101]:
+            - generic [ref=e102]: Max. budget
+            - generic [ref=e103]:
+              - generic [ref=e104]: $
+              - spinbutton "Maximum budget in pesos" [ref=e554]
+          - button "Search" [ref=e555] [cursor=pointer]
+    - generic [ref=e109]:
+      - generic [ref=e110]:
+        - generic [ref=e111]:
+          - paragraph [ref=e112]: Available listings
+          - heading "Properties to start imagining" [level=2] [ref=e556]
+          - paragraph [ref=e114]: Published properties. If something interests you, request information and we will review every detail with you.
+        - generic [ref=e115]: 3 results
+      - paragraph [ref=e117]: Select up to 10 properties to share them together.
+      - generic [ref=e118]:
+        - article [ref=e119]:
+          - checkbox "Select Venta de Apartamento Sabaneta to share" [ref=e557]
+          - link "View Venta de Apartamento Sabaneta" [ref=e558] [cursor=pointer]:
+            - /url: /propiedad/prop_1794014788048_b6td1ixh
+            - generic [ref=e124]: Image unavailable
+            - generic [ref=e129]: Sale
+          - generic [ref=e130]:
+            - generic [ref=e131]:
+              - strong [ref=e132]: COP 45,000,000
+              - generic [ref=e133]: COP
+            - heading [level=3] [ref=e134]:
+              - link "Venta de Apartamento Sabaneta" [ref=e135] [cursor=pointer]:
+                - /url: /propiedad/prop_1794014788048_b6td1ixh
+            - paragraph [ref=e136]: Sabaneta
+            - paragraph [ref=e140]: aaprtamento en la parte baja de sabanea
+            - list "Features" [ref=e559]:
+              - listitem [ref=e560]: 4 bed.
+              - listitem [ref=e564]: 2 bath.
+              - listitem [ref=e568]: 1 parking
+              - listitem [ref=e155]: 80 m²
+          - generic [ref=e161]:
+            - generic [ref=e162]: Apartment
+            - link "View property" [ref=e573] [cursor=pointer]:
+              - /url: /propiedad/prop_1794014788048_b6td1ixh
+        - article [ref=e167]:
+          - checkbox "Select Venta de aparta estudio to share" [ref=e574]
+          - link "View Venta de aparta estudio" [ref=e575] [cursor=pointer]:
+            - /url: /propiedad/prop_1793994535311_06mvhk7w
+            - img "Venta de aparta estudio" [ref=e172]
+            - generic [ref=e173]: Sale
+          - generic [ref=e174]:
+            - generic [ref=e175]:
+              - strong [ref=e176]: COP 300,000,000
+              - generic [ref=e177]: COP
+            - heading [level=3] [ref=e178]:
+              - link "Venta de aparta estudio" [ref=e179] [cursor=pointer]:
+                - /url: /propiedad/prop_1793994535311_06mvhk7w
+            - paragraph [ref=e180]: Sabaneta
+            - paragraph [ref=e184]: Aparta estudio ubicado cerca a Daviarena
+            - list "Features" [ref=e576]:
+              - listitem [ref=e577]: 1 bed.
+              - listitem [ref=e581]: 1 bath.
+              - listitem [ref=e585]: 1 parking
+              - listitem [ref=e199]: 75 m²
+          - generic [ref=e205]:
+            - generic [ref=e206]: Apartment
+            - link "View property" [ref=e590] [cursor=pointer]:
+              - /url: /propiedad/prop_1793994535311_06mvhk7w
+        - article [ref=e211]:
+          - checkbox "Select Finca estilo chino to share" [ref=e591]
+          - link "View Finca estilo chino" [ref=e592] [cursor=pointer]:
+            - /url: /propiedad/prop_1793496053581_i6rqjvh9
+            - img "Finca estilo chino" [ref=e216]
+            - generic [ref=e217]: Sale
+          - generic [ref=e218]:
+            - generic [ref=e219]:
+              - strong [ref=e220]: COP 65,000,000
+              - generic [ref=e221]: COP
+            - heading [level=3] [ref=e222]:
+              - link "Finca estilo chino" [ref=e223] [cursor=pointer]:
+                - /url: /propiedad/prop_1793496053581_i6rqjvh9
+            - paragraph [ref=e224]: La estrella
+            - paragraph [ref=e228]: Casa recientemente remodelada con ambios luminicois
+            - list "Features" [ref=e593]:
+              - listitem [ref=e594]: 5 bed.
+              - listitem [ref=e598]: 3 bath.
+              - listitem [ref=e602]: 7 parking
+              - listitem [ref=e243]: 120 m²
+          - generic [ref=e249]:
+            - generic [ref=e250]: House
+            - link "View property" [ref=e607] [cursor=pointer]:
+              - /url: /propiedad/prop_1793496053581_i6rqjvh9
+    - region [ref=e608]:
+      - generic [ref=e256]:
+        - generic [ref=e257]:
+          - generic [ref=e258]:
+            - paragraph [ref=e259]: Most viewed
+            - heading "Recently published" [level=2] [ref=e609]
+            - paragraph [ref=e261]: There are not enough views this month yet. Here are the most recent properties so you can start exploring.
+          - generic [ref=e262]: Up to 6 properties
+        - generic [ref=e263]:
+          - article [ref=e264]:
+            - link "View Venta de Apartamento Sabaneta" [ref=e610] [cursor=pointer]:
+              - /url: /propiedad/prop_1794014788048_b6td1ixh
+              - generic [ref=e266]: Image unavailable
+              - generic [ref=e271]: Sale
+            - generic [ref=e272]:
+              - generic [ref=e273]:
+                - strong [ref=e274]: COP 45,000,000
+                - generic [ref=e275]: COP
+              - heading [level=3] [ref=e276]:
+                - link "Venta de Apartamento Sabaneta" [ref=e277] [cursor=pointer]:
+                  - /url: /propiedad/prop_1794014788048_b6td1ixh
+              - paragraph [ref=e278]: Sabaneta
+              - paragraph [ref=e282]: aaprtamento en la parte baja de sabanea
+              - list "Features" [ref=e611]:
+                - listitem [ref=e612]: 4 bed.
+                - listitem [ref=e616]: 2 bath.
+                - listitem [ref=e620]: 1 parking
+                - listitem [ref=e297]: 80 m²
+            - generic [ref=e303]:
+              - generic [ref=e304]: Apartment
+              - link "View property" [ref=e625] [cursor=pointer]:
+                - /url: /propiedad/prop_1794014788048_b6td1ixh
+          - article [ref=e309]:
+            - link "View Venta de aparta estudio" [ref=e626] [cursor=pointer]:
+              - /url: /propiedad/prop_1793994535311_06mvhk7w
+              - img "Venta de aparta estudio" [ref=e311]
+              - generic [ref=e312]: Sale
+            - generic [ref=e313]:
+              - generic [ref=e314]:
+                - strong [ref=e315]: COP 300,000,000
+                - generic [ref=e316]: COP
+              - heading [level=3] [ref=e317]:
+                - link "Venta de aparta estudio" [ref=e318] [cursor=pointer]:
+                  - /url: /propiedad/prop_1793994535311_06mvhk7w
+              - paragraph [ref=e319]: Sabaneta
+              - paragraph [ref=e323]: Aparta estudio ubicado cerca a Daviarena
+              - list "Features" [ref=e627]:
+                - listitem [ref=e628]: 1 bed.
+                - listitem [ref=e632]: 1 bath.
+                - listitem [ref=e636]: 1 parking
+                - listitem [ref=e338]: 75 m²
+            - generic [ref=e344]:
+              - generic [ref=e345]: Apartment
+              - link "View property" [ref=e641] [cursor=pointer]:
+                - /url: /propiedad/prop_1793994535311_06mvhk7w
+          - article [ref=e350]:
+            - link "View Finca estilo chino" [ref=e642] [cursor=pointer]:
+              - /url: /propiedad/prop_1793496053581_i6rqjvh9
+              - img "Finca estilo chino" [ref=e352]
+              - generic [ref=e353]: Sale
+            - generic [ref=e354]:
+              - generic [ref=e355]:
+                - strong [ref=e356]: COP 65,000,000
+                - generic [ref=e357]: COP
+              - heading [level=3] [ref=e358]:
+                - link "Finca estilo chino" [ref=e359] [cursor=pointer]:
+                  - /url: /propiedad/prop_1793496053581_i6rqjvh9
+              - paragraph [ref=e360]: La estrella
+              - paragraph [ref=e364]: Casa recientemente remodelada con ambios luminicois
+              - list "Features" [ref=e643]:
+                - listitem [ref=e644]: 5 bed.
+                - listitem [ref=e648]: 3 bath.
+                - listitem [ref=e652]: 7 parking
+                - listitem [ref=e379]: 120 m²
+            - generic [ref=e385]:
+              - generic [ref=e386]: House
+              - link "View property" [ref=e657] [cursor=pointer]:
+                - /url: /propiedad/prop_1793496053581_i6rqjvh9
+    - generic [ref=e392]:
+      - generic [ref=e393]:
+        - paragraph [ref=e394]: How I can help
+        - heading "Less noise, clearer decisions" [level=2] [ref=e658]
+        - paragraph [ref=e396]: It's not about showing you every property on the market, but finding the ones that make sense for you.
+      - generic [ref=e397]:
+        - article [ref=e398]:
+          - heading "Find your next place" [level=3] [ref=e659]
+          - paragraph [ref=e404]: We filter options based on how you live, your budget, and the area you have in mind.
+          - link "Learn about the service" [ref=e660] [cursor=pointer]:
+            - /url: /servicios
+        - article [ref=e409]:
+          - heading "Sell with clarity" [level=3] [ref=e661]
+          - paragraph [ref=e417]: We organize the listing and negotiation so the process is predictable.
+          - link "Learn about the service" [ref=e662] [cursor=pointer]:
+            - /url: /servicios
+        - article [ref=e422]:
+          - heading "Rent without noise" [level=3] [ref=e663]
+          - paragraph [ref=e428]: We guide you through the selection, review of terms, and handover of the property.
+          - link "Learn about the service" [ref=e664] [cursor=pointer]:
+            - /url: /servicios
+    - generic [ref=e436]:
+      - paragraph [ref=e437]: A more human approach
+      - heading "Moving through the real estate market doesn't have to be confusing." [level=2] [ref=e665]
+      - paragraph [ref=e439]: "My job is to translate the process into simple decisions: what to look at, what to ask, and when to move forward. With clear information and no pressure, so you can choose a place that truly feels like yours."
+      - list [ref=e440]:
+        - listitem [ref=e441]: Direct communication throughout the process.
+        - listitem [ref=e444]: Support with negotiation and closing.
+        - listitem [ref=e447]: Focus on your priorities, not on rushing.
+      - link "Learn more about Manuela" [ref=e666] [cursor=pointer]:
+        - /url: /nosotros
+    - generic [ref=e454]:
+      - generic [ref=e455]:
+        - generic [ref=e456]:
+          - paragraph [ref=e457]: The process
+          - heading "Three steps, one ongoing conversation" [level=2] [ref=e667]
+        - paragraph [ref=e459]: Every transaction is different. These are the moments we always take care of with you.
+      - generic [ref=e460]:
+        - article [ref=e461]:
+          - generic [ref=e462]: "01"
+          - heading "We talk" [level=3] [ref=e668]
+          - paragraph [ref=e464]: We listen to what you need, what matters to you about the place, and what your real budget is.
+        - article [ref=e465]:
+          - generic [ref=e466]: "02"
+          - heading "We select" [level=3] [ref=e669]
+          - paragraph [ref=e468]: We filter properties that fit and share the information you need with you.
+        - article [ref=e469]:
+          - generic [ref=e470]: "03"
+          - heading "We support you" [level=3] [ref=e670]
+          - paragraph [ref=e472]: We review terms, negotiation, and closing with you, with constant communication.
+    - generic [ref=e474]:
+      - generic [ref=e475]:
+        - paragraph [ref=e476]: Let's talk
+        - heading "Tell me what you are looking for." [level=2] [ref=e671]
+        - paragraph [ref=e478]: Whether you are just starting to look or ready for the next step, we can sort through the options together.
+      - generic [ref=e479]:
+        - link "Request information" [ref=e672] [cursor=pointer]:
+          - /url: /contacto
+        - link "Message on WhatsApp" [ref=e673] [cursor=pointer]:
+          - /url: https://wa.me/573042548683?text=Hi%20Manuela%20Berm%C3%BAdez%2C%20I%20would%20like%20real%20estate%20guidance.
+  - contentinfo [ref=e486]:
+    - generic [ref=e487]:
+      - img "Panoramic view of Medellín at sunset." [ref=e674]
+      - paragraph [ref=e491]: Medellín, Antioquia
+    - generic [ref=e492]:
+      - generic [ref=e493]:
+        - link "Manuela Bermúdez, go to home" [ref=e675] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e498]:
+            - generic [ref=e499]: Manuela Bermúdez
+            - generic [ref=e500]: Real estate advisor
+        - paragraph [ref=e501]: Close real estate guidance to find, sell, or rent a place that feels like yours.
+      - generic [ref=e502]:
+        - heading "Explore" [level=2] [ref=e676]
+        - link "Home" [ref=e677] [cursor=pointer]:
+          - /url: /
+        - link "Properties" [ref=e678] [cursor=pointer]:
+          - /url: /#propiedades
+        - link "Services" [ref=e679] [cursor=pointer]:
+          - /url: /servicios
+        - link "About" [ref=e680] [cursor=pointer]:
+          - /url: /nosotros
+        - link "Contact" [ref=e681] [cursor=pointer]:
+          - /url: /contacto
+      - generic [ref=e509]:
+        - heading "Account" [level=2] [ref=e682]
+        - link "Sign in" [ref=e683] [cursor=pointer]:
+          - /url: /login
+        - link "Create account" [ref=e684] [cursor=pointer]:
+          - /url: /registro?rol=Comprador
+        - link "List a property" [ref=e685] [cursor=pointer]:
+          - /url: /registro?rol=Vendedor
+        - link "Buyer dashboard" [ref=e686] [cursor=pointer]:
+          - /url: /comprador
+      - generic [ref=e515]:
+        - heading "Let's talk" [level=2] [ref=e687]
+        - link "manuelabermudezrealestate@gmail.com" [ref=e517] [cursor=pointer]:
+          - /url: mailto:manuelabermudezrealestate@gmail.com
+        - link "+57 304 254 8683" [ref=e521] [cursor=pointer]:
+          - /url: tel:+573042548683
+        - link "WhatsApp" [ref=e524] [cursor=pointer]:
+          - /url: https://wa.me/573042548683?text=Hi%20Manuela%20Berm%C3%BAdez%2C%20I%20would%20like%20real%20estate%20guidance.
+        - link "Manuela's Instagram" [ref=e688] [cursor=pointer]:
+          - /url: https://www.instagram.com/manubermu_realtor
+          - generic [aria-hidden] [ref=e531]: 
+          - text: "@manubermu_realtor"
+        - generic [ref=e532]: Message me on WhatsApp any time.
+    - generic [ref=e533]:
+      - paragraph [ref=e534]: © 2026 Manuela Bermúdez. All rights reserved.
+      - generic [ref=e535]:
+        - link "Privacy policy" [ref=e689] [cursor=pointer]:
+          - /url: /privacidad
+        - link "Contact" [ref=e690] [cursor=pointer]:
+          - /url: /contacto

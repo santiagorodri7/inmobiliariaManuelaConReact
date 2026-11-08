@@ -10,17 +10,26 @@ import {
   KeyRound,
   MessageCircle,
   Search,
+  Share2,
   Sparkles,
 } from "lucide-react";
 import PropertyFilters from "../../components/property/PropertyFilters.jsx";
 import PropertyGrid from "../../components/property/PropertyGrid.jsx";
 import TestimonialGrid from "../../components/testimonials/TestimonialGrid.jsx";
 import MediaImage from "../../components/ui/MediaImage.jsx";
+import { useToast } from "../../components/ui/Toast.jsx";
+import { useMostViewedProperties } from "../../hooks/useMostViewedProperties.js";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { useProperties } from "../../hooks/useProperties.js";
 import { useTestimonials } from "../../hooks/useTestimonials.js";
 import { useI18n } from "../../i18n/I18nContext.jsx";
+import { MAX_MOST_VIEWED } from "../../services/propertyViewsService.js";
 import { filterProperties, propertySearchSummary } from "../../utils/property.js";
+import {
+  buildSelectionShareUrl,
+  MAX_SHARE_SELECTION,
+  shareContent,
+} from "../../utils/share.js";
 import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
 import { site } from "../../config/site.js";
 
@@ -42,12 +51,16 @@ const steps = ["talk", "select", "support"];
 
 export default function HomePage() {
   const { t } = useI18n();
+  const toast = useToast();
   usePageTitle(t("home.pageTitle"), t("home.pageDescription"));
 
   const { properties, loading, error, reload } = useProperties({ publicOnly: true });
   const { testimonials, loading: testimonialsLoading } = useTestimonials();
+  const { properties: viewedProperties, loading: viewedLoading } =
+    useMostViewedProperties(MAX_MOST_VIEWED);
   const [filters, setFilters] = useState(initialFilters);
   const [showAll, setShowAll] = useState(false);
+  const [selectedIds, setSelectedIds] = useState([]);
 
   const filtered = useMemo(
     () => filterProperties(properties, filters),
@@ -56,6 +69,10 @@ export default function HomePage() {
   const visible = showAll ? filtered : filtered.slice(0, 6);
   const hasFilters = Object.values(filters).some(Boolean);
   const summary = propertySearchSummary(filters);
+  const featured = viewedProperties.length
+    ? viewedProperties
+    : properties.slice(0, MAX_MOST_VIEWED);
+  const usingRecentFallback = viewedProperties.length === 0;
 
   const updateFilter = (field, value) => {
     setFilters((current) => ({ ...current, [field]: value }));
@@ -70,6 +87,37 @@ export default function HomePage() {
   const handleSearch = (event) => {
     event.preventDefault();
     document.getElementById("propiedades")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const toggleSelection = (id) => {
+    if (!selectedIds.includes(id) && selectedIds.length >= MAX_SHARE_SELECTION) {
+      toast.info(
+        t("property.selection.limit", { max: MAX_SHARE_SELECTION }),
+      );
+      return;
+    }
+
+    setSelectedIds((current) =>
+      current.includes(id)
+        ? current.filter((item) => item !== id)
+        : [...current, id],
+    );
+  };
+
+  const handleShareSelection = async () => {
+    const url = buildSelectionShareUrl(selectedIds);
+    if (!url) return;
+
+    const result = await shareContent({
+      title: t("property.selection.shareTitle"),
+      text: t("property.selection.shareText", {
+        count: selectedIds.length,
+      }),
+      url,
+    });
+
+    if (result === "copied") toast.success(t("property.share.copied"));
+    if (result === "manual") toast.info(t("property.share.manual"));
   };
 
   return (
@@ -183,11 +231,47 @@ export default function HomePage() {
             </div>
           )}
 
+          <p className="property-selection-hint">
+            {t("property.selection.hint", { max: MAX_SHARE_SELECTION })}
+          </p>
+
+          {selectedIds.length > 0 && (
+            <div
+              className="selection-toolbar"
+              role="region"
+              aria-label={t("property.selection.toolbar")}
+            >
+              <span className="selection-toolbar__count" aria-live="polite">
+                {t("property.selection.count", { count: selectedIds.length })}
+              </span>
+              <div className="selection-toolbar__actions">
+                <button
+                  type="button"
+                  className="selection-toolbar__clear"
+                  onClick={() => setSelectedIds([])}
+                >
+                  {t("property.selection.clear")}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary btn-sm"
+                  onClick={handleShareSelection}
+                >
+                  <Share2 size={15} aria-hidden="true" />
+                  {t("property.selection.share")}
+                </button>
+              </div>
+            </div>
+          )}
+
           <PropertyGrid
             properties={visible}
             loading={loading}
             error={error}
             onRetry={reload}
+            selectable
+            selectedIds={selectedIds}
+            onToggleSelect={toggleSelection}
             emptyTitle={
               hasFilters
                 ? t("home.inventory.emptyFilteredTitle")
@@ -216,6 +300,36 @@ export default function HomePage() {
           )}
         </div>
       </section>
+
+      {(viewedLoading || featured.length > 0) && (
+        <section className="section section--most-viewed" aria-labelledby="most-viewed-title">
+          <div className="shell">
+            <div className="section-heading section-heading--split">
+              <div>
+                <p className="eyebrow">{t("home.mostViewed.eyebrow")}</p>
+                <h2 id="most-viewed-title">
+                  {usingRecentFallback
+                    ? t("home.mostViewed.fallbackTitle")
+                    : t("home.mostViewed.title")}
+                </h2>
+                <p>
+                  {usingRecentFallback
+                    ? t("home.mostViewed.fallbackDescription")
+                    : t("home.mostViewed.description")}
+                </p>
+              </div>
+              <span className="section-heading__note">
+                {t("home.mostViewed.note", { count: MAX_MOST_VIEWED })}
+              </span>
+            </div>
+            <PropertyGrid
+              properties={featured}
+              loading={viewedLoading || loading}
+              skeletonCount={3}
+            />
+          </div>
+        </section>
+      )}
 
       <section className="section section--sand" id="servicios">
         <div className="shell">
@@ -330,7 +444,7 @@ export default function HomePage() {
                   t("home.whatsappMessage", { name: site.name }),
                 )}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="btn btn-ghost btn-lg"
               >
                 <MessageCircle size={18} aria-hidden="true" />

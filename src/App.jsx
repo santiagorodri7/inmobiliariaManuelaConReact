@@ -22,6 +22,9 @@ const PrivacyPage = lazy(() => import("./pages/public/PrivacyPage.jsx"));
 const PropertyDetailPage = lazy(
   () => import("./pages/public/PropertyDetailPage.jsx"),
 );
+const SharedPropertiesPage = lazy(
+  () => import("./pages/public/SharedPropertiesPage.jsx"),
+);
 const NotFoundPage = lazy(() => import("./pages/public/NotFoundPage.jsx"));
 const LoginPage = lazy(() => import("./pages/auth/LoginPage.jsx"));
 const RegisterPage = lazy(() => import("./pages/auth/RegisterPage.jsx"));
@@ -73,7 +76,7 @@ export default function App() {
                   <Route path="/propiedad/:id" element={<PropertyDetailPage />} />
                   <Route
                     path="/propiedades"
-                    element={<Navigate to="/#propiedades" replace />}
+                    element={<SharedPropertiesPage />}
                   />
                   <Route path="*" element={<NotFoundPage />} />
                 </Route>

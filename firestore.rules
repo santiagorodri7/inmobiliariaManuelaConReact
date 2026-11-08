@@ -11,24 +11,45 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function userDocument(uid) {
+    function canonicalUserDocument(uid) {
+      return /databases/$(database)/documents/users/$(uid);
+    }
+
+    function legacyUserDocument(uid) {
       return /databases/$(database)/documents/usuarios/$(uid);
     }
 
-    function currentUserData() {
-      return get(userDocument(request.auth.uid)).data;
+    function hasCanonicalUser(uid) {
+      return exists(canonicalUserDocument(uid));
     }
 
-    // Acepta los valores heredados ("Administrador") mientras se normaliza
-    // la colección. El cliente ya los trata como Admin.
+    // El rol puede vivir en la colección nueva `users` o en la heredada
+    // `usuarios`. Si existe el documento nuevo, ese rol tiene prioridad.
     function isAdmin() {
-      return isSignedIn() && currentUserData().rol in ['Admin', 'Administrador'];
+      return isSignedIn() && (
+        (hasCanonicalUser(request.auth.uid)
+          && get(canonicalUserDocument(request.auth.uid)).data.rol
+            in ['Admin', 'Administrador'])
+        || (!hasCanonicalUser(request.auth.uid)
+          && exists(legacyUserDocument(request.auth.uid))
+          && get(legacyUserDocument(request.auth.uid)).data.rol
+            in ['Admin', 'Administrador'])
+      );
+    }
+
+    function isActiveProfile(path) {
+      return exists(path) && (
+        !get(path).data.keys().hasAny(['activo'])
+        || get(path).data.activo != false
+      );
     }
 
     function isActiveUser() {
       return isSignedIn() && (
-        !currentUserData().keys().hasAny(['activo'])
-        || currentUserData().activo != false
+        (hasCanonicalUser(request.auth.uid)
+          && isActiveProfile(canonicalUserDocument(request.auth.uid)))
+        || (!hasCanonicalUser(request.auth.uid)
+          && isActiveProfile(legacyUserDocument(request.auth.uid)))
       );
     }
 
@@ -40,9 +61,48 @@ service cloud.firestore {
       return value is string && value.size() >= min && value.size() <= max;
     }
 
-    function hasValidLanguage(data) {
-      return !data.keys().hasAny(['idioma'])
-        || data.idioma in ['es', 'en'];
+    function validDigits(value, min, max) {
+      return value is string
+        && value.size() >= min
+        && value.size() <= max
+        && value.matches('^[0-9]+$');
+    }
+
+    function validDateString(value) {
+      return value is string && value.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
+    }
+
+    function validFinancialData(data) {
+      return data.estadoCivil in [
+          'soltero',
+          'casado',
+          'union_libre',
+          'divorciado',
+          'viudo'
+        ]
+        && data.tipoContrato in [
+          'indefinido',
+          'fijo',
+          'prestacion_servicios',
+          'independiente',
+          'pensionado',
+          'otro'
+        ]
+        && data.ingresosMensuales is number
+        && data.ingresosMensuales > 0
+        && data.ingresosExtras is number
+        && data.ingresosExtras >= 0
+        && data.aceptaTratamiento == true;
+    }
+
+    function validRegistrationData(data) {
+      return validText(data.nombre, 2, 120)
+        && validDigits(data.cedula, 6, 12)
+        && validDateString(data.fechaNacimiento)
+        && validText(data.email, 5, 180)
+        && data.rol in ['Comprador', 'Vendedor']
+        && data.activo == true
+        && validFinancialData(data);
     }
 
     // Solo los inmuebles publicados son legibles sin autenticación.
@@ -57,9 +117,107 @@ service cloud.firestore {
     }
 
     // ---------------------------------------------------------------------
-    // usuarios: perfil privado. Solo el propio usuario o un administrador.
-    // `idioma` es opcional y solo admite 'es' o 'en'. Los documentos antiguos
-    // sin el campo se interpretan como español en el cliente.
+    // users: perfil canónico. La cédula y los ingresos son datos sensibles:
+    // solo el propio usuario o un administrador pueden leerlos.
+    // ---------------------------------------------------------------------
+
+    match /users/{userId} {
+      allow read: if isSignedIn()
+        && (request.auth.uid == userId || isAdmin());
+
+      allow create: if isSignedIn()
+        && request.auth.uid == userId
+        && request.resource.data.email == request.auth.token.email
+        && validRegistrationData(request.resource.data)
+        && request.resource.data.keys().hasOnly([
+          'nombre',
+          'cedula',
+          'fechaNacimiento',
+          'email',
+          'telefono',
+          'direccion',
+          'avatar',
+          'rol',
+          'activo',
+          'estadoCivil',
+          'tipoContrato',
+          'ingresosMensuales',
+          'ingresosExtras',
+          'aceptaTratamiento',
+          'fechaAceptacionTratamiento',
+          'preferences',
+          'fechaRegistro',
+          'createdAt',
+          'updatedAt'
+        ]);
+
+      // El usuario puede editar datos de contacto y financieros, pero nunca
+      // su cédula, correo, rol, estado activo ni el consentimiento.
+      allow update: if request.auth.uid == userId
+        && (!resource.data.keys().hasAny(['activo']) || resource.data.activo != false)
+        && changedFields().hasOnly([
+          'nombre',
+          'telefono',
+          'direccion',
+          'avatar',
+          'fechaNacimiento',
+          'estadoCivil',
+          'tipoContrato',
+          'ingresosMensuales',
+          'ingresosExtras',
+          'preferences',
+          'updatedAt'
+        ])
+        && validText(request.resource.data.nombre, 2, 120)
+        && validDigits(request.resource.data.cedula, 6, 12)
+        && validDateString(request.resource.data.fechaNacimiento)
+        && validFinancialData(request.resource.data)
+        && request.resource.data.cedula == resource.data.cedula
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.rol == resource.data.rol
+        && request.resource.data.activo == resource.data.activo;
+
+      allow update: if isAdmin()
+        && changedFields().hasOnly([
+          'nombre',
+          'cedula',
+          'fechaNacimiento',
+          'email',
+          'telefono',
+          'direccion',
+          'avatar',
+          'rol',
+          'activo',
+          'estadoCivil',
+          'tipoContrato',
+          'ingresosMensuales',
+          'ingresosExtras',
+          'aceptaTratamiento',
+          'fechaAceptacionTratamiento',
+          'preferences',
+          'deactivatedAt',
+          'deactivatedBy',
+          'fechaRegistro',
+          'updatedAt'
+        ])
+        && (!request.resource.data.keys().hasAny(['rol'])
+          || request.resource.data.rol in ['Admin', 'Vendedor', 'Comprador'])
+        && (!request.resource.data.keys().hasAny(['cedula'])
+          || validDigits(request.resource.data.cedula, 6, 12))
+        && (!request.resource.data.keys().hasAny(['ingresosMensuales'])
+          || (request.resource.data.ingresosMensuales is number
+            && request.resource.data.ingresosMensuales >= 0))
+        && (!request.resource.data.keys().hasAny(['ingresosExtras'])
+          || (request.resource.data.ingresosExtras is number
+            && request.resource.data.ingresosExtras >= 0));
+
+      allow delete: if isAdmin();
+    }
+
+    // ---------------------------------------------------------------------
+    // usuarios: colección heredada. Se mantiene para que las cuentas y el
+    // panel administrativo anteriores sigan funcionando. `idioma` ya no se
+    // escribe ni se valida: la preferencia vive solo en localStorage.
     // ---------------------------------------------------------------------
 
     match /usuarios/{userId} {
@@ -72,7 +230,6 @@ service cloud.firestore {
         && request.resource.data.rol in ['Comprador', 'Vendedor']
         && validText(request.resource.data.nombre, 2, 120)
         && validText(request.resource.data.email, 5, 180)
-        && hasValidLanguage(request.resource.data)
         && request.resource.data.keys().hasOnly([
           'nombre',
           'cedula',
@@ -83,7 +240,6 @@ service cloud.firestore {
           'avatar',
           'rol',
           'activo',
-          'idioma',
           'fechaRegistro',
           'createdAt',
           'updatedAt'
@@ -99,15 +255,13 @@ service cloud.firestore {
           'direccion',
           'avatar',
           'fechaNacimiento',
-          'idioma',
           'preferences',
           'updatedAt'
         ])
         && validText(request.resource.data.nombre, 2, 120)
         && request.resource.data.email == resource.data.email
         && request.resource.data.rol == resource.data.rol
-        && request.resource.data.activo == resource.data.activo
-        && hasValidLanguage(request.resource.data);
+        && request.resource.data.activo == resource.data.activo;
 
       allow update: if isAdmin()
         && changedFields().hasOnly([
@@ -119,7 +273,11 @@ service cloud.firestore {
           'avatar',
           'rol',
           'activo',
-          'idioma',
+          'estadoCivil',
+          'tipoContrato',
+          'ingresosMensuales',
+          'ingresosExtras',
+          'aceptaTratamiento',
           'deactivatedAt',
           'deactivatedBy',
           'fechaRegistro',
@@ -127,8 +285,7 @@ service cloud.firestore {
         ])
         && (!request.resource.data.keys().hasAny(['rol'])
           || !changedFields().hasAny(['rol'])
-          || request.resource.data.rol in ['Admin', 'Vendedor', 'Comprador'])
-        && hasValidLanguage(request.resource.data);
+          || request.resource.data.rol in ['Admin', 'Vendedor', 'Comprador']);
 
       allow delete: if isAdmin();
     }
@@ -176,6 +333,36 @@ service cloud.firestore {
             == resource.data.get('closedAt', null));
 
       // El borrado definitivo se ejecuta con la Cloud Function protegida.
+      allow delete: if false;
+    }
+
+    // ---------------------------------------------------------------------
+    // propertyViews: contador mensual público. Cualquiera puede crear el
+    // documento con views = 1 o sumar exactamente 1. No se permite borrar ni
+    // asignar valores arbitrarios.
+    // ---------------------------------------------------------------------
+
+    match /propertyViews/{viewId} {
+      allow read: if true;
+
+      allow create: if request.resource.data.keys().hasOnly([
+          'month',
+          'propertyId',
+          'views',
+          'updatedAt'
+        ])
+        && validText(request.resource.data.month, 7, 7)
+        && request.resource.data.month.matches('^[0-9]{4}-[0-9]{2}$')
+        && validText(request.resource.data.propertyId, 1, 128)
+        && request.resource.data.views is number
+        && request.resource.data.views == 1;
+
+      allow update: if changedFields().hasOnly(['views', 'updatedAt'])
+        && request.resource.data.month == resource.data.month
+        && request.resource.data.propertyId == resource.data.propertyId
+        && request.resource.data.views is number
+        && request.resource.data.views == resource.data.views + 1;
+
       allow delete: if false;
     }
 

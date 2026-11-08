@@ -89,7 +89,7 @@ export default function AboutPage() {
                   t("about.whatsappMessage", { name: site.name }),
                 )}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="btn btn-ghost btn-lg"
               >
                 {t("about.cta.whatsapp")}

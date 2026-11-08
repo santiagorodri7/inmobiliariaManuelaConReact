@@ -448,3 +448,45 @@
     gap: 5px;
   }
 }
+
+/* Secciones del formulario de registro ----------------------------------- */
+
+.auth-language {
+  flex-shrink: 0;
+}
+
+.auth-card .form-section {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.auth-card .form-section legend {
+  margin-bottom: 4px;
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.auth-card .form-section__hint {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+.auth-card .form-section--financial {
+  padding: 18px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--ivory-soft);
+}
+
+.auth-card .form-section--financial legend {
+  padding: 0 6px;
+}
+
+.auth-card .form-section--financial .form-grid {
+  margin-top: 4px;
+}

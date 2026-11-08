@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, Check, ShieldCheck } from "lucide-react";
 import Logo from "../ui/Logo.jsx";
+import LanguageSwitcher from "../ui/LanguageSwitcher.jsx";
 import { site } from "../../config/site.js";
 import { useI18n } from "../../i18n/I18nContext.jsx";
 
@@ -53,6 +54,7 @@ export default function AuthLayout({ children, eyebrow, title, description, poin
           <div className="auth-main__mobile-brand">
             <Logo />
           </div>
+          <LanguageSwitcher className="auth-language" />
           <Link to="/" className="auth-back">
             <ArrowLeft size={16} aria-hidden="true" />
             {t("auth.layout.back")}

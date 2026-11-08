@@ -1,5 +1,11 @@
-import { isSupportedLanguage } from "../i18n/languages.js";
 import { translate } from "../i18n/translate.js";
+import { calculateAge, parseDateInput } from "./dates.js";
+import {
+  amountValue,
+  CONTRACT_TYPE_VALUES,
+  ID_DIGITS_REGEX,
+  MARITAL_STATUS_VALUES,
+} from "../config/profileOptions.js";
 
 export const isValidEmail = (value = "") =>
   /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(String(value).trim());
@@ -13,9 +19,23 @@ export const validateRegister = (values) => {
   }
   if (!values.cedula?.trim()) {
     errors.cedula = t("validation.register.id");
+  } else if (!ID_DIGITS_REGEX.test(String(values.cedula).trim())) {
+    errors.cedula = t("validation.register.idFormat");
   }
   if (!values.fechaNacimiento) {
     errors.fechaNacimiento = t("validation.register.birth");
+  } else {
+    const birthDate = parseDateInput(values.fechaNacimiento);
+    const age = calculateAge(birthDate);
+    if (!birthDate) {
+      errors.fechaNacimiento = t("validation.register.birthInvalid");
+    } else if (birthDate.getFullYear() < 1920) {
+      errors.fechaNacimiento = t("validation.register.birthRange");
+    } else if (age === null || age < 18) {
+      errors.fechaNacimiento = t("validation.register.birthAge");
+    } else if (age > 120) {
+      errors.fechaNacimiento = t("validation.register.birthRange");
+    }
   }
   if (!isValidEmail(values.email)) {
     errors.email = t("validation.register.email");
@@ -23,8 +43,21 @@ export const validateRegister = (values) => {
   if (!values.rol) {
     errors.rol = t("validation.register.role");
   }
-  if (!isSupportedLanguage(values.idioma)) {
-    errors.idioma = t("language.invalid");
+  if (!values.estadoCivil || !MARITAL_STATUS_VALUES.includes(values.estadoCivil)) {
+    errors.estadoCivil = t("validation.register.maritalStatus");
+  }
+  if (!values.tipoContrato || !CONTRACT_TYPE_VALUES.includes(values.tipoContrato)) {
+    errors.tipoContrato = t("validation.register.contractType");
+  }
+  if (!String(values.ingresosMensuales ?? "").trim()) {
+    errors.ingresosMensuales = t("validation.register.monthlyIncomeRequired");
+  } else if (amountValue(values.ingresosMensuales) <= 0) {
+    errors.ingresosMensuales = t("validation.register.monthlyIncome");
+  }
+  if (!String(values.ingresosExtras ?? "").trim()) {
+    errors.ingresosExtras = t("validation.register.extraIncomeRequired");
+  } else if (amountValue(values.ingresosExtras) < 0) {
+    errors.ingresosExtras = t("validation.register.extraIncome");
   }
   if (!values.password || values.password.length < 8) {
     errors.password = t("validation.register.password");
@@ -32,8 +65,8 @@ export const validateRegister = (values) => {
   if (values.password !== values.confirmPassword) {
     errors.confirmPassword = t("validation.register.confirm");
   }
-  if (!values.terms) {
-    errors.terms = t("validation.register.terms");
+  if (!values.aceptaTratamiento) {
+    errors.aceptaTratamiento = t("validation.register.consent");
   }
   return errors;
 };

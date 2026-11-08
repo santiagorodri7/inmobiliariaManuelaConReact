@@ -1,5 +1,4 @@
 import {
-  AtSign,
   ExternalLink,
   Mail,
   MessageCircle,
@@ -33,7 +32,10 @@ export default function ContactPage() {
             <p className="contact-page__intro">{t("contact.info.intro")}</p>
 
             <div className="contact-channels">
-              <a href={`mailto:${site.email}`} className="contact-channel">
+              <a
+                href={`mailto:${site.email}?subject=${encodeURIComponent(t("contact.info.emailSubject"))}`}
+                className="contact-channel"
+              >
                 <span className="contact-channel__icon" aria-hidden="true">
                   <Mail size={19} />
                 </span>
@@ -61,7 +63,7 @@ export default function ContactPage() {
                     t("contact.whatsappMessage", { name: site.name }),
                   )}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="contact-channel"
                 >
                   <span className="contact-channel__icon" aria-hidden="true">
@@ -79,15 +81,15 @@ export default function ContactPage() {
                 <a
                   href={site.instagram}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="contact-channel"
                 >
                   <span className="contact-channel__icon" aria-hidden="true">
-                    <AtSign size={19} aria-hidden="true" />
+                    <i className="fab fa-instagram" />
                   </span>
                   <div>
                     <span>{t("contact.info.instagram")}</span>
-                    <strong>@manubermu_realtor</strong>
+                    <strong>{site.instagramHandle}</strong>
                   </div>
                   <ExternalLink size={15} aria-hidden="true" />
                 </a>
@@ -95,7 +97,20 @@ export default function ContactPage() {
             </div>
 
             {isWhatsappConfigured && (
-              <p className="contact-page__note">{t("site.whatsappAnytime")}</p>
+              <>
+                <a
+                  href={buildWhatsappUrl(
+                    t("contact.whatsappMessage", { name: site.name }),
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary contact-page__cta"
+                >
+                  <MessageCircle size={17} aria-hidden="true" />
+                  {t("contact.info.contactManu")}
+                </a>
+                <p className="contact-page__note">{t("site.whatsappAnytime")}</p>
+              </>
             )}
           </div>
 

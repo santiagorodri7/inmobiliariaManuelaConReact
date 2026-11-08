@@ -1,9 +1,8 @@
 import { dateInputValue } from "./dates.js";
 import { normalizeRole } from "./roles.js";
 import { safeString } from "./format.js";
-import { normalizeLanguage } from "../i18n/languages.js";
 
-export const normalizeUser = (id, data = {}, authUser = null) => {
+export const normalizeUser = (id, data = {}, authUser = null, collection = "") => {
   const email = safeString(data.email || authUser?.email);
   const nombre =
     safeString(data.nombre || data.displayName || authUser?.displayName) ||
@@ -21,7 +20,13 @@ export const normalizeUser = (id, data = {}, authUser = null) => {
     telefono: safeString(data.telefono),
     direccion: safeString(data.direccion),
     avatar: safeString(data.avatar),
-    idioma: normalizeLanguage(data.idioma),
+    collection,
+    estadoCivil: safeString(data.estadoCivil),
+    tipoContrato: safeString(data.tipoContrato),
+    ingresosMensuales: Number(data.ingresosMensuales) || 0,
+    ingresosExtras: Number(data.ingresosExtras) || 0,
+    aceptaTratamiento: data.aceptaTratamiento === true,
+    fechaAceptacionTratamiento: data.fechaAceptacionTratamiento || null,
     preferences:
       data.preferences && typeof data.preferences === "object"
         ? {

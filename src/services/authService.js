@@ -9,12 +9,7 @@ import {
   updatePassword,
   updateProfile,
 } from "firebase/auth";
-import {
-  doc,
-  getDoc,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, db, requireFirebase } from "./firebase.js";
 import { getUserProfile } from "./usersService.js";
 import { normalizeUser } from "../utils/users.js";
@@ -22,9 +17,13 @@ import { normalizeRole } from "../utils/roles.js";
 import { appError, isPermissionError } from "../utils/errors.js";
 import { isValidEmail } from "../utils/validation.js";
 import {
-  DEFAULT_LANGUAGE,
-  assertSupportedLanguage,
-} from "../i18n/languages.js";
+  amountValue,
+  CONTRACT_TYPE_VALUES,
+  ID_DIGITS_REGEX,
+  MARITAL_STATUS_VALUES,
+  onlyDigits,
+} from "../config/profileOptions.js";
+import { calculateAge } from "../utils/dates.js";
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -37,6 +36,36 @@ export const getProfileWithRetry = async (uid, attempts = 4) => {
   return null;
 };
 
+const assertRegistrationData = (values) => {
+  const cedula = onlyDigits(values.cedula);
+  const age = calculateAge(values.fechaNacimiento);
+
+  if (!values.nombre?.trim() || values.nombre.trim().length < 3) {
+    throw appError("auth/invalid-register-data");
+  }
+  if (!ID_DIGITS_REGEX.test(cedula)) {
+    throw appError("auth/invalid-register-data");
+  }
+  if (age === null || age < 18 || age > 120) {
+    throw appError("auth/invalid-register-data");
+  }
+  if (!MARITAL_STATUS_VALUES.includes(values.estadoCivil)) {
+    throw appError("auth/invalid-register-data");
+  }
+  if (!CONTRACT_TYPE_VALUES.includes(values.tipoContrato)) {
+    throw appError("auth/invalid-register-data");
+  }
+  if (amountValue(values.ingresosMensuales) <= 0) {
+    throw appError("auth/invalid-register-data");
+  }
+  if (amountValue(values.ingresosExtras) < 0) {
+    throw appError("auth/invalid-register-data");
+  }
+  if (values.aceptaTratamiento !== true) {
+    throw appError("auth/invalid-register-data");
+  }
+};
+
 export const registerUser = async ({
   nombre,
   cedula,
@@ -45,7 +74,11 @@ export const registerUser = async ({
   password,
   telefono = "",
   rol,
-  idioma,
+  estadoCivil,
+  tipoContrato,
+  ingresosMensuales,
+  ingresosExtras,
+  aceptaTratamiento,
 }) => {
   requireFirebase();
   const cleanEmail = String(email || "").trim().toLowerCase();
@@ -61,8 +94,16 @@ export const registerUser = async ({
     throw appError("auth/invalid-role");
   }
 
-  const selectedLanguage =
-    idioma === undefined ? DEFAULT_LANGUAGE : assertSupportedLanguage(idioma);
+  assertRegistrationData({
+    nombre,
+    cedula,
+    fechaNacimiento,
+    estadoCivil,
+    tipoContrato,
+    ingresosMensuales,
+    ingresosExtras,
+    aceptaTratamiento,
+  });
 
   let credential;
   try {
@@ -81,24 +122,35 @@ export const registerUser = async ({
     await updateProfile(user, { displayName: String(nombre || "").trim() });
     const payload = {
       nombre: String(nombre || "").trim(),
-      cedula: String(cedula || "").trim(),
-      fechaNacimiento: fechaNacimiento || "",
+      cedula: onlyDigits(cedula),
+      fechaNacimiento: String(fechaNacimiento || ""),
       email: cleanEmail,
       telefono: String(telefono || "").trim(),
       direccion: "",
       avatar: "",
       rol: selectedRole,
       activo: true,
-      idioma: selectedLanguage,
+      estadoCivil,
+      tipoContrato,
+      ingresosMensuales: amountValue(ingresosMensuales),
+      ingresosExtras: amountValue(ingresosExtras),
+      aceptaTratamiento: true,
+      fechaAceptacionTratamiento: serverTimestamp(),
       fechaRegistro: serverTimestamp(),
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
-    await setDoc(doc(db, "usuarios", user.uid), payload);
+    await setDoc(doc(db, "users", user.uid), payload);
     return normalizeUser(
       user.uid,
-      { ...payload, fechaRegistro: createdAt, createdAt },
+      {
+        ...payload,
+        fechaRegistro: createdAt,
+        createdAt,
+        fechaAceptacionTratamiento: createdAt,
+      },
       user,
+      "users",
     );
   } catch (error) {
     try {
@@ -168,7 +220,5 @@ export const requestPasswordReset = async (email) => {
 
 export const readProfileOnce = async (uid) => {
   if (!db) return null;
-  const snapshot = await getDoc(doc(db, "usuarios", uid));
-  if (!snapshot.exists()) return null;
-  return normalizeUser(snapshot.id, snapshot.data(), auth?.currentUser);
+  return getUserProfile(uid);
 };

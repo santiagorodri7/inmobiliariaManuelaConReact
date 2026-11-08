@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import {
   ArrowUpRight,
-  AtSign,
   Mail,
   MessageCircle,
   Phone,
@@ -78,7 +77,7 @@ export default function Footer() {
             <a
               href={buildWhatsappUrl(whatsappMessage)}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               <MessageCircle size={16} aria-hidden="true" />
               WhatsApp
@@ -86,9 +85,14 @@ export default function Footer() {
             </a>
           )}
           {site.instagram && (
-            <a href={site.instagram} target="_blank" rel="noreferrer">
-              <AtSign size={16} aria-hidden="true" />
-              @manubermu_realtor
+            <a
+              href={site.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t("nav.instagram")}
+            >
+              <i className="fab fa-instagram" aria-hidden="true" />
+              {site.instagramHandle}
             </a>
           )}
           {isWhatsappConfigured && (

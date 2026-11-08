@@ -7,7 +7,6 @@ import {
   useState,
 } from "react";
 import {
-  DEFAULT_LANGUAGE,
   detectBrowserLanguage,
   isSupportedLanguage,
   normalizeLanguage,
@@ -61,15 +60,11 @@ export function I18nProvider({ children }) {
     document.documentElement.lang = language;
   }, [language]);
 
-  const setLanguage = useCallback((nextLanguage, { persistVisitor = false } = {}) => {
+  const setLanguage = useCallback((nextLanguage) => {
     if (!isSupportedLanguage(nextLanguage)) return false;
     setLanguageState(nextLanguage);
-    if (persistVisitor) persistVisitorLanguage(nextLanguage);
+    persistVisitorLanguage(nextLanguage);
     return true;
-  }, []);
-
-  const resetToVisitorLanguage = useCallback(() => {
-    setLanguageState(readVisitorLanguage());
   }, []);
 
   const t = useCallback(
@@ -82,7 +77,6 @@ export function I18nProvider({ children }) {
       language: normalizeLanguage(language),
       locale,
       setLanguage,
-      resetToVisitorLanguage,
       t,
       operationLabel: (operation) => operationLabel(t, operation),
       statusLabel: (status) => statusLabel(t, status),
@@ -101,7 +95,7 @@ export function I18nProvider({ children }) {
       formatNumber: (amount) => formatNumber(amount, locale),
       formatArea: (area) => formatArea(area, locale),
     }),
-    [language, locale, resetToVisitorLanguage, setLanguage, t],
+    [language, locale, setLanguage, t],
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;

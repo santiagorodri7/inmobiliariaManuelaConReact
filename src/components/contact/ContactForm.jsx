@@ -92,7 +92,7 @@ export default function ContactForm({
                 t("contactForm.whatsappSent", { name: site.name }),
               )}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="btn btn-primary"
             >
               <MessageCircle size={17} aria-hidden="true" />
@@ -215,7 +215,7 @@ export default function ContactForm({
                   t("contactForm.whatsappFallback", { name: site.name }),
                 )}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="btn btn-outline-secondary btn-sm"
               >
                 <MessageCircle size={15} aria-hidden="true" />

@@ -14,6 +14,9 @@ export default function PropertyGrid({
   emptyDescription,
   emptyAction = null,
   skeletonCount = 3,
+  selectable = false,
+  selectedIds = [],
+  onToggleSelect,
 }) {
   const { t } = useI18n();
   if (loading) return <PropertyGridSkeleton count={skeletonCount} />;
@@ -39,7 +42,13 @@ export default function PropertyGrid({
   return (
     <div className="property-grid">
       {properties.map((property) => (
-        <PropertyCard key={property.id} property={property} />
+        <PropertyCard
+          key={property.id}
+          property={property}
+          selectable={selectable}
+          selected={selectedIds.includes(property.id)}
+          onToggleSelect={onToggleSelect}
+        />
       ))}
     </div>
   );
