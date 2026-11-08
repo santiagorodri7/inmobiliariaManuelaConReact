@@ -1,3 +1,5 @@
+import { buildMailtoUrl, contact } from "./contact.js";
+
 /**
  * Datos centralizados de la marca.
  *
@@ -7,14 +9,15 @@
  * TODO (legal): revisar la política de privacidad antes de publicarla.
  */
 export const site = {
-  name: "Manuela Bermúdez",
-  fullName: "Manuela Bermúdez",
-  role: "Asesora inmobiliaria",
-  tagline: "Un lugar que se sienta tuyo.",
-  email: "manuelabermudezrealestate@gmail.com",
-  phone: "+57 304 254 8683",
-  phoneRaw: "+573042548683",
-  instagram: "https://www.instagram.com/manubermu_realtor",
+  name: contact.name,
+  fullName: contact.fullName,
+  role: contact.role,
+  tagline: contact.tagline,
+  email: contact.email,
+  phone: contact.phone,
+  phoneRaw: contact.phoneRaw,
+  instagram: contact.instagram,
+  instagramHandle: contact.instagramHandle,
   facebook: "",
   linkedin: "",
 };
@@ -22,6 +25,7 @@ export const site = {
 export const siteMeta = {
   title: "Manuela Bermúdez | Asesora inmobiliaria",
   description: "Manuela Bermúdez, asesora inmobiliaria. Atención por WhatsApp.",
+  image: "/img/about-1.png",
 };
 
 export const navigation = [
@@ -98,10 +102,5 @@ export const contactSubjects = [
   "Otro asunto",
 ];
 
-export const mailtoUrl = (subject = "", body = "") => {
-  const params = new URLSearchParams();
-  if (subject) params.set("subject", subject);
-  if (body) params.set("body", body);
-  const query = params.toString();
-  return `mailto:${site.email}${query ? `?${query}` : ""}`;
-};
+export const mailtoUrl = (subject = "", body = "") =>
+  buildMailtoUrl(subject, body);

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Camera, LoaderCircle, Mail, Save, ShieldCheck, X } from "lucide-react";
 import Field from "../ui/Field.jsx";
-import LanguageSelect from "../ui/LanguageSelect.jsx";
 import Avatar from "../ui/Avatar.jsx";
 import { useToast } from "../ui/Toast.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
@@ -22,7 +21,6 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
     telefono: "",
     direccion: "",
     fechaNacimiento: "",
-    idioma: "es",
   });
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -34,7 +32,6 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
       telefono: profile?.telefono || "",
       direccion: profile?.direccion || "",
       fechaNacimiento: dateInputValue(profile?.fechaNacimiento),
-      idioma: profile?.idioma || "es",
     });
   }, [profile]);
 
@@ -195,12 +192,6 @@ export default function PersonalInfoForm({ profile, onUpdated }) {
             placeholder={t("account.personal.addressPlaceholder")}
           />
         </Field>
-        <LanguageSelect
-          id="profile-language"
-          value={values.idioma}
-          onChange={update("idioma")}
-          hint={t("language.profileHint")}
-        />
         <Field
           label={t("account.personal.email")}
           htmlFor="profile-email"

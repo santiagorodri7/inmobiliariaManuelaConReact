@@ -1,0 +1,143 @@
+- generic [ref=f3e11]:
+  - complementary [ref=f3e12]:
+    - generic [ref=f3e14]:
+      - link "Manuela Bermúdez, ir al inicio" [ref=f3e156] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f3e19]:
+          - generic [ref=f3e20]: Manuela Bermúdez
+          - generic [ref=f3e21]: Asesora inmobiliaria
+      - generic [ref=f3e22]:
+        - paragraph [ref=f3e23]: Crea tu cuenta
+        - heading "Empieza a buscar, publicar y decidir con claridad." [level=2] [ref=f3e157]
+        - paragraph [ref=f3e25]: Una cuenta te permite guardar tus preferencias, publicar tu inmueble y mantener toda la conversación en un solo lugar.
+      - list [ref=f3e26]:
+        - listitem [ref=f3e158]: "Compradores: recomendaciones según sus intereses."
+        - listitem [ref=f3e162]: "Vendedores: publicaciones y seguimiento del inventario."
+      - generic [ref=f3e35]:
+        - generic [ref=f3e36]: Espacio privado y seguro
+        - generic [ref=f3e40]: Asesora inmobiliaria
+  - main [ref=f3e41]:
+    - generic [ref=f3e42]:
+      - group "Idioma" [ref=f3e166]:
+        - button "Español" [active] [pressed] [ref=f3e49] [cursor=pointer]: ES
+        - button "English" [ref=f3e50] [cursor=pointer]: EN
+      - link "Volver al sitio" [ref=f3e167] [cursor=pointer]:
+        - /url: /
+    - generic [ref=f3e54]:
+      - generic [ref=f3e55]:
+        - paragraph [ref=f3e56]: Registro
+        - heading "Crea tu cuenta" [level=1] [ref=f3e168]
+        - paragraph [ref=f3e58]: Completa tus datos. El registro público permite cuentas de Comprador y Vendedor; las cuentas de administración se asignan por separado.
+      - generic [ref=f3e59]:
+        - group "¿Cómo quieres usar la plataforma?" [ref=f3e169]:
+          - generic [ref=f3e62]:
+            - generic [ref=f3e63] [cursor=pointer]:
+              - radio "Quiero comprar o arrendar Explora propiedades y guarda tus preferencias." [checked]
+              - generic [ref=f3e68]:
+                - strong [ref=f3e69]: Quiero comprar o arrendar
+                - generic [ref=f3e70]: Explora propiedades y guarda tus preferencias.
+            - generic [ref=f3e71] [cursor=pointer]:
+              - radio "Quiero publicar un inmueble Publica y administra tus propiedades."
+              - generic [ref=f3e77]:
+                - strong [ref=f3e78]: Quiero publicar un inmueble
+                - generic [ref=f3e79]: Publica y administra tus propiedades.
+        - group "Datos personales" [ref=f3e170]:
+          - generic [ref=f3e82]:
+            - generic [ref=f3e83]:
+              - generic [ref=f3e84]:
+                - text: Nombre completo
+                - generic [aria-hidden] [ref=f3e85]: "*"
+              - textbox "Nombre completo" [ref=f3e171]:
+                - /placeholder: Ej. Laura Restrepo
+            - generic [ref=f3e87]:
+              - generic [ref=f3e88]:
+                - text: Cédula
+                - generic [aria-hidden] [ref=f3e89]: "*"
+              - textbox "Cédula" [ref=f3e172]:
+                - /placeholder: Número de documento
+              - paragraph [ref=f3e91]: Entre 6 y 12 dígitos, sin puntos ni espacios.
+            - generic [ref=f3e92]:
+              - generic [ref=f3e93]:
+                - text: Fecha de nacimiento
+                - generic [aria-hidden] [ref=f3e94]: "*"
+              - textbox "Fecha de nacimiento" [ref=f3e173]
+              - paragraph [ref=f3e96]: Debes ser mayor de 18 años. Año mínimo 1920 y máximo 2008.
+            - generic [ref=f3e97]:
+              - generic [ref=f3e98]: Teléfono
+              - textbox "Teléfono" [ref=f3e174]:
+                - /placeholder: +57 300 000 0000
+              - paragraph [ref=f3e100]: Opcional
+            - generic [ref=f3e101]:
+              - generic [ref=f3e102]:
+                - text: Correo electrónico
+                - generic [aria-hidden] [ref=f3e103]: "*"
+              - textbox "Correo electrónico" [ref=f3e175]:
+                - /placeholder: tu@correo.com
+        - group "Seguridad de tu cuenta" [ref=f3e176]:
+          - generic [ref=f3e107]:
+            - generic [ref=f3e108]:
+              - generic [ref=f3e109]:
+                - text: Contraseña
+                - generic [aria-hidden] [ref=f3e110]: "*"
+              - generic [ref=f3e111]:
+                - textbox "Contraseña" [ref=f3e177]
+                - button "Mostrar contraseñas" [ref=f3e178] [cursor=pointer]
+              - paragraph [ref=f3e117]: Mínimo 8 caracteres.
+            - generic [ref=f3e118]:
+              - generic [ref=f3e119]:
+                - text: Confirmar contraseña
+                - generic [aria-hidden] [ref=f3e120]: "*"
+              - textbox "Confirmar contraseña" [ref=f3e179]
+        - group "Información financiera" [ref=f3e180]:
+          - paragraph [ref=f3e124]: Estos datos nos ayudan a orientar tu proceso de compra o arriendo. La cédula y los ingresos solo los pueden ver tú y la administración.
+          - generic [ref=f3e125]:
+            - generic [ref=f3e126]:
+              - generic [ref=f3e127]:
+                - text: Estado civil
+                - generic [aria-hidden] [ref=f3e128]: "*"
+              - combobox "Estado civil" [ref=f3e181]:
+                - option "Selecciona una opción" [selected]
+                - option "Soltero(a)"
+                - option "Casado(a)"
+                - option "Unión libre"
+                - option "Divorciado(a)"
+                - option "Viudo(a)"
+            - generic [ref=f3e130]:
+              - generic [ref=f3e131]:
+                - text: Tipo de contrato
+                - generic [aria-hidden] [ref=f3e132]: "*"
+              - combobox "Tipo de contrato" [ref=f3e182]:
+                - option "Selecciona una opción" [selected]
+                - option "Contrato indefinido"
+                - option "Contrato a término fijo"
+                - option "Prestación de servicios"
+                - option "Independiente"
+                - option "Pensionado(a)"
+                - option "Otro"
+            - generic [ref=f3e134]:
+              - generic [ref=f3e135]:
+                - text: Ingresos mensuales (COP)
+                - generic [aria-hidden] [ref=f3e136]: "*"
+              - textbox "Ingresos mensuales (COP)" [ref=f3e183]:
+                - /placeholder: Ej. 4.500.000
+                - text: $ 1.234.567
+              - paragraph [ref=f3e138]: Valor mayor que cero. Se formatea automáticamente mientras escribes.
+            - generic [ref=f3e139]:
+              - generic [ref=f3e140]:
+                - text: Ingresos extras mensuales (COP)
+                - generic [aria-hidden] [ref=f3e141]: "*"
+              - textbox "Ingresos extras mensuales (COP)" [ref=f3e184]:
+                - /placeholder: Ej. 0
+              - paragraph [ref=f3e143]: Si no tienes, escribe 0.
+        - generic [ref=f3e144]:
+          - checkbox "Acepto el tratamiento de mis datos personales para gestionar mi cuenta, recibir respuestas y usar los servicios de la plataforma, conforme a la política de privacidad." [ref=f3e185]
+          - generic [ref=f3e146]:
+            - text: Acepto el
+            - link "tratamiento de mis datos personales" [ref=f3e186] [cursor=pointer]:
+              - /url: /privacidad
+            - text: para gestionar mi cuenta, recibir respuestas y usar los servicios de la plataforma, conforme a la política de privacidad.
+        - button "Crear mi cuenta" [ref=f3e187] [cursor=pointer]
+      - generic [ref=f3e152]: ¿Ya tienes una cuenta?
+      - link "Iniciar sesión" [ref=f3e188] [cursor=pointer]:
+        - /url: /login
+    - paragraph [ref=f3e155]: © 2026 Manuela Bermúdez. Todos los derechos reservados.

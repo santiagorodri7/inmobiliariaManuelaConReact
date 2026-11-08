@@ -28,6 +28,11 @@ const getNumberFormatter = (locale) => {
 export const formatCOP = (value, locale = "es-CO") =>
   getCopFormatter(locale).format(Number(value) || 0);
 
+export const formatCopInput = (value) => {
+  const digits = String(value ?? "").replace(/\D/g, "").slice(0, 12);
+  return digits ? formatCOP(Number(digits)) : "";
+};
+
 export const formatNumber = (value, locale = "es-CO") =>
   getNumberFormatter(locale).format(Number(value) || 0);
 

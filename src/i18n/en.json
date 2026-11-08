@@ -1,12 +1,8 @@
 {
   "language": {
     "label": "Language",
-    "hint": "You can change it anytime.",
-    "registerHint": "It will be saved to your account and applied when you sign in.",
-    "profileHint": "The change is applied when you save your information.",
     "spanish": "Español",
-    "english": "English",
-    "invalid": "Select Español or English."
+    "english": "English"
   },
   "common": {
     "loading": "Loading…",
@@ -87,7 +83,8 @@
       "reports": "Sales report",
       "account": "My profile",
       "security": "Security"
-    }
+    },
+    "instagram": "Manuela's Instagram"
   },
   "home": {
     "pageTitle": "Real estate advisor",
@@ -185,7 +182,15 @@
       "schedule": "Request information",
       "whatsapp": "Message on WhatsApp"
     },
-    "whatsappMessage": "Hi {{name}}, I would like real estate guidance."
+    "whatsappMessage": "Hi {{name}}, I would like real estate guidance.",
+    "mostViewed": {
+      "eyebrow": "Most viewed",
+      "title": "Most viewed this month",
+      "fallbackTitle": "Recently published",
+      "description": "The properties that drew the most interest this month. If one catches your eye, we can arrange a visit.",
+      "fallbackDescription": "There are not enough views this month yet. Here are the most recent properties so you can start exploring.",
+      "note": "Up to {{count}} properties"
+    }
   },
   "about": {
     "pageTitle": "About",
@@ -324,7 +329,9 @@
       "phone": "Phone",
       "whatsapp": "WhatsApp",
       "writeNow": "Write now",
-      "instagram": "Instagram"
+      "instagram": "Instagram",
+      "contactManu": "Contact Manu",
+      "emailSubject": "Real estate inquiry"
     },
     "form": {
       "eyebrow": "Write to us",
@@ -383,7 +390,8 @@
         "availability": "Message me on WhatsApp any time.",
         "cta": "Message on WhatsApp",
         "aria": "Message Manu on WhatsApp about {{title}}",
-        "message": "Hi Manu, I'm interested in the property \"{{title}}\". Here is the link: {{url}}"
+        "message": "Hi Manu, I'm interested in the property \"{{title}}\". Here is the link: {{url}}",
+        "emailSubject": "I would like information about {{title}}"
       },
       "relatedEyebrow": "You may also like",
       "relatedTitle": "Other properties to explore",
@@ -396,7 +404,8 @@
         "parking": "Parking spaces",
         "area": "Area",
         "stratum": "Stratum"
-      }
+      },
+      "share": "Share"
     },
     "card": {
       "imageUnavailable": "Image unavailable",
@@ -521,6 +530,22 @@
       "submitEdit": "Save changes",
       "submitNew": "Publish property",
       "validationToast": "Review the highlighted fields before saving."
+    },
+    "selection": {
+      "hint": "Select up to {{max}} properties to share them together.",
+      "selectAria": "Select {{title}} to share",
+      "toolbar": "Selected properties",
+      "count": "{{count}} selected",
+      "clear": "Clear selection",
+      "share": "Share selection",
+      "shareTitle": "Property selection",
+      "shareText": "I'm sharing {{count}} properties from Manuela Bermúdez with you.",
+      "limit": "You can share up to {{max}} properties at once."
+    },
+    "share": {
+      "text": "Take a look at this property: {{title}}",
+      "copied": "Link copied to clipboard.",
+      "manual": "Copy the link from the browser bar."
     }
   },
   "testimonials": {
@@ -602,6 +627,37 @@
       "note": "Admin accounts are assigned manually. If your account isn't working, write to us and we will review it with you."
     },
     "register": {
+      "idHint": "Between 6 and 12 digits, without periods or spaces.",
+      "birthHint": "You must be at least 18 years old. Minimum year 1920 and maximum {{year}}.",
+      "selectPlaceholder": "Select an option",
+      "financialLegend": "Financial information",
+      "financialHint": "This information helps us guide your purchase or rental process. Only you and administration can see your ID number and income.",
+      "maritalStatus": "Marital status",
+      "contractType": "Contract type",
+      "monthlyIncome": "Monthly income (COP)",
+      "monthlyIncomeHint": "A value greater than zero. It is formatted automatically as you type.",
+      "monthlyIncomePlaceholder": "E.g. 4,500,000",
+      "extraIncome": "Additional monthly income (COP)",
+      "extraIncomeHint": "If you have none, enter 0.",
+      "extraIncomePlaceholder": "E.g. 0",
+      "consentPrefix": "I accept the",
+      "consentLink": "processing of my personal data",
+      "consentSuffix": "to manage my account, receive answers, and use the platform's services, in accordance with the privacy policy.",
+      "marital": {
+        "soltero": "Single",
+        "casado": "Married",
+        "union_libre": "Domestic partnership",
+        "divorciado": "Divorced",
+        "viudo": "Widowed"
+      },
+      "contract": {
+        "indefinido": "Permanent contract",
+        "fijo": "Fixed-term contract",
+        "prestacion_servicios": "Service agreement",
+        "independiente": "Self-employed",
+        "pensionado": "Retired",
+        "otro": "Other"
+      },
       "pageTitle": "Create account",
       "pageDescription": "Create your Manuela Bermúdez account.",
       "eyebrow": "Create your account",
@@ -640,7 +696,9 @@
       "validationToast": "Review the highlighted fields before continuing.",
       "successToast": "Your account is ready. Welcome to Manuela Bermúdez.",
       "divider": "Already have an account?",
-      "login": "Sign in"
+      "login": "Sign in",
+      "personalLegend": "Personal information",
+      "securityLegend": "Account security"
     },
     "forgot": {
       "pageTitle": "Reset password",
@@ -1366,6 +1424,17 @@
   },
   "validation": {
     "register": {
+      "idFormat": "The ID number must be between 6 and 12 digits.",
+      "birthInvalid": "Select a valid date of birth.",
+      "birthRange": "The date must be between 1920 and 18 years ago.",
+      "birthAge": "You must be at least 18 years old to register.",
+      "maritalStatus": "Select your marital status.",
+      "contractType": "Select your contract type.",
+      "monthlyIncomeRequired": "Enter your monthly income.",
+      "monthlyIncome": "Monthly income must be greater than zero.",
+      "extraIncomeRequired": "Enter 0 if you have no additional income.",
+      "extraIncome": "Additional income cannot be negative.",
+      "consent": "You must accept the data processing to continue.",
       "name": "Enter your full name.",
       "id": "The ID number is required.",
       "birth": "Select your date of birth.",
@@ -1430,7 +1499,8 @@
       "userDisabled": "This account is deactivated.",
       "recentLogin": "For security, sign in again before continuing.",
       "operationNotAllowed": "Email sign-in is not enabled in Firebase.",
-      "requiresLogin": "Sign in again."
+      "requiresLogin": "Sign in again.",
+      "invalidRegisterData": "Review the form details. The ID number, age, and income must be valid."
     },
     "permissionDenied": "You don't have permission to perform this action. If you think this is a mistake, contact the administrator.",
     "unavailable": "The service is unavailable right now. Please try again.",
@@ -1533,7 +1603,7 @@
       },
       "data": {
         "title": "Data collected",
-        "text": "Contact forms request your name, email, phone, and message. Creating an account requests your name, ID number, date of birth, email, role, and language. Publishing a property stores the property details and the images you choose to upload."
+        "text": "Contact forms request your name, email, phone, and message. Creating an account requests your full name, ID number, date of birth, email, marital status, contract type, and monthly and additional income. Publishing a property stores the property details and the images you choose to upload."
       },
       "purpose": {
         "title": "How it is used",
@@ -1545,7 +1615,7 @@
       },
       "storage": {
         "title": "Storage and services",
-        "text": "The site uses Firebase (Google) for authentication, database, and image storage. The browser stores the selected language and the active session. Legal review must confirm the applicable providers and transfers."
+        "text": "The site uses Firebase (Google) for authentication, database, and image storage. The browser stores the selected language and the active session. The ID number and income are restricted to the account holder and administration. Legal review must confirm the applicable providers and transfers."
       },
       "rights": {
         "title": "Rights",
@@ -1573,5 +1643,19 @@
     "skip": "Skip to content",
     "logoHome": "Manuela Bermúdez, go to home",
     "backToTop": "Back to top"
+  },
+  "shared": {
+    "pageTitle": "Property selection",
+    "pageDescription": "A selection of {{count}} properties shared by Manuela Bermúdez.",
+    "eyebrow": "Shared selection",
+    "title": "{{count}} properties for you",
+    "description": "Manuela shared this selection with you. Review each property and write to us if you would like to arrange a visit.",
+    "breadcrumb": "Shared selection",
+    "listEyebrow": "Your selection",
+    "listTitle": "Shared properties",
+    "listDescription": "We only show properties that are still published. If one is missing, it may have been withdrawn.",
+    "viewCatalog": "View the full catalog",
+    "emptyTitle": "This selection is no longer available",
+    "emptyDescription": "The properties may have been withdrawn or the link may be incomplete. Explore the current catalog or write to us to find alternatives."
   }
 }

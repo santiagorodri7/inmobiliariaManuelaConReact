@@ -1,12 +1,26 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Bath, BedDouble, Car, House, MapPin, Maximize } from "lucide-react";
+import {
+  ArrowUpRight,
+  Bath,
+  BedDouble,
+  Car,
+  Check,
+  House,
+  MapPin,
+  Maximize,
+} from "lucide-react";
 import { useState } from "react";
 import { OperationBadge } from "../ui/StatusBadge.jsx";
 import { useI18n } from "../../i18n/I18nContext.jsx";
 import { truncate } from "../../utils/format.js";
 import { coverImage } from "../../utils/property.js";
 
-export default function PropertyCard({ property }) {
+export default function PropertyCard({
+  property,
+  selectable = false,
+  selected = false,
+  onToggleSelect,
+}) {
   const { t, formatArea, formatCOP, propertyTypeLabel } = useI18n();
   const [imageFailed, setImageFailed] = useState(false);
   const image = coverImage(property);
@@ -30,7 +44,25 @@ export default function PropertyCard({ property }) {
   ].filter(Boolean);
 
   return (
-    <article className="property-card">
+    <article className={`property-card${selected ? " is-selected" : ""}`}>
+      {selectable && (
+        <label
+          className={`property-card__select${selected ? " is-selected" : ""}`}
+        >
+          <input
+            type="checkbox"
+            checked={selected}
+            onChange={() => onToggleSelect?.(property.id)}
+            aria-label={t("property.selection.selectAria", {
+              title: property.title,
+            })}
+          />
+          <span className="property-card__select-mark" aria-hidden="true">
+            {selected && <Check size={14} />}
+          </span>
+        </label>
+      )}
+
       <Link
         to={`/propiedad/${encodeURIComponent(property.id)}`}
         className="property-card__media"

@@ -1,12 +1,8 @@
 {
   "language": {
     "label": "Idioma",
-    "hint": "Puedes cambiarlo cuando quieras.",
-    "registerHint": "Se guardará en tu cuenta y se aplicará al iniciar sesión.",
-    "profileHint": "El cambio se aplica al guardar tu información.",
     "spanish": "Español",
-    "english": "English",
-    "invalid": "Selecciona Español o English."
+    "english": "English"
   },
   "common": {
     "loading": "Cargando…",
@@ -87,7 +83,8 @@
       "reports": "Reporte de ventas",
       "account": "Mi perfil",
       "security": "Seguridad"
-    }
+    },
+    "instagram": "Instagram de Manuela"
   },
   "home": {
     "pageTitle": "Asesora inmobiliaria",
@@ -185,7 +182,15 @@
       "schedule": "Solicitar información",
       "whatsapp": "Escribir por WhatsApp"
     },
-    "whatsappMessage": "Hola {{name}}, quiero recibir asesoría inmobiliaria."
+    "whatsappMessage": "Hola {{name}}, quiero recibir asesoría inmobiliaria.",
+    "mostViewed": {
+      "eyebrow": "Lo más visto",
+      "title": "Lo más visto este mes",
+      "fallbackTitle": "Recién publicadas",
+      "description": "Los inmuebles que más interés despertaron este mes. Si alguno te llama la atención, podemos coordinar una visita.",
+      "fallbackDescription": "Aún no hay suficientes visitas este mes. Te mostramos las propiedades más recientes para que empieces a explorar.",
+      "note": "Máximo {{count}} propiedades"
+    }
   },
   "about": {
     "pageTitle": "Nosotros",
@@ -324,7 +329,9 @@
       "phone": "Teléfono",
       "whatsapp": "WhatsApp",
       "writeNow": "Escribir ahora",
-      "instagram": "Instagram"
+      "instagram": "Instagram",
+      "contactManu": "Contactar a Manu",
+      "emailSubject": "Consulta inmobiliaria"
     },
     "form": {
       "eyebrow": "Escríbenos",
@@ -383,7 +390,8 @@
         "availability": "Escríbeme por WhatsApp a cualquier hora.",
         "cta": "Escribir por WhatsApp",
         "aria": "Escribir a Manu por WhatsApp sobre {{title}}",
-        "message": "Hola Manu, me interesa la propiedad \"{{title}}\". Te comparto el enlace: {{url}}"
+        "message": "Hola Manu, me interesa la propiedad \"{{title}}\". Te comparto el enlace: {{url}}",
+        "emailSubject": "Quiero información sobre {{title}}"
       },
       "relatedEyebrow": "También te puede interesar",
       "relatedTitle": "Otras propiedades para explorar",
@@ -396,7 +404,8 @@
         "parking": "Parqueaderos",
         "area": "Área",
         "stratum": "Estrato"
-      }
+      },
+      "share": "Compartir"
     },
     "card": {
       "imageUnavailable": "Imagen no disponible",
@@ -521,6 +530,22 @@
       "submitEdit": "Guardar cambios",
       "submitNew": "Publicar propiedad",
       "validationToast": "Revisa los campos marcados antes de guardar."
+    },
+    "selection": {
+      "hint": "Marca hasta {{max}} propiedades para compartirlas juntas.",
+      "selectAria": "Seleccionar {{title}} para compartir",
+      "toolbar": "Propiedades seleccionadas",
+      "count": "{{count}} seleccionadas",
+      "clear": "Limpiar selección",
+      "share": "Compartir selección",
+      "shareTitle": "Selección de propiedades",
+      "shareText": "Te comparto {{count}} propiedades de Manuela Bermúdez.",
+      "limit": "Puedes compartir hasta {{max}} propiedades a la vez."
+    },
+    "share": {
+      "text": "Mira esta propiedad: {{title}}",
+      "copied": "Enlace copiado al portapapeles.",
+      "manual": "Copia el enlace desde la barra del navegador."
     }
   },
   "testimonials": {
@@ -602,6 +627,37 @@
       "note": "Las cuentas de administración se asignan manualmente. Si tu cuenta no funciona, escríbenos y la revisamos contigo."
     },
     "register": {
+      "idHint": "Entre 6 y 12 dígitos, sin puntos ni espacios.",
+      "birthHint": "Debes ser mayor de 18 años. Año mínimo 1920 y máximo {{year}}.",
+      "selectPlaceholder": "Selecciona una opción",
+      "financialLegend": "Información financiera",
+      "financialHint": "Estos datos nos ayudan a orientar tu proceso de compra o arriendo. La cédula y los ingresos solo los pueden ver tú y la administración.",
+      "maritalStatus": "Estado civil",
+      "contractType": "Tipo de contrato",
+      "monthlyIncome": "Ingresos mensuales (COP)",
+      "monthlyIncomeHint": "Valor mayor que cero. Se formatea automáticamente mientras escribes.",
+      "monthlyIncomePlaceholder": "Ej. 4.500.000",
+      "extraIncome": "Ingresos extras mensuales (COP)",
+      "extraIncomeHint": "Si no tienes, escribe 0.",
+      "extraIncomePlaceholder": "Ej. 0",
+      "consentPrefix": "Acepto el",
+      "consentLink": "tratamiento de mis datos personales",
+      "consentSuffix": "para gestionar mi cuenta, recibir respuestas y usar los servicios de la plataforma, conforme a la política de privacidad.",
+      "marital": {
+        "soltero": "Soltero(a)",
+        "casado": "Casado(a)",
+        "union_libre": "Unión libre",
+        "divorciado": "Divorciado(a)",
+        "viudo": "Viudo(a)"
+      },
+      "contract": {
+        "indefinido": "Contrato indefinido",
+        "fijo": "Contrato a término fijo",
+        "prestacion_servicios": "Prestación de servicios",
+        "independiente": "Independiente",
+        "pensionado": "Pensionado(a)",
+        "otro": "Otro"
+      },
       "pageTitle": "Crear cuenta",
       "pageDescription": "Crea tu cuenta en Manuela Bermúdez.",
       "eyebrow": "Crea tu cuenta",
@@ -640,7 +696,9 @@
       "validationToast": "Revisa los campos marcados antes de continuar.",
       "successToast": "Tu cuenta está lista. Bienvenido a Manuela Bermúdez.",
       "divider": "¿Ya tienes una cuenta?",
-      "login": "Iniciar sesión"
+      "login": "Iniciar sesión",
+      "personalLegend": "Datos personales",
+      "securityLegend": "Seguridad de tu cuenta"
     },
     "forgot": {
       "pageTitle": "Recuperar contraseña",
@@ -1366,6 +1424,17 @@
   },
   "validation": {
     "register": {
+      "idFormat": "La cédula debe tener entre 6 y 12 dígitos.",
+      "birthInvalid": "Selecciona una fecha de nacimiento válida.",
+      "birthRange": "La fecha debe estar entre 1920 y hace 18 años.",
+      "birthAge": "Debes ser mayor de 18 años para registrarte.",
+      "maritalStatus": "Selecciona tu estado civil.",
+      "contractType": "Selecciona tu tipo de contrato.",
+      "monthlyIncomeRequired": "Escribe tus ingresos mensuales.",
+      "monthlyIncome": "Los ingresos mensuales deben ser mayores que cero.",
+      "extraIncomeRequired": "Escribe 0 si no tienes ingresos extras.",
+      "extraIncome": "Los ingresos extras no pueden ser negativos.",
+      "consent": "Debes aceptar el tratamiento de datos para continuar.",
       "name": "Escribe tu nombre completo.",
       "id": "La cédula es obligatoria.",
       "birth": "Selecciona tu fecha de nacimiento.",
@@ -1430,7 +1499,8 @@
       "userDisabled": "Esta cuenta está desactivada.",
       "recentLogin": "Por seguridad, vuelve a iniciar sesión antes de continuar.",
       "operationNotAllowed": "El inicio de sesión con correo no está habilitado en Firebase.",
-      "requiresLogin": "Inicia sesión de nuevo."
+      "requiresLogin": "Inicia sesión de nuevo.",
+      "invalidRegisterData": "Revisa los datos del formulario. La cédula, la edad y los ingresos deben ser válidos."
     },
     "permissionDenied": "No tienes permisos para realizar esta acción. Si crees que es un error, contacta a la administradora.",
     "unavailable": "El servicio no está disponible en este momento. Inténtalo de nuevo.",
@@ -1533,7 +1603,7 @@
       },
       "data": {
         "title": "Datos que se recogen",
-        "text": "En los formularios de contacto se solicitan nombre, correo, teléfono y mensaje. Al crear una cuenta se solicitan nombre, cédula, fecha de nacimiento, correo, rol e idioma. Al publicar una propiedad se guardan los datos del inmueble y las imágenes que decidas cargar."
+        "text": "En los formularios de contacto se solicitan nombre, correo, teléfono y mensaje. Al crear una cuenta se solicitan nombre completo, cédula, fecha de nacimiento, correo, estado civil, tipo de contrato e ingresos mensuales y extras. Al publicar una propiedad se guardan los datos del inmueble y las imágenes que decidas cargar."
       },
       "purpose": {
         "title": "Para qué se usan",
@@ -1545,7 +1615,7 @@
       },
       "storage": {
         "title": "Almacenamiento y servicios",
-        "text": "El sitio usa Firebase (Google) para autenticación, base de datos y almacenamiento de imágenes. El navegador guarda el idioma elegido y la sesión iniciada. La revisión legal debe confirmar los proveedores y las transferencias aplicables."
+        "text": "El sitio usa Firebase (Google) para autenticación, base de datos y almacenamiento de imágenes. El navegador guarda el idioma elegido y la sesión iniciada. La cédula y los ingresos se restringen al titular de la cuenta y a la administración. La revisión legal debe confirmar los proveedores y las transferencias aplicables."
       },
       "rights": {
         "title": "Derechos",
@@ -1573,5 +1643,19 @@
     "skip": "Saltar al contenido",
     "logoHome": "Manuela Bermúdez, ir al inicio",
     "backToTop": "Volver arriba"
+  },
+  "shared": {
+    "pageTitle": "Selección de propiedades",
+    "pageDescription": "Selección de {{count}} propiedades compartidas por Manuela Bermúdez.",
+    "eyebrow": "Selección compartida",
+    "title": "{{count}} propiedades para ti",
+    "description": "Manuela compartió esta selección contigo. Revisa cada inmueble y escríbenos si quieres coordinar una visita.",
+    "breadcrumb": "Selección compartida",
+    "listEyebrow": "Tu selección",
+    "listTitle": "Propiedades compartidas",
+    "listDescription": "Solo mostramos los inmuebles que siguen publicados. Si alguno ya no aparece, puede haberse retirado.",
+    "viewCatalog": "Ver todo el catálogo",
+    "emptyTitle": "Esta selección ya no está disponible",
+    "emptyDescription": "Los inmuebles pueden haberse retirado o el enlace puede estar incompleto. Explora el catálogo actual o escríbenos para buscar alternativas."
   }
 }

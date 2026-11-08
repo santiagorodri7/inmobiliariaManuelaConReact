@@ -1810,3 +1810,44 @@
     white-space: normal;
   }
 }
+
+/* Propiedades más vistas ------------------------------------------------- */
+
+.section--most-viewed {
+  border-top: 1px solid var(--line);
+  background:
+    radial-gradient(40rem 24rem at 100% 0%, rgba(27, 99, 158, 0.06), transparent 65%),
+    var(--ivory-soft);
+}
+
+/* Compartir y contacto directo ------------------------------------------ */
+
+.property-summary__share {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.manu-contact-card__email {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--green);
+  font-size: 0.76rem;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.manu-contact-card__email:hover {
+  color: var(--blue);
+}
+
+.contact-page__cta {
+  width: 100%;
+  margin-top: 18px;
+}
+
+@media (max-width: 640px) {
+  .property-summary__share {
+    padding-inline: 10px;
+  }
+}

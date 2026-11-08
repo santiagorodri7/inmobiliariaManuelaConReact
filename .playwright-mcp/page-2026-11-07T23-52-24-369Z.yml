@@ -1,0 +1,4 @@
+- status [ref=e3]:
+  - link "Manuela Bermúdez, ir al inicio" [ref=e4] [cursor=pointer]:
+    - /url: /
+  - paragraph [ref=e10]: Cargando tu espacio…

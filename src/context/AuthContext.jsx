@@ -17,12 +17,11 @@ import {
 } from "../services/authService.js";
 import { getErrorMessage } from "../utils/errors.js";
 import { useI18n } from "../i18n/I18nContext.jsx";
-import { DEFAULT_LANGUAGE } from "../i18n/languages.js";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const { t, setLanguage, resetToVisitorLanguage } = useI18n();
+  const { t } = useI18n();
   const tRef = useRef(t);
   const [profile, setProfile] = useState(null);
   const [firebaseUser, setFirebaseUser] = useState(null);
@@ -100,18 +99,6 @@ export function AuthProvider({ children }) {
       unsubscribe();
     };
   }, []);
-
-  useEffect(() => {
-    if (profile) {
-      setLanguage(profile.idioma || DEFAULT_LANGUAGE);
-    }
-  }, [profile?.idioma, setLanguage]);
-
-  useEffect(() => {
-    if (!loading && !profile) {
-      resetToVisitorLanguage();
-    }
-  }, [loading, profile, resetToVisitorLanguage]);
 
   const login = useCallback(async (email, password) => {
     setAuthError("");

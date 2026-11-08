@@ -102,6 +102,28 @@ export const isWithinRange = (value, from, to) => {
 
 export const todayInputValue = () => dateInputValue(new Date());
 
+export const MIN_BIRTH_YEAR = 1920;
+
+export const calculateAge = (value, reference = new Date()) => {
+  const date = toDate(value);
+  if (!date) return null;
+  let age = reference.getFullYear() - date.getFullYear();
+  const monthDiff = reference.getMonth() - date.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && reference.getDate() < date.getDate())) {
+    age -= 1;
+  }
+  return age;
+};
+
+export const birthDateBounds = (reference = new Date()) => {
+  const latest = new Date(reference);
+  latest.setFullYear(latest.getFullYear() - 18);
+  return {
+    min: `${MIN_BIRTH_YEAR}-01-01`,
+    max: dateInputValue(latest),
+  };
+};
+
 export const fileDateStamp = () => {
   const now = new Date();
   const year = now.getFullYear();

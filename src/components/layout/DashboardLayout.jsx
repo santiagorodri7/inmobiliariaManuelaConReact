@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import Logo from "../ui/Logo.jsx";
 import Avatar from "../ui/Avatar.jsx";
+import LanguageSwitcher from "../ui/LanguageSwitcher.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useI18n } from "../../i18n/I18nContext.jsx";
 
@@ -155,6 +156,7 @@ export default function DashboardLayout({
           </div>
           <div className="dashboard-topbar__right">
             {actions}
+            <LanguageSwitcher className="dashboard-language" />
             <Avatar profile={profile} size="sm" />
           </div>
         </header>

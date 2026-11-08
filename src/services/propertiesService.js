@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  documentId,
   getDoc,
   getDocs,
   query,
@@ -16,6 +17,7 @@ import {
 } from "./storageService.js";
 import {
   isAvailable,
+  isPublicProperty,
   normalizeProperty,
   propertyPayload,
   sortProperties,
@@ -99,6 +101,51 @@ export const getPropertyById = async (id) => {
   const snapshot = await getDoc(doc(db, PROPERTIES, id));
   if (!snapshot.exists()) return null;
   return normalizeProperty(snapshot.id, snapshot.data());
+};
+
+/**
+ * Resuelve una selección de inmuebles compartida (máximo 10) conservando el
+ * orden en que llegaron los IDs. Solo devuelve inmuebles publicados.
+ */
+export const getPropertiesByIds = async (ids = []) => {
+  requireFirebase();
+  const unique = [...new Set(ids)].slice(0, 10);
+  if (!unique.length) return [];
+
+  let byId = new Map();
+  try {
+    const snapshot = await getDocs(
+      query(
+        collection(db, PROPERTIES),
+        where(documentId(), "in", unique),
+        where("status", "==", "disponible"),
+      ),
+    );
+    byId = new Map(
+      snapshot.docs.map((item) => [
+        item.id,
+        normalizeProperty(item.id, item.data()),
+      ]),
+    );
+  } catch (error) {
+    console.warn("No se pudo resolver la selección compartida:", error);
+    const entries = await Promise.all(
+      unique.map(async (id) => {
+        try {
+          const snapshot = await getDoc(doc(db, PROPERTIES, id));
+          if (!snapshot.exists()) return null;
+          return [id, normalizeProperty(id, snapshot.data())];
+        } catch {
+          return null;
+        }
+      }),
+    );
+    byId = new Map(entries.filter(Boolean));
+  }
+
+  return unique
+    .map((id) => byId.get(id))
+    .filter((property) => property && isPublicProperty(property));
 };
 
 export const saveProperty = async ({

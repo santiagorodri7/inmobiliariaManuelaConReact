@@ -5,6 +5,10 @@ Bermúdez. Está construida con React 19, Vite 7, Bootstrap 5 y Firebase 10. La
 interfaz pública, la autenticación y los paneles de Comprador, Vendedor y
 Administrador viven en `src/`.
 
+Incluye selector de idioma ES/EN persistido en `localStorage`, registro con
+datos financieros, contador mensual de vistas, selección múltiple de inmuebles
+para compartir y acciones de contacto por WhatsApp y correo.
+
 ## Requisitos
 
 - Node.js 20 o superior y npm.
@@ -39,7 +43,7 @@ a partir de `.env.example`. Las variables definidas allí tienen prioridad:
 | `VITE_FUNCTIONS_REGION` | Región de las Cloud Functions |
 | `VITE_ALLOW_BASE64_FALLBACK` | `true` por defecto; `false` desactiva el respaldo Base64 |
 | `VITE_CONTACT_FALLBACK_URL` | Endpoint PHP opcional de contingencia |
-| `VITE_WHATSAPP_NUMBER` | Número de WhatsApp; si está vacío se oculta el CTA |
+| `VITE_WHATSAPP_NUMBER` | Sobrescribe el número de WhatsApp; si está vacío se usa el número confirmado en `src/config/contact.js` |
 
 El proyecto usa `registrologininmobiliaria` por defecto (`.firebaserc`).
 
@@ -52,15 +56,19 @@ npm run preview   # revisar el build
 npm run test:rules
 ```
 
-`npm run test:rules` requiere Firebase CLI y el emulador de Firestore. Las
-pruebas cubren accesos públicos, roles, cierres, testimonios y auditoría.
+`npm run test:rules` requiere Firebase CLI, Java y los emuladores. Las pruebas
+cubren lectura pública, perfiles `users`/`usuarios`, datos sensibles, roles,
+propiedades, `propertyViews`, cierres, testimonios y auditoría; además validan
+`storage.rules`. La suite actual suma 111 pruebas de Firestore y 8 de Storage.
 
 ## Rutas principales
 
 | Ruta | Acceso |
 | --- | --- |
 | `/`, `/home`, `/nosotros`, `/servicios`, `/contacto` | Público |
+| `/privacidad` | Público |
 | `/propiedad/:id` | Público si la propiedad está disponible |
+| `/propiedades?ids=id1,id2` | Público; selección compartida de hasta 10 inmuebles |
 | `/login`, `/registro`, `/recuperar-contrasena` | Público, solo sin sesión |
 | `/cuenta` | Cualquier usuario autenticado |
 | `/comprador` | Comprador |
@@ -74,22 +82,34 @@ redirecciones 301 configuradas en `firebase.json`.
 
 ### Authentication
 
-Correo y contraseña. Al registrarse se crea el perfil en `usuarios/{uid}` con
-rol `Comprador` o `Vendedor`. El rol `Admin` se asigna desde la consola de
-Firebase o con una cuenta administrativa existente.
+Correo y contraseña. Al registrarse se crea el perfil canónico en
+`users/{uid}` con rol `Comprador` o `Vendedor`. La app sigue leyendo
+`usuarios/{uid}` para las cuentas anteriores. El registro exige nombre completo,
+cédula de 6 a 12 dígitos, fecha de nacimiento de una persona mayor de 18 años,
+correo, estado civil, tipo de contrato, ingresos mensuales mayores que cero,
+ingresos extras mayores o iguales que cero y consentimiento de tratamiento.
+
+La cédula, los ingresos y el consentimiento son datos sensibles: solo los puede
+leer el titular de la cuenta o un administrador.
 
 ### Firestore
 
 | Colección | Contenido |
 | --- | --- |
-| `usuarios` | Perfil, rol, estado y preferencias. Lectura privada |
+| `users` | Perfil canónico, rol, estado, datos financieros y consentimiento. Lectura solo del titular o Admin |
+| `usuarios` | Perfil heredado. Se mantiene para compatibilidad; lectura solo del titular o Admin |
 | `propiedades` | Inventario. Lectura pública solo con `status == "disponible"` |
+| `propertyViews` | Contador mensual por inmueble. Lectura pública; crear con `views = 1` o sumar exactamente 1 |
 | `ventas` | Cierres registrados por administración. Lectura solo Admin |
 | `testimonios` | Reseñas. Lectura pública de `activo` o `aprobado` |
 | `auditLog` | Registro de acciones sensibles. Lectura solo Admin |
 | `contactRateLimits` | Control de frecuencia del formulario. Solo Admin SDK |
 
-Reglas: `firestore.rules`. Índices: `firestore.indexes.json`.
+El rol Admin se busca primero en `users/{uid}` y, si ese documento no existe, en
+`usuarios/{uid}`. Cuando existen ambos, el rol canónico tiene prioridad.
+
+Reglas: `firestore.rules`. Índices: `firestore.indexes.json`; incluye el índice
+compuesto de `propertyViews` por `month` y `views`.
 
 ### Storage
 
@@ -156,6 +176,63 @@ y deja un registro en `auditLog`. No modifica precios, imágenes, cuentas ni
 cierres. Después de la migración, el catálogo público vuelve a mostrar los
 inmuebles con la consulta segura `where("status", "==", "disponible")`.
 
+## Idioma
+
+La preferencia vive solo en `localStorage` (`manuela.idioma.visitante`). En la
+primera visita se detecta el idioma del navegador y español es el respaldo si no
+es compatible. Cambiar entre ES y EN no escribe en Firestore ni modifica el
+perfil. Los formularios de registro y de perfil no incluyen un campo de idioma.
+
+## Vistas mensuales
+
+Cada apertura de `/propiedad/:id` registra una visita por sesión en
+`propertyViews/{YYYY-MM}__{propertyId}` con `increment(1)`. `sessionStorage`
+evita contar dos veces la misma propiedad en la misma pestaña durante el mes. La
+portada hace una consulta del mes actual ordenada por `views` descendente con
+límite 6, resuelve los inmuebles publicados y, si aún no hay datos, muestra los
+más recientes. Las reglas permiten crear con `views = 1`, sumar exactamente 1 y
+no permiten borrar ni asignar valores arbitrarios.
+
+## Compartir propiedades
+
+- En el detalle, **Compartir** usa la Web Share API cuando existe; si no, copia
+  el enlace y confirma «Enlace copiado».
+- En los listados se pueden marcar hasta 10 inmuebles y compartir
+  `/propiedades?ids=id1,id2,...`.
+- La página de selección valida y limita los IDs, y solo muestra inmuebles que
+  siguen publicados.
+- `usePageTitle` actualiza título, descripción y metadatos Open Graph/Twitter.
+  Como la SPA los escribe en el cliente, los rastreadores que no ejecutan
+  JavaScript pueden ver solo los valores estáticos de `index.html`; para una
+  vista previa completa hace falta prerender o metadata del servidor.
+
+## Contacto
+
+`src/config/contact.js` es la única fuente de datos públicos: WhatsApp
+`+57 304 254 8683`, correo `manuelabermudezrealestate@gmail.com` e Instagram
+`@manubermu_realtor`. Los CTA arman `https://wa.me/...` con
+`encodeURIComponent`; en el detalle incluyen el título y la URL del inmueble. El
+correo aparece como enlace `mailto:`. Todos los enlaces externos abren con
+`target="_blank"` y `rel="noopener noreferrer"`.
+
+## Rol de administración
+
+1. Registra la cuenta desde `/registro` con el rol Comprador o Vendedor. Así se
+   crea `users/{uid}` con los datos financieros y el consentimiento que exigen
+   las reglas.
+2. Copia el UID de la cuenta desde Authentication o desde la URL del documento
+   en Firestore.
+3. En Firebase Console, abre `users/{uid}` y cambia `rol` a `"Admin"`. La consola
+   escribe con privilegios de administrador, por eso puede modificar el rol.
+4. Si la cuenta es anterior y solo existe en `usuarios/{uid}`, actualiza allí
+   `rol` a `"Admin"`. La app consulta primero `users`; si ese documento no
+   existe, usa `usuarios`.
+5. Cierra sesión y vuelve a entrar para refrescar el perfil. Confirma el acceso a
+   `/admin`.
+
+No asignes `Admin` desde el formulario público: las reglas solo aceptan
+`Comprador` o `Vendedor` en el registro.
+
 ## Seguridad antes de publicar
 
 - Revisa en Firebase Console que las reglas desplegadas sean las de este repo.
@@ -163,9 +240,14 @@ inmuebles con la consulta segura `where("status", "==", "disponible")`.
   está disponible. Para desactivarlo, define `VITE_ALLOW_BASE64_FALLBACK=false`.
   Guarda todas las fotos o falla con un error explícito; nunca omite imágenes en
   silencio. Los límites son 180 KB por imagen y 600 KB en total.
-- Confirma que `usuarios` no sea legible públicamente.
+- Confirma que `users` y `usuarios` no sean legibles públicamente. Solo el
+  titular o un Admin pueden leer la cédula, los ingresos y el consentimiento.
+- La preferencia de idioma no se guarda en Firestore; si migras datos antiguos,
+  elimina el campo `idioma` de los perfiles.
 - No publiques `ownerEmail` en `propiedades`; la migración lo retira de los
   documentos antiguos.
+- Los metadatos Open Graph de propiedades se escriben en el cliente. Para
+  crawlers sin JavaScript, configura prerender o metadata del servidor.
 - Considera activar App Check y `ENFORCE_APP_CHECK=true` en Functions.
 - El borrado definitivo no se ejecuta desde el cliente: usa la Function
   protegida y exige reautenticación.
@@ -176,10 +258,19 @@ inmuebles con la consulta segura `where("status", "==", "disponible")`.
 
 ## Estado y pendientes
 
-- Credenciales definitivas, plan Blaze, proveedor SMTP, dominio y datos
-  oficiales de marca/contacto están pendientes de confirmación.
-- El logo definitivo y los datos de contacto deben reemplazar los provisionales
-  en `src/config/site.js`.
+- El plan Blaze, el proveedor SMTP y el dominio siguen pendientes de
+  confirmación. Storage no se puede habilitar sin pago, por eso el respaldo
+  Base64 continúa siendo la ruta de producción.
+- Los datos de contacto confirmados están centralizados en
+  `src/config/contact.js`; el logo definitivo y la identidad de marca siguen
+  pendientes.
+- Antes de publicar, revisa que los textos de servicios y nosotros no incluyan
+  afirmaciones no confirmadas sobre cobertura, número de showings, credenciales
+  «Realtor» o autenticidad de testimonios.
+- La política de privacidad debe revisarse con asesoría legal, especialmente el
+  tratamiento de cédula, ingresos y consentimiento.
+- La vista previa de enlaces de propiedades requiere prerender o metadata del
+  servidor; la SPA solo actualiza Open Graph después de cargar.
 - Los archivos estáticos antiguos (`css/`, `lib/`, `scss/`, `mail/`) se
   conservan como referencia o contingencia; la aplicación activa es `src/`.
 - Las vistas React antiguas de `src/pages/` (home, blog, guide, etc.) no se

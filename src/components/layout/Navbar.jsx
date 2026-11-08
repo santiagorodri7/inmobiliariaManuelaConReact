@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Logo from "../ui/Logo.jsx";
 import Avatar from "../ui/Avatar.jsx";
+import LanguageSwitcher from "../ui/LanguageSwitcher.jsx";
 import { navigation, site } from "../../config/site.js";
 import { buildWhatsappUrl, isWhatsappConfigured } from "../../utils/whatsapp.js";
 import { useAuth } from "../../context/AuthContext.jsx";
@@ -92,6 +93,21 @@ export default function Navbar() {
         </nav>
 
         <div className="nav-actions">
+          {site.instagram && (
+            <a
+              href={site.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-social"
+              aria-label={t("nav.instagram")}
+              title={t("nav.instagram")}
+            >
+              <i className="fab fa-instagram" aria-hidden="true" />
+            </a>
+          )}
+
+          <LanguageSwitcher className="nav-language" />
+
           {!loading && profile ? (
             <div className="account-menu" ref={accountRef}>
               <button
@@ -196,13 +212,27 @@ export default function Navbar() {
             <a
               href={buildWhatsappUrl(whatsappMessage)}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="mobile-menu__link"
             >
               <MessageCircle size={18} aria-hidden="true" />
               {t("nav.whatsapp")}
             </a>
           )}
+          {site.instagram && (
+            <a
+              href={site.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mobile-menu__link"
+            >
+              <i className="fab fa-instagram" aria-hidden="true" />
+              {t("nav.instagram")}
+            </a>
+          )}
+          <div className="mobile-menu__language">
+            <LanguageSwitcher />
+          </div>
           <Link to="/registro?rol=Vendedor" className="btn btn-primary w-100 mt-2">
             {t("nav.publish")}
           </Link>
