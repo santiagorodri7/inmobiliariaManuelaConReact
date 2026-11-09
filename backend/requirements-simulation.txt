@@ -1,0 +1,4 @@
+# Dependencias del simulador Python necesarias para el botón "Actualizar datos".
+# Solo se requieren cuando el API ejecuta el pipeline (POST /api/simulation/rerun).
+pandas==3.0.5
+Faker==40.39.0

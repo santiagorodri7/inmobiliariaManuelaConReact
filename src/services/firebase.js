@@ -1,7 +1,7 @@
 import { initializeApp, getApps } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { connectAuthEmulator, getAuth } from "firebase/auth";
+import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
+import { connectStorageEmulator, getStorage } from "firebase/storage";
 import { getFunctions } from "firebase/functions";
 import { firebasePublicConfig } from "../config/firebasePublic.js";
 
@@ -54,6 +54,20 @@ export const storage = app ? getStorage(app) : null;
 export const functions = app
   ? getFunctions(app, env.VITE_FUNCTIONS_REGION || "us-central1")
   : null;
+
+if (
+  import.meta.env.DEV &&
+  env.VITE_USE_FIREBASE_EMULATORS === "true" &&
+  auth &&
+  db &&
+  storage
+) {
+  connectAuthEmulator(auth, "http://127.0.0.1:9099", {
+    disableWarnings: true,
+  });
+  connectFirestoreEmulator(db, "127.0.0.1", 8080);
+  connectStorageEmulator(storage, "127.0.0.1", 9199);
+}
 
 // El respaldo Base64 permite publicar cuando Storage no está disponible.
 // Queda activo por defecto para que un clon nuevo funcione sin configuración;

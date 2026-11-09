@@ -16,6 +16,9 @@ para compartir y acciones de contacto por WhatsApp y correo.
   opcional: si no está disponible, la app usa el respaldo Base64.
 - Firebase CLI para desplegar reglas, Functions y Hosting.
 - Java 11 o superior si se ejecutan los emuladores.
+- Python 3.11 o superior si se ejecuta el backend FastAPI de simulación. Para el
+  botón **Actualizar datos** también se necesitan `pandas` y `Faker` (ver
+  `backend/requirements-simulation.txt`).
 
 ## Configuración local
 
@@ -41,6 +44,8 @@ a partir de `.env.example`. Las variables definidas allí tienen prioridad:
 | `VITE_FIREBASE_MESSAGING_SENDER_ID` | Sender ID |
 | `VITE_FIREBASE_APP_ID` | App ID |
 | `VITE_FUNCTIONS_REGION` | Región de las Cloud Functions |
+| `VITE_USE_FIREBASE_EMULATORS` | `true` conecta Auth, Firestore y Storage a los emuladores locales |
+| `VITE_SIMULATION_API_URL` | URL del backend FastAPI; vacío usa el proxy `/api` de Vite |
 | `VITE_ALLOW_BASE64_FALLBACK` | `true` por defecto; `false` desactiva el respaldo Base64 |
 | `VITE_CONTACT_FALLBACK_URL` | Endpoint PHP opcional de contingencia |
 | `VITE_WHATSAPP_NUMBER` | Sobrescribe el número de WhatsApp; si está vacío se usa el número confirmado en `src/config/contact.js` |
@@ -50,16 +55,69 @@ El proyecto usa `registrologininmobiliaria` por defecto (`.firebaserc`).
 ## Comandos
 
 ```bash
-npm run dev       # servidor de desarrollo
-npm run build     # build de producción en dist/
-npm run preview   # revisar el build
-npm run test:rules
+npm run dev         # servidor de desarrollo
+npm run build       # build de producción en dist/
+npm run preview     # revisar el build
+npm run test:rules  # reglas de Firestore y Storage
+npm run emulators   # Auth, Firestore y Storage locales
+npm run seed:demo   # datos demo (requiere variables del emulador)
+npm run test:e2e    # emuladores + siembra + Playwright
 ```
 
 `npm run test:rules` requiere Firebase CLI, Java y los emuladores. Las pruebas
 cubren lectura pública, perfiles `users`/`usuarios`, datos sensibles, roles,
 propiedades, `propertyViews`, cierres, testimonios y auditoría; además validan
 `storage.rules`. La suite actual suma 111 pruebas de Firestore y 8 de Storage.
+
+`npm run test:e2e` inicia los emuladores, siembra los datos demo, levanta Vite y
+el API FastAPI, y ejecuta 10 pruebas Playwright: 7 del panel administrativo
+(datos, filtros, tablas, acciones, paginación y exportaciones Excel) y 3 de la
+pestaña de simulación (nueve gráficos, totales, regeneración real del pipeline,
+recuperación ante errores de carga y error controlado al regenerar).
+
+## Panel de simulación y backend FastAPI
+
+La pestaña **Simulación** (`/admin/simulacion`) muestra nueve gráficos
+interactivos con Recharts: balances, estado e intereses de compradores;
+balances, estado y propiedades vendidas de vendedores; y tipos, participación y
+calidad de datos de administradores. Los datos provienen únicamente de los CSV
+del simulador Python (`data/limpios` y `data/sucios`). No se escribe en
+Firestore ni se usan datos de producción.
+
+El backend vive en `backend/` y expone `GET /api/simulation/overview` y
+`POST /api/simulation/rerun`. El botón **Actualizar datos** ejecuta las etapas
+1–4 del simulador (simular, exportar, ensuciar y limpiar) en una carpeta
+temporal, valida los CSV y solo entonces reemplaza los archivos reales. Si algo
+falla, los datos anteriores quedan intactos. Para desarrollarlo:
+
+```powershell
+python -m pip install -r backend/requirements-dev.txt
+python -m uvicorn backend.app.main:app --reload --host 127.0.0.1 --port 8000
+npm run dev
+```
+
+Con `VITE_SIMULATION_API_URL` vacío, Vite enruta `/api` al backend local. El
+botón **Actualizar datos** regenera los CSV con datos aleatorios nuevos, por lo
+que los gráficos cambian en cada corrida. Solo se permite una simulación a la
+vez y la petición tarda alrededor de 10 s. No se regeneran los PNG de
+`data/reportes`; para eso hay que ejecutar `python src/main.py` aparte.
+
+Con `FIREBASE_PROJECT_ID` definido, el API exige un Firebase ID token con rol
+`Admin` o `Administrador`. Sin esa variable funciona en modo local sin
+autenticación, válido solo para desarrollo. La configuración completa, las
+variables, el modo con emuladores, las pruebas y las notas de despliegue están
+en `backend/README.md`.
+
+Para sembrar los datos demo manualmente:
+
+```powershell
+$env:FIRESTORE_EMULATOR_HOST="127.0.0.1:8080"
+$env:FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:9099"
+$env:GCLOUD_PROJECT="demo-manuela"
+python backend/scripts/seed_demo.py
+```
+
+Credenciales demo: `admin.demo@manuela.local` / `Demo1234!`.
 
 ## Rutas principales
 
@@ -74,6 +132,7 @@ propiedades, `propertyViews`, cierres, testimonios y auditoría; además validan
 | `/comprador` | Comprador |
 | `/vendedor` | Vendedor |
 | `/admin`, `/admin/reportes-ventas` | Admin / Administrador |
+| `/admin/simulacion` | Admin / Administrador |
 
 Las URL antiguas `.html` se redirigen con el cliente y, en Hosting, con
 redirecciones 301 configuradas en `firebase.json`.
@@ -251,10 +310,22 @@ No asignes `Admin` desde el formulario público: las reglas solo aceptan
 - Considera activar App Check y `ENFORCE_APP_CHECK=true` en Functions.
 - El borrado definitivo no se ejecuta desde el cliente: usa la Function
   protegida y exige reautenticación.
+- El API FastAPI de simulación no debe exponerse en modo local sin
+  autenticación. En producción define `FIREBASE_PROJECT_ID`, una cuenta de
+  servicio con permisos mínimos, HTTPS y `CORS_ORIGINS` con el origen exacto.
+  No publiques el JSON de la cuenta de servicio.
+- Para regenerar, el servidor necesita `pandas` y `Faker`, permisos de escritura
+  en `SIMULATION_DIR` y un reverse proxy con timeout superior a
+  `SIMULATION_TIMEOUT_SECONDS` (120 s por defecto). La petición es síncrona y
+  tarda unos 10 s; si el hosting corta peticiones largas, habrá que usar una
+  cola o un job asíncrono. El lock de una corrida a la vez es en memoria: con
+  varios workers de Uvicorn hay que usar un lock de archivo o una cola.
 - Revisa los avisos de `npm audit` antes del lanzamiento.
-- `npm audit` reporta 12 vulnerabilidades transitivas de Firebase 10.8.1
-  (`undici` y `@grpc/grpc-js`). Actualizar a Firebase 10.14.x las corrige, pero
-  cambia la versión exigida del SDK; requiere aprobación antes de hacerlo.
+- `npm audit --omit=dev` reporta 12 vulnerabilidades de producción, transitivas
+  de Firebase 10.8.1 (`undici` y `@grpc/grpc-js`). Actualizar a Firebase 10.14.x
+  las corrige, pero cambia la versión exigida del SDK; requiere aprobación antes
+  de hacerlo. La auditoría completa suma 27 avisos porque incluye herramientas
+  de desarrollo (`firebase-tools` y Playwright).
 
 ## Estado y pendientes
 
@@ -278,3 +349,10 @@ No asignes `Admin` desde el formulario público: las reglas solo aceptan
   parte del build.
 - El formulario PHP de `mail/` solo debe usarse como respaldo si se configura
   `VITE_CONTACT_FALLBACK_URL`.
+- `integrador_nt_Manuela_Bermudez_Reaktor` contiene un repositorio Git anidado y
+  puede no estar versionado. El backend de simulación depende de sus CSV; si no
+  está en el servidor, define `SIMULATION_DIR` con permisos de escritura. Si el
+  simulador usa otro entorno virtual, define `SIMULATION_PYTHON`.
+- El backend FastAPI no se despliega con Firebase Hosting. Necesita un servicio
+  aparte (contenedor, VM o función serverless compatible) y un reverse proxy que
+  enrute `/api`; revisa `backend/README.md` antes de publicarlo.

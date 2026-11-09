@@ -81,6 +81,7 @@
       "testimonials": "Testimonios",
       "sales": "Cierres",
       "reports": "Reporte de ventas",
+      "simulation": "Simulación",
       "account": "Mi perfil",
       "security": "Seguridad"
     },
@@ -1172,6 +1173,127 @@
         "other": "{{count}} cierres"
       },
       "note": "Los valores del reporte corresponden a los cierres vigentes (no anulados) y a los filtros aplicados. La exportación en Excel respeta la misma selección."
+    },
+    "simulation": {
+      "pageTitle": "Simulación",
+      "pageDescription": "Reportes interactivos del simulador de compradores, vendedores y administradores.",
+      "title": "Reportes de simulación",
+      "subtitle": "Indicadores generados a partir de los CSV limpios y sucios del simulador Python.",
+      "back": "Volver al panel",
+      "refresh": "Actualizar datos",
+      "refreshing": "Generando datos…",
+      "refreshHint": "Vuelve a ejecutar el simulador Python y regenera los CSV.",
+      "generatedAt": "Datos actualizados el {{date}}",
+      "loading": "Cargando reportes de simulación…",
+      "sourceNote": "Los gráficos leen data/limpios y data/sucios del simulador. Actualizar ejecuta de nuevo el pipeline Python (simular, ensuciar y limpiar), reemplaza los CSV y vuelve a cargar los datos. No escribe en Firestore.",
+      "runSuccess": "Simulación completada en {{seconds}} s.",
+      "runError": "No se pudo regenerar la simulación. Revisa los logs del backend.",
+      "loadError": "No se pudieron cargar los reportes de simulación.",
+      "errorTitle": "No pudimos cargar los reportes",
+      "emptyTitle": "No hay datos de simulación",
+      "emptyDescription": "Ejecuta el simulador Python para generar los CSV y vuelve a actualizar.",
+      "retry": "Reintentar",
+      "noData": "Sin datos para este gráfico.",
+      "stats": {
+        "buyers": "Compradores",
+        "buyersHint": "Filas limpias",
+        "sellers": "Vendedores",
+        "sellersHint": "Filas limpias",
+        "admins": "Administradores",
+        "adminsHint": "IDs limpios",
+        "rawAdminRows": "Filas crudas de admin",
+        "rawAdminRowsHint": "Antes de deduplicar"
+      },
+      "sections": {
+        "buyers": {
+          "eyebrow": "Compradores",
+          "title": "Comportamiento de compra",
+          "text": "Balances, estado y preferencias de los compradores simulados."
+        },
+        "sellers": {
+          "eyebrow": "Vendedores",
+          "title": "Comportamiento de venta",
+          "text": "Balances, estado y propiedades vendidas por los vendedores simulados."
+        },
+        "admins": {
+          "eyebrow": "Administradores",
+          "title": "Gestión y calidad de datos",
+          "text": "Tipos de administrador y efecto de la limpieza de registros."
+        }
+      },
+      "charts": {
+        "buyerBalances": {
+          "eyebrow": "Balance",
+          "title": "Distribución de balances",
+          "description": "Agrupa los balances de los compradores en millones de COP."
+        },
+        "buyerStatus": {
+          "eyebrow": "Estado",
+          "title": "Compradores activos",
+          "description": "Proporción de compradores activos e inactivos."
+        },
+        "buyerInterests": {
+          "eyebrow": "Interés",
+          "title": "Interés por tipo de inmueble",
+          "description": "Tipo de propiedad que prefiere cada comprador."
+        },
+        "sellerBalances": {
+          "eyebrow": "Balance",
+          "title": "Distribución de balances",
+          "description": "Agrupa los balances de los vendedores en millones de COP."
+        },
+        "sellerStatus": {
+          "eyebrow": "Estado",
+          "title": "Vendedores activos",
+          "description": "Proporción de vendedores activos e inactivos."
+        },
+        "sellerSoldProperties": {
+          "eyebrow": "Ventas",
+          "title": "Propiedades vendidas",
+          "description": "Cantidad de vendedores según el número de propiedades vendidas."
+        },
+        "adminTypes": {
+          "eyebrow": "Roles",
+          "title": "Tipos de administrador",
+          "description": "Cantidad de administradores y superadmins."
+        },
+        "adminTypeShare": {
+          "eyebrow": "Participación",
+          "title": "Participación por tipo",
+          "description": "Proporción de administradores y superadmins."
+        },
+        "adminQuality": {
+          "eyebrow": "Calidad",
+          "title": "Efecto de la limpieza",
+          "description": "Comparación entre filas crudas, IDs únicos y administradores limpios."
+        }
+      },
+      "axes": {
+        "buyers": "Compradores",
+        "sellers": "Vendedores",
+        "admins": "Administradores",
+        "count": "Cantidad",
+        "millions": "Millones de COP",
+        "soldProperties": "Propiedades vendidas",
+        "balanceRange": "Rango de balance"
+      },
+      "labels": {
+        "active": "Activos",
+        "inactive": "Inactivos",
+        "unknown": "Sin dato",
+        "admin": "Admin",
+        "superadmin": "Superadmin",
+        "invalid": "Inválido",
+        "apartamento": "Apartamento",
+        "casa": "Casa",
+        "finca": "Finca",
+        "apartaestudio": "Apartaestudio",
+        "rawRows": "Filas crudas",
+        "rawUniqueIds": "IDs únicos",
+        "cleanAdmins": "Admins limpios",
+        "excluded": "{{count}} registros sin balance válido",
+        "range": "{{from}}–{{to}} M"
+      }
     }
   },
   "admin": {
@@ -1548,6 +1670,12 @@
       "annulled": "Este cierre ya fue anulado.",
       "date": "Selecciona una fecha de cierre válida.",
       "dateFuture": "La fecha del cierre no puede ser futura."
+    },
+    "simulation": {
+      "unavailable": "No se pudo conectar con el servicio de simulación. Verifica que el backend FastAPI esté en ejecución.",
+      "unauthorized": "Tu sesión no tiene permisos para consultar los reportes de simulación.",
+      "running": "Ya hay una simulación en curso. Espera a que termine.",
+      "runFailed": "La simulación no pudo completarse. Revisa los CSV y los logs del backend."
     },
     "testimonial": {
       "loginRequired": "Inicia sesión para compartir tu experiencia.",

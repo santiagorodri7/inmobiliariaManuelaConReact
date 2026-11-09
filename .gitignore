@@ -6,3 +6,9 @@ dist/
 serviceAccount*.json
 *.log
 .firebase/
+.playwright-mcp/
+.superpowers/
+test-results/
+playwright-report/
+__pycache__/
+.pytest_cache/

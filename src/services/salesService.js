@@ -176,6 +176,14 @@ export const annulSale = async (saleId, { admin, reason = "" } = {}) => {
       throw appError("sale/already-annulled");
     }
 
+    // Firestore exige que todas las lecturas ocurran antes de las escrituras.
+    let propertyRef = null;
+    let propertySnapshot = null;
+    if (sale.propertyId) {
+      propertyRef = doc(db, "propiedades", sale.propertyId);
+      propertySnapshot = await transaction.get(propertyRef);
+    }
+
     transaction.update(saleRef, {
       status: "anulada",
       annulledAt: serverTimestamp(),
@@ -184,17 +192,13 @@ export const annulSale = async (saleId, { admin, reason = "" } = {}) => {
       updatedAt: serverTimestamp(),
     });
 
-    if (sale.propertyId) {
-      const propertyRef = doc(db, "propiedades", sale.propertyId);
-      const propertySnapshot = await transaction.get(propertyRef);
-      if (propertySnapshot.exists()) {
-        transaction.update(propertyRef, {
-          status: "disponible",
-          saleId: "",
-          closedAt: null,
-          updatedAt: serverTimestamp(),
-        });
-      }
+    if (propertyRef && propertySnapshot?.exists()) {
+      transaction.update(propertyRef, {
+        status: "disponible",
+        saleId: "",
+        closedAt: null,
+        updatedAt: serverTimestamp(),
+      });
     }
 
     transaction.set(doc(collection(db, "auditLog")), {
