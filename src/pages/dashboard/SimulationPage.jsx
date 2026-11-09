@@ -27,11 +27,15 @@ import SimulationChartCard from "../../components/admin/SimulationChartCard.jsx"
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import ErrorState from "../../components/ui/ErrorState.jsx";
 import { PageLoader } from "../../components/ui/Spinner.jsx";
+import { useToast } from "../../components/ui/Toast.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useI18n } from "../../i18n/I18nContext.jsx";
 import { usePageTitle } from "../../hooks/usePageTitle.js";
 import { adminNav } from "../../config/dashboardNav.js";
-import { fetchSimulationOverview } from "../../services/simulationService.js";
+import {
+  fetchSimulationOverview,
+  rerunSimulation,
+} from "../../services/simulationService.js";
 import { getErrorMessage } from "../../utils/errors.js";
 
 const PALETTE = ["#1b639e", "#2f6d5a", "#a5523d", "#c9a227", "#7d8fa1"];
@@ -204,9 +208,10 @@ function BreakdownPieChart({ items = [], innerRadius = 55 }) {
 export default function SimulationPage() {
   const { t, formatNumber, formatDateTime } = useI18n();
   const { profile } = useAuth();
+  const toast = useToast();
   const [overview, setOverview] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [regenerating, setRegenerating] = useState(false);
   const [error, setError] = useState("");
 
   usePageTitle(
@@ -214,9 +219,8 @@ export default function SimulationPage() {
     t("dashboard.simulation.pageDescription"),
   );
 
-  const load = useCallback(async ({ silent = false } = {}) => {
-    if (silent) setRefreshing(true);
-    else setLoading(true);
+  const load = useCallback(async () => {
+    setLoading(true);
     setError("");
     try {
       setOverview(await fetchSimulationOverview());
@@ -224,13 +228,37 @@ export default function SimulationPage() {
       setError(getErrorMessage(loadError, "dashboard.simulation.loadError"));
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   }, []);
 
   useEffect(() => {
     load();
   }, [load]);
+
+  const handleRerun = async () => {
+    if (regenerating) return;
+    setRegenerating(true);
+    try {
+      const regenerated = await rerunSimulation();
+      setOverview(regenerated);
+      setError("");
+      const seconds = Math.max(
+        1,
+        Math.round((regenerated.run?.durationMs || 0) / 1000),
+      );
+      toast.success(
+        t("dashboard.simulation.runSuccess", {
+          seconds: formatNumber(seconds),
+        }),
+      );
+    } catch (runError) {
+      toast.error(
+        getErrorMessage(runError, "dashboard.simulation.runError"),
+      );
+    } finally {
+      setRegenerating(false);
+    }
+  };
 
   const totals = overview?.totals || {};
   const charts = overview?.charts || {};
@@ -270,15 +298,16 @@ export default function SimulationPage() {
           <button
             type="button"
             className="btn btn-primary btn-sm dashboard-action"
-            onClick={() => load({ silent: true })}
-            disabled={loading || refreshing}
+            onClick={handleRerun}
+            disabled={loading || regenerating}
+            title={t("dashboard.simulation.refreshHint")}
           >
             <RefreshCw
               size={15}
-              className={refreshing ? "spin" : undefined}
+              className={regenerating ? "spin" : undefined}
               aria-hidden="true"
             />
-            {refreshing
+            {regenerating
               ? t("dashboard.simulation.refreshing")
               : t("dashboard.simulation.refresh")}
           </button>

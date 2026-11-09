@@ -1181,10 +1181,13 @@
       "subtitle": "Indicadores generados a partir de los CSV limpios y sucios del simulador Python.",
       "back": "Volver al panel",
       "refresh": "Actualizar datos",
-      "refreshing": "Actualizando…",
+      "refreshing": "Generando datos…",
+      "refreshHint": "Vuelve a ejecutar el simulador Python y regenera los CSV.",
       "generatedAt": "Datos actualizados el {{date}}",
       "loading": "Cargando reportes de simulación…",
-      "sourceNote": "Los gráficos leen data/limpios y data/sucios del simulador. Actualizar vuelve a consultar el API; no ejecuta la simulación ni escribe en Firestore.",
+      "sourceNote": "Los gráficos leen data/limpios y data/sucios del simulador. Actualizar ejecuta de nuevo el pipeline Python (simular, ensuciar y limpiar), reemplaza los CSV y vuelve a cargar los datos. No escribe en Firestore.",
+      "runSuccess": "Simulación completada en {{seconds}} s.",
+      "runError": "No se pudo regenerar la simulación. Revisa los logs del backend.",
       "loadError": "No se pudieron cargar los reportes de simulación.",
       "errorTitle": "No pudimos cargar los reportes",
       "emptyTitle": "No hay datos de simulación",
@@ -1670,7 +1673,9 @@
     },
     "simulation": {
       "unavailable": "No se pudo conectar con el servicio de simulación. Verifica que el backend FastAPI esté en ejecución.",
-      "unauthorized": "Tu sesión no tiene permisos para consultar los reportes de simulación."
+      "unauthorized": "Tu sesión no tiene permisos para consultar los reportes de simulación.",
+      "running": "Ya hay una simulación en curso. Espera a que termine.",
+      "runFailed": "La simulación no pudo completarse. Revisa los CSV y los logs del backend."
     },
     "testimonial": {
       "loginRequired": "Inicia sesión para compartir tu experiencia.",

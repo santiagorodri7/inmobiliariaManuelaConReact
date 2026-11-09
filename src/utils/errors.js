@@ -62,6 +62,8 @@ const messageKeys = {
   "testimonial/status": "errors.testimonial.status",
   "simulation/unavailable": "errors.simulation.unavailable",
   "simulation/unauthorized": "errors.simulation.unauthorized",
+  "simulation/running": "errors.simulation.running",
+  "simulation/runFailed": "errors.simulation.runFailed",
 };
 
 const looksLikeKey = (value) =>

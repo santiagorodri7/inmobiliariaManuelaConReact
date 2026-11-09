@@ -68,15 +68,60 @@ test("simulación: navegación, nueve gráficos y totales", async ({ page }) => 
     page.getByRole("heading", { name: "Gestión y calidad de datos" }),
   ).toBeVisible();
 
-  const refreshed = page.waitForResponse(
+  const regenerated = page.waitForResponse(
     (response) =>
-      response.url().includes("/api/simulation/overview") &&
+      response.url().includes("/api/simulation/rerun") &&
+      response.request().method() === "POST" &&
       response.status() === 200,
   );
   await page.getByRole("button", { name: "Actualizar datos" }).click();
-  await refreshed;
+  await expect(
+    page.getByRole("button", { name: "Generando datos…" }),
+  ).toBeVisible();
+  const regeneratedResponse = await regenerated;
+  const payload = await regeneratedResponse.json();
+  expect(payload.run.steps).toBe(3);
+  expect(payload.run.durationMs).toBeGreaterThan(0);
+  expect(payload.totals).toEqual({
+    buyers: 300,
+    sellers: 300,
+    admins: 300,
+    rawAdminRows: 315,
+  });
+
+  await expect(page.getByText(/Simulación completada en/)).toBeVisible();
   await expectAllCharts(page);
   await expect(page.getByText(/Datos actualizados el/)).toBeVisible();
+});
+
+test("simulación: error al regenerar mantiene los gráficos", async ({ page }) => {
+  await login(page);
+
+  await page
+    .locator(".dashboard-nav")
+    .getByRole("link", { name: "Simulación" })
+    .click();
+  await page.waitForURL(/\/admin\/simulacion$/);
+  await expectAllCharts(page);
+
+  await page.route("**/api/simulation/rerun", async (route) => {
+    await route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({ detail: "Fallo controlado de la simulación" }),
+    });
+  });
+
+  await page.getByRole("button", { name: "Actualizar datos" }).click();
+  await expect(
+    page.getByText(/La simulación no pudo completarse/),
+  ).toBeVisible();
+  await expectAllCharts(page);
+  await expect(
+    page.locator(".simulation-summary .stat-card").first(),
+  ).toBeVisible();
+
+  await page.unroute("**/api/simulation/rerun");
 });
 
 test("simulación: error del API y reintento", async ({ page }) => {

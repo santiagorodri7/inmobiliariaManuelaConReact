@@ -7,7 +7,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .auth import AdminIdentity, require_admin
 from .config import get_cors_origins, get_firebase_project_id
-from .simulation import SimulationDataError, load_overview
+from .rerun import (
+    SimulationBusyError,
+    SimulationRunError,
+    load_overview_locked,
+    run_simulation,
+)
+from .simulation import SimulationDataError
 
 app = FastAPI(
     title="Manuela Simulation API",
@@ -19,7 +25,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=get_cors_origins(),
     allow_credentials=False,
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST"],
     allow_headers=["Authorization", "Content-Type"],
 )
 
@@ -40,6 +46,19 @@ def simulation_overview(
 ) -> dict:
     """Return the aggregated simulation reports for the admin charts."""
     try:
-        return load_overview()
+        return load_overview_locked()
     except SimulationDataError as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
+
+
+@app.post("/api/simulation/rerun")
+def simulation_rerun(
+    _admin: AdminIdentity = Depends(require_admin),
+) -> dict:
+    """Run the Python data pipeline and return the regenerated overview."""
+    try:
+        return run_simulation()
+    except SimulationBusyError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+    except SimulationRunError as error:
         raise HTTPException(status_code=503, detail=str(error)) from error

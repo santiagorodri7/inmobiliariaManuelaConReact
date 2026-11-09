@@ -16,7 +16,9 @@ para compartir y acciones de contacto por WhatsApp y correo.
   opcional: si no está disponible, la app usa el respaldo Base64.
 - Firebase CLI para desplegar reglas, Functions y Hosting.
 - Java 11 o superior si se ejecutan los emuladores.
-- Python 3.11 o superior si se ejecuta el backend FastAPI de simulación.
+- Python 3.11 o superior si se ejecuta el backend FastAPI de simulación. Para el
+  botón **Actualizar datos** también se necesitan `pandas` y `Faker` (ver
+  `backend/requirements-simulation.txt`).
 
 ## Configuración local
 
@@ -68,10 +70,10 @@ propiedades, `propertyViews`, cierres, testimonios y auditoría; además validan
 `storage.rules`. La suite actual suma 111 pruebas de Firestore y 8 de Storage.
 
 `npm run test:e2e` inicia los emuladores, siembra los datos demo, levanta Vite y
-el API FastAPI, y ejecuta 9 pruebas Playwright: 7 del panel administrativo
-(datos, filtros, tablas, acciones, paginación y exportaciones Excel) y 2 de la
-pestaña de simulación (nueve gráficos, totales, actualización y recuperación
-ante errores del API).
+el API FastAPI, y ejecuta 10 pruebas Playwright: 7 del panel administrativo
+(datos, filtros, tablas, acciones, paginación y exportaciones Excel) y 3 de la
+pestaña de simulación (nueve gráficos, totales, regeneración real del pipeline,
+recuperación ante errores de carga y error controlado al regenerar).
 
 ## Panel de simulación y backend FastAPI
 
@@ -80,10 +82,13 @@ interactivos con Recharts: balances, estado e intereses de compradores;
 balances, estado y propiedades vendidas de vendedores; y tipos, participación y
 calidad de datos de administradores. Los datos provienen únicamente de los CSV
 del simulador Python (`data/limpios` y `data/sucios`). No se escribe en
-Firestore, no se ejecuta la simulación y no se usan datos de producción.
+Firestore ni se usan datos de producción.
 
-El backend vive en `backend/` y expone `GET /api/simulation/overview`. Para
-desarrollarlo:
+El backend vive en `backend/` y expone `GET /api/simulation/overview` y
+`POST /api/simulation/rerun`. El botón **Actualizar datos** ejecuta las etapas
+1–4 del simulador (simular, exportar, ensuciar y limpiar) en una carpeta
+temporal, valida los CSV y solo entonces reemplaza los archivos reales. Si algo
+falla, los datos anteriores quedan intactos. Para desarrollarlo:
 
 ```powershell
 python -m pip install -r backend/requirements-dev.txt
@@ -92,8 +97,10 @@ npm run dev
 ```
 
 Con `VITE_SIMULATION_API_URL` vacío, Vite enruta `/api` al backend local. El
-botón **Actualizar datos** vuelve a consultar el API; para reflejar una nueva
-simulación hay que regenerar los CSV.
+botón **Actualizar datos** regenera los CSV con datos aleatorios nuevos, por lo
+que los gráficos cambian en cada corrida. Solo se permite una simulación a la
+vez y la petición tarda alrededor de 10 s. No se regeneran los PNG de
+`data/reportes`; para eso hay que ejecutar `python src/main.py` aparte.
 
 Con `FIREBASE_PROJECT_ID` definido, el API exige un Firebase ID token con rol
 `Admin` o `Administrador`. Sin esa variable funciona en modo local sin
@@ -307,6 +314,12 @@ No asignes `Admin` desde el formulario público: las reglas solo aceptan
   autenticación. En producción define `FIREBASE_PROJECT_ID`, una cuenta de
   servicio con permisos mínimos, HTTPS y `CORS_ORIGINS` con el origen exacto.
   No publiques el JSON de la cuenta de servicio.
+- Para regenerar, el servidor necesita `pandas` y `Faker`, permisos de escritura
+  en `SIMULATION_DIR` y un reverse proxy con timeout superior a
+  `SIMULATION_TIMEOUT_SECONDS` (120 s por defecto). La petición es síncrona y
+  tarda unos 10 s; si el hosting corta peticiones largas, habrá que usar una
+  cola o un job asíncrono. El lock de una corrida a la vez es en memoria: con
+  varios workers de Uvicorn hay que usar un lock de archivo o una cola.
 - Revisa los avisos de `npm audit` antes del lanzamiento.
 - `npm audit --omit=dev` reporta 12 vulnerabilidades de producción, transitivas
   de Firebase 10.8.1 (`undici` y `@grpc/grpc-js`). Actualizar a Firebase 10.14.x
@@ -338,7 +351,8 @@ No asignes `Admin` desde el formulario público: las reglas solo aceptan
   `VITE_CONTACT_FALLBACK_URL`.
 - `integrador_nt_Manuela_Bermudez_Reaktor` contiene un repositorio Git anidado y
   puede no estar versionado. El backend de simulación depende de sus CSV; si no
-  está en el servidor, define `SIMULATION_DIR`.
+  está en el servidor, define `SIMULATION_DIR` con permisos de escritura. Si el
+  simulador usa otro entorno virtual, define `SIMULATION_PYTHON`.
 - El backend FastAPI no se despliega con Firebase Hosting. Necesita un servicio
   aparte (contenedor, VM o función serverless compatible) y un reverse proxy que
   enrute `/api`; revisa `backend/README.md` antes de publicarlo.

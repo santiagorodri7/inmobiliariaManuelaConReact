@@ -1181,10 +1181,13 @@
       "subtitle": "Indicators generated from the clean and raw CSV files of the Python simulator.",
       "back": "Back to dashboard",
       "refresh": "Refresh data",
-      "refreshing": "Refreshing…",
+      "refreshing": "Generating data…",
+      "refreshHint": "Runs the Python simulator again and regenerates the CSV files.",
       "generatedAt": "Data refreshed on {{date}}",
       "loading": "Loading simulation reports…",
-      "sourceNote": "The charts read data/limpios and data/sucios from the simulator. Refresh queries the API again; it does not run the simulation or write to Firestore.",
+      "sourceNote": "The charts read data/limpios and data/sucios from the simulator. Refresh runs the Python pipeline again (simulate, dirty, clean), replaces the CSV files, and reloads the data. It does not write to Firestore.",
+      "runSuccess": "Simulation completed in {{seconds}} s.",
+      "runError": "The simulation could not be regenerated. Check the backend logs.",
       "loadError": "The simulation reports could not be loaded.",
       "errorTitle": "We couldn't load the reports",
       "emptyTitle": "No simulation data",
@@ -1670,7 +1673,9 @@
     },
     "simulation": {
       "unavailable": "The simulation service could not be reached. Check that the FastAPI backend is running.",
-      "unauthorized": "Your session does not have permission to read the simulation reports."
+      "unauthorized": "Your session does not have permission to read the simulation reports.",
+      "running": "A simulation is already running. Wait for it to finish.",
+      "runFailed": "The simulation could not be completed. Check the CSV files and backend logs."
     },
     "testimonial": {
       "loginRequired": "Sign in to share your experience.",

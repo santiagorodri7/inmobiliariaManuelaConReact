@@ -6,6 +6,7 @@ Environment variables are read at call time so tests can monkeypatch them.
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -39,3 +40,24 @@ def get_firebase_project_id() -> str:
 def get_firebase_service_account() -> str:
     """Return the path to a service account JSON file, or an empty string."""
     return os.environ.get("FIREBASE_SERVICE_ACCOUNT", "").strip()
+
+
+def get_simulation_python() -> str:
+    """Return the Python executable used to run the simulator pipeline.
+
+    ``SIMULATION_PYTHON`` lets deployments point to an isolated virtual
+    environment that has pandas and Faker installed. It defaults to the
+    interpreter running FastAPI.
+    """
+    configured = os.environ.get("SIMULATION_PYTHON", "").strip()
+    return configured or sys.executable or "python"
+
+
+def get_simulation_timeout_seconds() -> int:
+    """Return the maximum duration of a full simulation run, in seconds."""
+    raw = os.environ.get("SIMULATION_TIMEOUT_SECONDS", "").strip()
+    try:
+        value = int(raw) if raw else 120
+    except ValueError:
+        value = 120
+    return max(10, min(value, 900))
