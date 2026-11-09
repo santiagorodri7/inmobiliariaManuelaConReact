@@ -81,6 +81,7 @@
       "testimonials": "Testimonials",
       "sales": "Closings",
       "reports": "Sales report",
+      "simulation": "Simulation",
       "account": "My profile",
       "security": "Security"
     },
@@ -1172,6 +1173,124 @@
         "other": "{{count}} closings"
       },
       "note": "The report values correspond to active closings (not annulled) and the applied filters. The Excel export respects the same selection."
+    },
+    "simulation": {
+      "pageTitle": "Simulation",
+      "pageDescription": "Interactive reports from the buyer, seller, and admin simulator.",
+      "title": "Simulation reports",
+      "subtitle": "Indicators generated from the clean and raw CSV files of the Python simulator.",
+      "back": "Back to dashboard",
+      "refresh": "Refresh data",
+      "refreshing": "Refreshing…",
+      "generatedAt": "Data refreshed on {{date}}",
+      "loading": "Loading simulation reports…",
+      "sourceNote": "The charts read data/limpios and data/sucios from the simulator. Refresh queries the API again; it does not run the simulation or write to Firestore.",
+      "loadError": "The simulation reports could not be loaded.",
+      "errorTitle": "We couldn't load the reports",
+      "emptyTitle": "No simulation data",
+      "emptyDescription": "Run the Python simulator to generate the CSV files, then refresh.",
+      "retry": "Retry",
+      "noData": "No data for this chart.",
+      "stats": {
+        "buyers": "Buyers",
+        "buyersHint": "Clean rows",
+        "sellers": "Sellers",
+        "sellersHint": "Clean rows",
+        "admins": "Admins",
+        "adminsHint": "Clean IDs",
+        "rawAdminRows": "Raw admin rows",
+        "rawAdminRowsHint": "Before deduplication"
+      },
+      "sections": {
+        "buyers": {
+          "eyebrow": "Buyers",
+          "title": "Buying behavior",
+          "text": "Balances, status, and preferences of the simulated buyers."
+        },
+        "sellers": {
+          "eyebrow": "Sellers",
+          "title": "Selling behavior",
+          "text": "Balances, status, and sold properties of the simulated sellers."
+        },
+        "admins": {
+          "eyebrow": "Admins",
+          "title": "Management and data quality",
+          "text": "Admin types and the effect of record cleanup."
+        }
+      },
+      "charts": {
+        "buyerBalances": {
+          "eyebrow": "Balance",
+          "title": "Balance distribution",
+          "description": "Groups buyer balances in millions of COP."
+        },
+        "buyerStatus": {
+          "eyebrow": "Status",
+          "title": "Active buyers",
+          "description": "Share of active and inactive buyers."
+        },
+        "buyerInterests": {
+          "eyebrow": "Interest",
+          "title": "Interest by property type",
+          "description": "Property type preferred by each buyer."
+        },
+        "sellerBalances": {
+          "eyebrow": "Balance",
+          "title": "Balance distribution",
+          "description": "Groups seller balances in millions of COP."
+        },
+        "sellerStatus": {
+          "eyebrow": "Status",
+          "title": "Active sellers",
+          "description": "Share of active and inactive sellers."
+        },
+        "sellerSoldProperties": {
+          "eyebrow": "Sales",
+          "title": "Sold properties",
+          "description": "Number of sellers by count of sold properties."
+        },
+        "adminTypes": {
+          "eyebrow": "Roles",
+          "title": "Admin types",
+          "description": "Count of admins and superadmins."
+        },
+        "adminTypeShare": {
+          "eyebrow": "Share",
+          "title": "Share by type",
+          "description": "Share of admins and superadmins."
+        },
+        "adminQuality": {
+          "eyebrow": "Quality",
+          "title": "Effect of cleanup",
+          "description": "Comparison of raw rows, unique IDs, and clean admins."
+        }
+      },
+      "axes": {
+        "buyers": "Buyers",
+        "sellers": "Sellers",
+        "admins": "Admins",
+        "count": "Count",
+        "millions": "Millions of COP",
+        "soldProperties": "Sold properties",
+        "balanceRange": "Balance range"
+      },
+      "labels": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "unknown": "Unknown",
+        "admin": "Admin",
+        "superadmin": "Superadmin",
+        "invalid": "Invalid",
+        "apartamento": "Apartment",
+        "casa": "House",
+        "finca": "Farm",
+        "apartaestudio": "Studio apartment",
+        "rawRows": "Raw rows",
+        "rawUniqueIds": "Unique IDs",
+        "cleanAdmins": "Clean admins",
+        "excluded": "{{count}} records without a valid balance",
+        "range": "{{from}}–{{to}} M"
+      }
     }
   },
   "admin": {
@@ -1548,6 +1667,10 @@
       "annulled": "This closing has already been annulled.",
       "date": "Select a valid closing date.",
       "dateFuture": "The closing date cannot be in the future."
+    },
+    "simulation": {
+      "unavailable": "The simulation service could not be reached. Check that the FastAPI backend is running.",
+      "unauthorized": "Your session does not have permission to read the simulation reports."
     },
     "testimonial": {
       "loginRequired": "Sign in to share your experience.",

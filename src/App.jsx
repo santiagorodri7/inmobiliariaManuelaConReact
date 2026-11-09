@@ -44,6 +44,9 @@ const AdminDashboard = lazy(
 const SalesReportPage = lazy(
   () => import("./pages/dashboard/SalesReportPage.jsx"),
 );
+const SimulationPage = lazy(
+  () => import("./pages/dashboard/SimulationPage.jsx"),
+);
 
 function LegacyPropertyRedirect() {
   const [searchParams] = useSearchParams();
@@ -143,6 +146,14 @@ export default function App() {
                   element={
                     <ProtectedRoute roles={[ROLES.ADMIN]}>
                       <SalesReportPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/simulacion"
+                  element={
+                    <ProtectedRoute roles={[ROLES.ADMIN]}>
+                      <SimulationPage />
                     </ProtectedRoute>
                   }
                 />

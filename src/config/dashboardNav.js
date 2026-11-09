@@ -1,5 +1,6 @@
 import {
   Building2,
+  ChartColumn,
   Compass,
   FileSpreadsheet,
   Handshake,
@@ -57,6 +58,12 @@ export const adminNav = [
     label: "nav.dashboard.reports",
     icon: FileSpreadsheet,
     to: "/admin/reportes-ventas",
+  },
+  {
+    key: "simulacion",
+    label: "nav.dashboard.simulation",
+    icon: ChartColumn,
+    to: "/admin/simulacion",
   },
   { key: "cuenta", label: "nav.dashboard.account", icon: UserRound, to: "/cuenta" },
 ];
